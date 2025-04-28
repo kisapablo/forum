@@ -11,23 +11,9 @@
     <title>Hello, world!</title> <!-- Заголовок где navicon -->
 </head>
 <body>
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <div class="container";>  <!-- Выравнивание по центру начало -->
-    <a class="navbar-brand" href="/">Blog</a> <!-- переход на начало страницы -->
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav">
-            <li class="nav-item">
-                <a class="nav-link" href="/about">About</a> <!-- переход на /about -->
-            </li>
-        </ul>
-    </div>
-    </div> <!-- Выравнивание по центру конец -->
-</nav>
+<!-- Навигация переехала в /navigation/navigation.twig -->
 
-{% include %}
+{% include 'Navigation/navigation.twig' %}
 {% block body %}{% endblock %}
 
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
