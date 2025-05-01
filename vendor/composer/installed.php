@@ -5,7 +5,7 @@
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => 'f457c84aba0a7c572e77bc31981ba228cd98d150',
+        'reference' => 'e89a0455daf55ff494188a8a1055c7ed677260b3',
         'name' => 'nikita/blog',
         'dev' => true,
     ),
@@ -34,7 +34,7 @@
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => 'f457c84aba0a7c572e77bc31981ba228cd98d150',
+            'reference' => 'e89a0455daf55ff494188a8a1055c7ed677260b3',
             'dev_requirement' => false,
         ),
         'psr/container' => array(

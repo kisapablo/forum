@@ -9,6 +9,19 @@ require __DIR__ . '/vendor/autoload.php';
 $loader = new \Twig\Loader\FilesystemLoader('Templates');
 $view = new \Twig\Environment($loader);
 
+$config = include 'config/database.php'; //mysql
+$dsn = $config['dsn']; //mysql
+$username = $config['username']; //mysql
+$password = $config['password']; //mysql
+
+try{
+    $connection = new PDO($dsn, $username, $password); // mysql
+    $connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION); //mysql
+    $connection->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC); //mysql
+} catch (PDOException $exception) {   // mysql
+    echo 'Database Error: ' . $exception-> getMessage();  // mysql
+    exit;  // mysql
+}
 
 $app = AppFactory::create();
 
@@ -20,7 +33,8 @@ $app->get('/', function (Request $request, Response $response, $args) use ($view
 
 $app->get('/about', function (Request $request, Response $response, $args) use ($view) {
     $body = $view->render('about.twig', [
-'name' => 'Max'
+            'name' => 'Nikita',
+            'animals' => 'Dogs'
         ]);
     $response->getBody()->write($body);
     return $response;
