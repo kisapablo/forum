@@ -3,6 +3,7 @@ use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\Factory\AppFactory;
 use \Twig\Loader\FilesystemLoader;
+use Blog\PostMapper;
 
 require __DIR__ . '/vendor/autoload.php';
 
@@ -23,6 +24,8 @@ try{
     exit;  // mysql
 }
 
+$postMapper = new PostMapper($connection);
+
 $app = AppFactory::create();
 
 $app->get('/', function (Request $request, Response $response, $args) use ($view) {
@@ -40,9 +43,11 @@ $app->get('/about', function (Request $request, Response $response, $args) use (
     return $response;
 });
 
-$app->get('/{url_key}', function (Request $request, Response $response, $args) use ($view) {
+$app->get('/{url_key}', function (Request $request, Response $response, $args) use ($view, $postMapper) {
+    $post = $postMapper->getByUrlKey((string) $args['url_key']);
+
     $body = $view ->render('post.twig',  [
-        'url_key' => $args['url_key']
+        'post' => $args['url_key']
     ]);
     $response->getBody()->write($body);
     return $response;

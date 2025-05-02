@@ -19,5 +19,10 @@
         "slim/psr7": "^1.7",
         "twig/twig": "^3.1",
         "ext-pdo": "7.4"
+    },
+    "autoload": {
+        "psr-4": {
+            "Blog\\": "src/"
+        }
     }
 }

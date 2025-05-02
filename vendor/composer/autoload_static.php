@@ -39,14 +39,14 @@ class ComposerStaticInitd751713988987e9331980363e24189ce
             'Psr\\Http\\Message\\' => 17,
             'Psr\\Container\\' => 14,
         ),
-        'N' => 
-        array (
-            'Nikita\\Blog\\' => 12,
-        ),
         'F' => 
         array (
             'Fig\\Http\\Message\\' => 17,
             'FastRoute\\' => 10,
+        ),
+        'B' => 
+        array (
+            'Blog\\' => 5,
         ),
     );
 
@@ -93,10 +93,6 @@ class ComposerStaticInitd751713988987e9331980363e24189ce
         array (
             0 => __DIR__ . '/..' . '/psr/container/src',
         ),
-        'Nikita\\Blog\\' => 
-        array (
-            0 => __DIR__ . '/../..' . '/src',
-        ),
         'Fig\\Http\\Message\\' => 
         array (
             0 => __DIR__ . '/..' . '/fig/http-message-util/src',
@@ -104,6 +100,10 @@ class ComposerStaticInitd751713988987e9331980363e24189ce
         'FastRoute\\' => 
         array (
             0 => __DIR__ . '/..' . '/nikic/fast-route/src',
+        ),
+        'Blog\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/src',
         ),
     );
 
