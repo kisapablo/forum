@@ -3,69 +3,28 @@
 {% block body %}
 <div class="container">
 <h1 class="mb-3 mt-3">Welcome to my Forum</h1>
-<div class="container fluid row">
+    {% set rowCount = 1 %}
+    {% for post in posts %}
+    {% if rowCount == 1 %}
+<div class="container row">
+    {% endif %}
 <div class="p-1">
 <div class="card" style="width: 18rem;">
-    <img src="https://dummyimage.com/300x200/05b76a/fff" class="card-img-top" alt="...">
+    <img src="https://dummyimage.com/300x200/05b76a/fff" class="card-img-top" alt="Blog Photo">
     <div class="card-body">
-        <h5 class="card-title">Card title</h5>
-        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's
-            content.</p>
-        <a href="/hello-world" class="btn btn-primary">Go somewhere</a>
+        <a href="/{{ post.url_key }}"><h5 class="card-title">{{ post.title }}</h5></a>
+        <p class="card-text">{{ post.description|escape }}</p>
+        <a href="/{{ post.url_key }}" class="btn btn-primary">Read more</a>
     </div>
 </div>
     </div>
-    <div class="p-1">
-    <div class="card" style="width: 18rem;">
-        <img src="https://dummyimage.com/300x200/05b76a/fff" class="card-img-top" alt="...">
-        <div class="card-body">
-            <h5 class="card-title">Card title</h5>
-            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-            <a href="/hello-worlds" class="btn btn-primary">Go somewhere</a>
+    {% set rowCount = rowCount + 1 %}
+    {% if rowCount == 1 %}
         </div>
-    </div>
-    </div>
-        <div class="p-1">
-    <div class="card" style="width: 18rem;">
-        <img src="https://dummyimage.com/300x200/05b76a/fff" class="card-img-top" alt="...">
-        <div class="card-body">
-            <h5 class="card-title">Card title</h5>
-            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-            <a href="/hello-worldi" class="btn btn-primary">Go somewhere</a>
-        </div>
+    {% endif %}
+    {% if rowCount > 3 %}
+    {% set rowCount = 1 %}
+    {% endif %}
+    {% endfor %}
 </div>
-</div>
-    <div class="container fluid row">
-        <div class="p-1">
-            <div class="card" style="width: 18rem;">
-                <img src="https://dummyimage.com/300x200/05b76a/fff" class="card-img-top" alt="...">
-                <div class="card-body">
-                    <h5 class="card-title">Card title</h5>
-                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's
-                        content.</p>
-                    <a href="/Hello-worldy" class="btn btn-primary">Go somewhere</a>
-                </div>
-            </div>
-        </div>
-        <div class="p-1">
-            <div class="card" style="width: 18rem;">
-                <img src="https://dummyimage.com/300x200/05b76a/fff" class="card-img-top" alt="...">
-                <div class="card-body">
-                    <h5 class="card-title">Card title</h5>
-                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                    <a href="/blog-post-5" class="btn btn-primary">Go somewhere</a>
-                </div>
-            </div>
-        </div>
-        <div class="p-1">
-            <div class="card" style="width: 18rem;">
-                <img src="https://dummyimage.com/300x200/05b76a/fff" class="card-img-top" alt="...">
-                <div class="card-body">
-                    <h5 class="card-title">Card title</h5>
-                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                    <a href="/blog-post-6" class="btn btn-primary">Go somewhere</a>
-                </div>
-            </div>
-        </div>
-</div
 {% endblock %}
