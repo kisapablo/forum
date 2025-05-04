@@ -26,6 +26,7 @@ try{
     exit;  // mysql
 }
 
+
 $app = AppFactory::create();
 
 $app->get('/', function (Request $request, Response $response) use ($view, $connection) {
@@ -39,7 +40,7 @@ $app->get('/', function (Request $request, Response $response) use ($view, $conn
     return $response;
 });
 
-$app->get('/about', function (Request $request, Response $response) use ($view) {
+$app->get('/about', function (Request $request, Response $response, $args) use ($view) {
     $body = $view->render('about.twig', [
             'name' => 'Nikita',
             'animals' => 'Dogs'
@@ -48,7 +49,9 @@ $app->get('/about', function (Request $request, Response $response) use ($view) 
     return $response;
 });
 
-$app->get('/{url_key}', function (Request $request, Response $response, $args) use ($view, $connection) {
+$app->get('/{url_key}', function (Request $request, Response $response, $args) use ($view,$connection) {
+    $postMapper = new PostMapper($connection);
+
     $post = $postMapper->getByUrlKey((string) $args['url_key']);
 
     if (empty($post)) {
