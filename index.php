@@ -46,9 +46,13 @@ $app->get('/about', function (Request $request, Response $response, $args) use (
 $app->get('/{url_key}', function (Request $request, Response $response, $args) use ($view, $postMapper) {
     $post = $postMapper->getByUrlKey((string) $args['url_key']);
 
+    if (empty($post)) {
+        $body = $view->render('not-found.twig');
+    } else {
     $body = $view ->render('post.twig',  [
-        'post' => $args['url_key']
+        'post' => $post
     ]);
+    }
     $response->getBody()->write($body);
     return $response;
 });

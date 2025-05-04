@@ -20,9 +20,9 @@ class PostMapper
 
     /**
      * @param string $urlKey
-     * @return array
+     * @return array|null
      */
-    public function getByUrlKey (string $urlKey): array
+    public function getByUrlKey (string $urlKey): ?array
     {
         $statement = $this->connection->prepare('SELECT * FROM post WHERE url_key = :url_key');
         $statement->execute([
