@@ -1,6 +1,7 @@
 <?php
 
 use Blog\LatestPosts;
+use Blog\Twig\AssetExtension;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\Factory\AppFactory;
@@ -11,6 +12,8 @@ require __DIR__ . '/vendor/autoload.php';
 
 $loader = new \Twig\Loader\FilesystemLoader('Templates');
 $view = new \Twig\Environment($loader);
+
+$view->addExtension(new AssetExtension());
 
 $config = include 'config/database.php'; //mysql
 $dsn = $config['dsn']; //mysql
@@ -31,7 +34,7 @@ $app = AppFactory::create();
 
 $app->get('/', function (Request $request, Response $response) use ($view, $connection) {
     $latestPosts = new LatestPosts($connection);
-    $posts = $latestPosts->get(4);
+    $posts = $latestPosts->get(3); // Отрисовка постов на главной странице(С параметром в последние три поста)
 
     $body = $view->render('index.twig', [
         'posts' => $posts
@@ -49,11 +52,11 @@ $app->get('/about', function (Request $request, Response $response, $args) use (
     return $response;
 });
 
-$app->get('/blog[/{page}]', function (Request $request, Response $response) use ($view, $connection) {
+$app->get('/blog[/{page}]', function (Request $request, Response $response, $args) use ($view, $connection) {
     $latestPosts = new PostMapper($connection);
 
     $page = isset($args['page']) ? (int) $args['page'] : 1;
-    $limit = 2;
+    $limit = 2; // Отрисовка страниц на /blog(Лимит отрисовки страниц на одной страницы /blog)
 
     $posts = $latestPosts->getList($page, $limit, 'DESC');
 
@@ -72,7 +75,7 @@ $app->get('/{url_key}', function (Request $request, Response $response, $args) u
     if (empty($post)) {
         $body = $view->render('not-found.twig');
     } else {
-    $body = $view ->render('posts.twig',  [
+    $body = $view ->render('post.twig',  [
         'post' => $post
     ]);
     }

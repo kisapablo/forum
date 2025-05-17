@@ -48,6 +48,8 @@ class PostMapper
         if (!in_array($direction, ['DESC', 'ASC'])) {
             throw new Exception('The direction is not supported.');
         }
+
+
             $start = ($page - 1) * $limit;
             $statement = $this->connection->prepare(
                 'SELECT * FROM post ORDER BY published_date ' . $direction .
