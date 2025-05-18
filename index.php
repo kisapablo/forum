@@ -5,13 +5,15 @@ use Blog\Slim\TwigMiddleware;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\Factory\AppFactory;
+use Twig\Environment;
 use \Twig\Loader\FilesystemLoader;
 use Blog\PostMapper;
 
 require __DIR__ . '/vendor/autoload.php';
 
-$loader = new \Twig\Loader\FilesystemLoader('Templates');
-$view = new \Twig\Environment($loader);
+$loader = new FilesystemLoader('Templates');
+$view = new Environment($loader);
+
 
 $config = include 'config/database.php'; //mysql
 $dsn = $config['dsn']; //mysql
