@@ -2,6 +2,7 @@
 
 use Blog\LatestPosts;
 use Blog\Slim\TwigMiddleware;
+use DI\ContainerBuilder;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\Factory\AppFactory;
@@ -11,9 +12,15 @@ use Blog\PostMapper;
 
 require __DIR__ . '/vendor/autoload.php';
 
-$loader = new FilesystemLoader('Templates');
-$view = new Environment($loader);
+//$loader = new FilesystemLoader('Templates');
+//$view = new Environment($loader); //alt dependency container
 
+$builder = new ContainerBuilder(); // dependency container
+$builder->addDefinitions('config/di.php'); // dependency container
+
+$container = $builder->build(); // dependency container
+
+AppFactory::setContainer($container); // dependency container
 
 $config = include 'config/database.php'; //mysql
 $dsn = $config['dsn']; //mysql
@@ -32,9 +39,10 @@ try{
 // app
 $app = AppFactory::create();
 
+$view = $container->get(Environment::class); // Временной контейнер зависимости/dependency container
 $app->add(new TwigMiddleware($view));
 
-$app->get('/', function (Request $request, Response $response) use ($view, $connection) {
+$app->get('/', function (Request $request, Response $response) use ($view, $connection) { // Стартовая отрисовка
     $latestPosts = new LatestPosts($connection);
     $posts = $latestPosts->get(3); // Отрисовка постов на главной странице(С параметром в последние три поста)
 
@@ -43,9 +51,9 @@ $app->get('/', function (Request $request, Response $response) use ($view, $conn
     ]);
     $response->getBody()->write($body);
     return $response;
-});
+}); // конец стартовой отрисовки
 
-$app->get('/about', function (Request $request, Response $response, $args) use ($view) {
+$app->get('/about', function (Request $request, Response $response, $args) use ($view) { // отрисовка на /about
     $body = $view->render('about.twig', [
             'name' => 'Nikita',
             'animals' => 'Dogs'
