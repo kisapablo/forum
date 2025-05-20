@@ -1,33 +1,14 @@
-## Composer.json Settings
-{
-    "name": "nikita/blog",
-    "description": "Forum on PHP and MySQL",
-    "type": "project",
-    "autoload": {
-        "psr-4": {
-            "Nikita\\Blog\\": "src/"
-        }
-    },
-    "authors": [
-        {
-            "name": "kisapablo",
-            "email": "kisapablos@gmail.com"
-        }
-    ],
-    "minimum-stability": "stable",
-    "require": {
-        "slim/slim": "4.*",
-        "slim/psr7": "^1.7",
-        "twig/twig": "^3.1",
-        "ext-pdo": "7.4"
-    },
-    "autoload": {
-        "psr-4": {
-            "Blog\\": "src/"
-        }
-    }
-}
-
+## Forum on PHP and MySQL
+Composer.json Settings
+composer init
+composer require slim/slim: "4.*'
+composer require slim/psr4
+composer require twig/twig
+composer install
+composer require"twig/twig:^3.0'
+composer require ext-pdo
+composer require dump-autoload
+composer require php-di/php-di:6
 
 ## Create to MySQL base and settings
 ## ATTENTION! Some of the text is written specifically in caps because it is probably necessary in syntax MySQL, Please enter the text in the same way as it is specified in the README File.
