@@ -1,6 +1,6 @@
 ## Forum on PHP and MySQL
+# Composer.json Settings
 
-Composer.json Settings
 composer init
 composer require slim/slim: "4.*'
 composer require slim/psr4
