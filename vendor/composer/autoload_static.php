@@ -11,8 +11,8 @@ class ComposerStaticInitd751713988987e9331980363e24189ce
         'a4a119a56e50fbb293281d9a48007e0e' => __DIR__ . '/..' . '/symfony/polyfill-php80/bootstrap.php',
         '253c157292f75eb38082b5acb06f3f01' => __DIR__ . '/..' . '/nikic/fast-route/src/functions.php',
         '6e3fae29631ef280660b3cdad06f25a8' => __DIR__ . '/..' . '/symfony/deprecation-contracts/function.php',
-        '0e6d7bf4a5811bfa5cf40c5ccd6fae6a' => __DIR__ . '/..' . '/symfony/polyfill-mbstring/bootstrap.php',
         '320cde22f66dd4f5d3fd621d3e88b98f' => __DIR__ . '/..' . '/symfony/polyfill-ctype/bootstrap.php',
+        '0e6d7bf4a5811bfa5cf40c5ccd6fae6a' => __DIR__ . '/..' . '/symfony/polyfill-mbstring/bootstrap.php',
         'b33e3d135e5d9e47d845c576147bda89' => __DIR__ . '/..' . '/php-di/php-di/src/functions.php',
         '89efb1254ef2d1c5d80096acd12c4098' => __DIR__ . '/..' . '/twig/twig/src/Resources/core.php',
         'ffecb95d45175fd40f75be8a23b34f90' => __DIR__ . '/..' . '/twig/twig/src/Resources/debug.php',
@@ -24,6 +24,7 @@ class ComposerStaticInitd751713988987e9331980363e24189ce
         'T' => 
         array (
             'Twig\\' => 5,
+            'Test\\PhpDevCommunity\\' => 21,
         ),
         'S' => 
         array (
@@ -39,6 +40,7 @@ class ComposerStaticInitd751713988987e9331980363e24189ce
             'Psr\\Http\\Server\\' => 16,
             'Psr\\Http\\Message\\' => 17,
             'Psr\\Container\\' => 14,
+            'PhpDevCommunity\\' => 16,
         ),
         'L' => 
         array (
@@ -67,6 +69,10 @@ class ComposerStaticInitd751713988987e9331980363e24189ce
         'Twig\\' => 
         array (
             0 => __DIR__ . '/..' . '/twig/twig/src',
+        ),
+        'Test\\PhpDevCommunity\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/devcoder-xyz/php-dotenv/tests',
         ),
         'Symfony\\Polyfill\\Php80\\' => 
         array (
@@ -105,6 +111,10 @@ class ComposerStaticInitd751713988987e9331980363e24189ce
         'Psr\\Container\\' => 
         array (
             0 => __DIR__ . '/..' . '/psr/container/src',
+        ),
+        'PhpDevCommunity\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/devcoder-xyz/php-dotenv/src',
         ),
         'Laravel\\SerializableClosure\\' => 
         array (

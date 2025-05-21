@@ -5,11 +5,20 @@
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => '04f74b6c557b4ed886658424bea62a51344f322a',
+        'reference' => '74b05eb0d9bda61e2edf5431df1bf0697a1b4f78',
         'name' => 'nikita/blog',
         'dev' => true,
     ),
     'versions' => array(
+        'devcoder-xyz/php-dotenv' => array(
+            'pretty_version' => '3.0.1',
+            'version' => '3.0.1.0',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../devcoder-xyz/php-dotenv',
+            'aliases' => array(),
+            'reference' => '896b6b1a1184dddd76e536fed674560f4381b400',
+            'dev_requirement' => false,
+        ),
         'fig/http-message-util' => array(
             'pretty_version' => '1.1.5',
             'version' => '1.1.5.0',
@@ -43,7 +52,7 @@
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => '04f74b6c557b4ed886658424bea62a51344f322a',
+            'reference' => '74b05eb0d9bda61e2edf5431df1bf0697a1b4f78',
             'dev_requirement' => false,
         ),
         'php-di/invoker' => array(
