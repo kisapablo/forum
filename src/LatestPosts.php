@@ -1,18 +1,20 @@
 <?php
 
 namespace Blog;
-
 class LatestPosts
 {
+    /**
+     * @var DataBase
+     */
 
-    private \PDO $connection;
+    private DataBase $DataBase;
 
     /** LatestPosts const
-     * @param \PDO $connection
+     * @param DataBase $DataBase
      */
-    public function __construct(\PDO $connection)
+    public function __construct(DataBase $DataBase)
     {
-        $this->connection = $connection;
+        $this->DataBase = $DataBase;
 }
 
     /**
@@ -21,7 +23,8 @@ class LatestPosts
      */
 public function get(int $limit): ?array
 {
-    $statement = $this->connection->prepare('SELECT * FROM post ORDER BY  published_date DESC LIMIT ' . $limit
+    $statement = $this->DataBase->getConnection()->prepare(
+        'SELECT * FROM post ORDER BY  published_date DESC LIMIT ' . $limit
     );
 
     $statement->execute();

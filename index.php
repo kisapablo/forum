@@ -1,7 +1,8 @@
 <?php
 
 use Blog\DataBase;
-use Blog\LatestPosts;
+// use Blog\LatestPosts;
+use Blog\Route\HomePage;
 use Blog\Slim\TwigMiddleware;
 use DI\ContainerBuilder;
 use PhpDevCommunity\DotEnv;
@@ -47,16 +48,21 @@ $app->add(new TwigMiddleware($view));
 
 $connection = $container->get(DataBase::class)->getConnection();
 
-$app->get('/', function (Request $request, Response $response) use ($view, $connection) { // Стартовая отрисовка
-    $latestPosts = new LatestPosts($connection);
-    $posts = $latestPosts->get(3); // Отрисовка постов на главной странице(С параметром в последние три поста)
 
-    $body = $view->render('index.twig', [
-        'posts' => $posts
-    ]);
-    $response->getBody()->write($body);
-    return $response;
-}); // конец стартовой отрисовки
+        // alt
+//$app->get('/', function (Request $request, Response $response) use ($view, $connection) { // Стартовая отрисовка
+//    $latestPosts = new LatestPosts($connection);
+//    $posts = $latestPosts->get(3); // Отрисовка постов на главной странице(С параметром в последние три поста)
+//
+//    $body = $view->render('index.twig', [
+//        'posts' => $posts
+//    ]);
+//    $response->getBody()->write($body);
+//    return $response;
+//}); // конец стартовой отрисовки alt
+
+// Начало стартовой отрисовки находящейся по адресу Route\HomePage;
+$app->get('/',HomePage::class . ':execute'); // конец стартовой отрисовки
 
 $app->get('/about', function (Request $request, Response $response, $args) use ($view) { // отрисовка на /about
     $body = $view->render('about.twig', [
