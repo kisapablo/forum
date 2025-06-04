@@ -2,6 +2,7 @@
 
 use Blog\DataBase;
 // use Blog\LatestPosts;
+use Blog\Route\AboutPage;
 use Blog\Route\HomePage;
 use Blog\Slim\TwigMiddleware;
 use DI\ContainerBuilder;
@@ -26,20 +27,6 @@ $container = $builder->build(); // dependency container, контейнер за
 
 AppFactory::setContainer($container); // dependency container, контейнер зависимостей
 
-//$config = include 'config/database.php'; //mysql alt
-//$dsn = $config['dsn']; //mysql alt
-//$username = $config['username']; //mysql alt
-//$password = $config['password']; //mysql alt
-
-//try{ // alt mysql
-//    $connection = new PDO($dsn, $username, $password); // mysql alt
-//    $connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION); //mysql alt
-//    $connection->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC); //mysql alt
-//} catch (PDOException $exception) {   // mysql alt
-//    echo 'Database Error: ' . $exception-> getMessage();  // mysql alt
-//    exit;  // mysql alt
-//} // mysql end alt
-
 // app
 $app = AppFactory::create();
 
@@ -63,15 +50,18 @@ $connection = $container->get(DataBase::class)->getConnection();
 
 // Начало стартовой отрисовки находящейся по адресу Route\HomePage;
 $app->get('/',HomePage::class . ':execute'); // конец стартовой отрисовки
-
-$app->get('/about', function (Request $request, Response $response, $args) use ($view) { // отрисовка на /about
-    $body = $view->render('about.twig', [
-            'name' => 'Nikita',
-            'animals' => 'Dogs'
-        ]);
-    $response->getBody()->write($body);
-    return $response;
-});
+// alt
+//$app->get('/about', function (Request $request, Response $response, $args) use ($view) { // отрисовка на /about
+//    $body = $view->render('about.twig', [
+//        'name' => 'Nikita',
+//        'animals' => 'Dogs'
+//    ]);
+//    $response->getBody()->write($body);
+//    return $response;
+//});
+// конец стартовой отрисовки alt
+// Начало стартовой отрисовки находящейся по адресу Route\AboutPage;
+$app->get('/about', AboutPage::class);
 
 $app->get('/blog[/{page}]', function (Request $request, Response $response, $args) use ($view, $connection) {
     $postMapper = new PostMapper($connection);
