@@ -25,13 +25,13 @@ class AboutPage
     /**
      * @param ServerRequestInterface $request
      * @param ResponseInterface $response
-     * @return Response
+     * @return ResponseInterface
      * @throws \Twig\Error\LoaderError
      * @throws \Twig\Error\RuntimeError
      * @throws \Twig\Error\SyntaxError
      */
     // Отрисовка /page
-    public function __invoke(ServerRequestInterface $request, ResponseInterface $response): Response
+    public function __invoke(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
     {
         $body = $this->view->render('about.twig', [
             'name' => 'Nikita',

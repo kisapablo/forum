@@ -3,7 +3,9 @@
 use Blog\DataBase;
 // use Blog\LatestPosts;
 use Blog\Route\AboutPage;
+use Blog\Route\BlogPage;
 use Blog\Route\HomePage;
+use Blog\Route\PostPage;
 use Blog\Slim\TwigMiddleware;
 use DI\ContainerBuilder;
 use PhpDevCommunity\DotEnv;
@@ -50,53 +52,27 @@ $connection = $container->get(DataBase::class)->getConnection();
 
 // Начало стартовой отрисовки находящейся по адресу Route\HomePage;
 $app->get('/',HomePage::class . ':execute'); // конец стартовой отрисовки
-// alt
-//$app->get('/about', function (Request $request, Response $response, $args) use ($view) { // отрисовка на /about
-//    $body = $view->render('about.twig', [
-//        'name' => 'Nikita',
-//        'animals' => 'Dogs'
+// Начало стартовой отрисовки находящейся по адресу Route\AboutPage;
+$app->get('/about', AboutPage::class); // конец стартовой отрисовки
+// Начало стартовой отрисовки находящейся по адресу Route\BlogPage;
+$app->get('/blog[/{page}]', BlogPage::class); // конец стартовой отрисовки
+$app->get('/{url_key}', PostPage::class);
+// alt post
+//$app->get('/{url_key}', function (Request $request, Response $response, $args) use ($view,$connection) {
+//    $postMapper = new PostMapper($connection);
+//
+//    $post = $postMapper->getByUrlKey((string) $args['url_key']);
+//
+//    if (empty($post)) {
+//        $body = $view->render('not-found.twig');
+//    } else {
+//    $body = $view ->render('post.twig',  [
+//        'post' => $post
 //    ]);
+//    }
 //    $response->getBody()->write($body);
 //    return $response;
 //});
-// конец стартовой отрисовки alt
-// Начало стартовой отрисовки находящейся по адресу Route\AboutPage;
-$app->get('/about', AboutPage::class);
-
-$app->get('/blog[/{page}]', function (Request $request, Response $response, $args) use ($view, $connection) {
-    $postMapper = new PostMapper($connection);
-
-    $page = isset($args['page']) ? (int) $args['page'] : 1;
-    $limit = 2; // Отрисовка страниц на /blog(Лимит отрисовки страниц на одной страницы /blog)
-
-    $posts = $postMapper->getList($page, $limit, 'DESC');
-
-    $totalCount = $postMapper->getTotalCount();
-    $body = $view->render('blog.twig', [
-        'posts' => $posts,
-        'pagination' => [
-            'current' => $page,
-            'paging' => ceil($totalCount / $limit)
-        ]
-    ]);
-    $response->getBody()->write($body);
-    return $response;
-});
-
-$app->get('/{url_key}', function (Request $request, Response $response, $args) use ($view,$connection) {
-    $postMapper = new PostMapper($connection);
-
-    $post = $postMapper->getByUrlKey((string) $args['url_key']);
-
-    if (empty($post)) {
-        $body = $view->render('not-found.twig');
-    } else {
-    $body = $view ->render('post.twig',  [
-        'post' => $post
-    ]);
-    }
-    $response->getBody()->write($body);
-    return $response;
-});
+// end alt post
 
 $app->run();
