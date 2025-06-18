@@ -11,14 +11,14 @@ class PostMapper
     /**
      * @var DataBase
      */
-    private DataBase $dataBase;
+    private DataBase $DataBase;
 
     /**
-     * @param DataBase $dataBase
+     * @param DataBase $DataBase
      */
-    public function __construct (DataBase $dataBase)
+    public function __construct (DataBase $DataBase)
     {
-        $this->dataBase = $dataBase;
+        $this->DataBase = $DataBase;
     }
 
     /**
@@ -35,7 +35,6 @@ class PostMapper
 
         return array_shift($result);
     }
-
     /**
      * @param int $page
      * @param int $limit
@@ -67,6 +66,7 @@ class PostMapper
      */
     public function getTotalCount(): int
     {
+        //
 $statement = $this->getConnection()->prepare( // Если не робит то добавь перед getConnection, dataBase->
     'SELECT count(post_id) as total FROM post'
 );
@@ -82,6 +82,6 @@ return (int) ($statement->fetchColumn() ?? 0);
      */
     private function getConnection(): PDO
     {
-        return $this->dataBase->getConnection();
+        return $this->DataBase->getConnection();
     }
 }
