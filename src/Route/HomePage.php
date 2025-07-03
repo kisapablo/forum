@@ -40,7 +40,9 @@ class HomePage
         $posts = $this->latestPosts->get(3); // Отрисовка постов на главной странице(С параметром в последние три поста)
 
         $body = $this->view->render('index.twig', [
-            'posts' => $posts
+            'posts' => $posts,
+            'showAuthButton' => true,
+            'showUserInfo' => false,
     ]);
     $response->getBody()->write($body);
     return $response;

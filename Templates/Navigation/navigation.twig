@@ -1,18 +1,16 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <div class="container">  <!-- Выравнивание по центру начало -->
-        <a class="navbar-brand" href="{{ base_url() }}">Blog</a> <!-- переход на начало страницы -->
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav">
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ url('blog') }}">Blog</a> <!-- переход на /blog -->
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ url('about') }}">About</a> <!-- переход на /about -->
-
-                </li>
-            </ul>
-        </div>
-    </div> <!-- Выравнивание по центру конец -->
+<nav class="navbar navbar-light bg-light fixed-top border-top border-bottom">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="{{ base_url() }}">MyApp</a>
+        {% if userInfo is null %}
+            <div class="d-flex">
+                <a class="btn btn-outline-primary mx-1" href="{{ url('log-in') }}">Log In</a>
+                <a class="btn btn-outline-primary mx-1" href="{{ url('user/reg') }}">Register</a>
+            </div>
+        {% endif %}
+        {% if userInfo is not null %}
+            <div>
+                {{ userInfo['name'] }}
+            </div>
+        {% endif %}
+    </div>
 </nav>
