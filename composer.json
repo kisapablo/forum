@@ -15,7 +15,8 @@
         "twig/twig": "^3.1",
         "ext-pdo": "8.*",
         "php-di/php-di": "^7.0",
-        "devcoder-xyz/php-dotenv": "^3.0"
+        "devcoder-xyz/php-dotenv": "^3.0",
+      "ext-mysqli": "*"
     },
     "autoload": {
         "psr-4": {

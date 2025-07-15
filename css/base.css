@@ -21,7 +21,7 @@ html {
 .navbar{
     border: orange 1px solid;
     border-radius: 10px;
-    background: #686868;
+    background: #188c63;
     position: relative;
     display: flex;
 padding: 50px;
@@ -50,7 +50,7 @@ list-style: none;
 }
 
 .post{
-    background: #404040;
+    background: #149a3c;
     border: 1px solid silver; /* Обводка со значением в 1 пиксель и методом solid и hex цветом*/
     margin: 50px;
     /*margin-bottom: .75rem;*/
@@ -103,4 +103,6 @@ list-style: none;
     color: #ffffff;
     background: dodgerblue;
     border: dodgerblue;
+border-radius: 25px;
 }
+

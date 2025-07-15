@@ -1,0 +1,28 @@
+.container {
+    padding-top: 70px; /* 70 default*/
+    /*position: relative;*/
+    /*display: flex;*/
+}
+
+
+.form-control{
+    margin-bottom: 10px;
+    border: 1px #767676 solid;
+    width: fit-content;
+}
+
+/*.container h3 {*/
+/*    position: initial;*/
+/*    display: block;*/
+/*}*/
+
+
+.personal{
+    color: orangered;
+}
+.card-text{
+    color: dodgerblue;
+}
+
+
+

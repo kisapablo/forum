@@ -9,6 +9,8 @@ use Blog\Route\HomePage;
 use Blog\Route\PostPage;
 use Blog\Route\UserLogin;
 use Blog\Route\UserRegistration;
+use Blog\Route\CreateNewPostController;
+use Blog\Route\PersonalCabinet;
 use Blog\Slim\TwigMiddleware;
 use DI\ContainerBuilder;
 use PhpDevCommunity\DotEnv;
@@ -27,7 +29,6 @@ require __DIR__ . '/vendor/autoload.php';
 $builder = new ContainerBuilder(); // dependency container,контейнер зависимостей
 $builder->addDefinitions('config/di.php'); // dependency container,контейнер зависимостей
 (new DotEnv(__DIR__ . '/.env'))->load(); // dependency container,контейнер зависимостей
-
 $container = $builder->build(); // dependency container, контейнер зависимостей
 
 AppFactory::setContainer($container); // dependency container, контейнер зависимостей
@@ -57,12 +58,19 @@ $connection = $container->get(DataBase::class)->getConnection();
 $app->get('/', HomePage::class . ':execute'); // конец стартовой отрисовки
 // Начало стартовой отрисовки находящейся по адресу Route\AboutPage;
 $app->get('/about', AboutPage::class);
-$app->get('/user/reg', UserRegistration::class);
-$app->get('/user/login', UserLogin::class);
+$app->map(['GET', 'POST'],'/user/reg', UserRegistration::class);
+$app->map(['GET', 'POST'],'/user/login', UserLogin::class);
+//$app->map(['GET', 'POST'],'/newposts', NewPostsPage::class);
+//$app->map(['GET', 'POST'],'/newposts', CreateNewPostController::class);
+
+$app->get('/posts', [CreateNewPostController::class, 'showNewPostPage']);
+$app->post('/posts/new', [CreateNewPostController::class, 'createNewPost']);
+
+$app->get('/personal-cabinet', PersonalCabinet::class);
 
 
 // Начало стартовой отрисовки находящейся по адресу Route\BlogPage;
-$app->get('/log-in[/{page}]', BlogPage::class); // конец стартовой отрисовки
+$app->get('/blog[/{page}]', BlogPage::class); // конец стартовой отрисовки
 $app->get('/{url_key}', PostPage::class);
 // alt post
 //$app->get('/{url_key}', function (Request $request, Response $response, $args) use ($view,$connection) {
