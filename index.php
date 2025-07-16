@@ -1,30 +1,16 @@
 <?php
 
-use Blog\DataBase;
-
-// use Blog\LatestPosts;
 use Blog\Route\AboutPage;
-use Blog\Route\BlogPage;
-use Blog\Route\HomePage;
-use Blog\Route\PostPage;
-use Blog\Route\UserLogin;
-use Blog\Route\UserRegistration;
-use Blog\Route\CreateNewPostController;
+use Blog\Route\UserController;
+use Blog\Route\PostsController;
 use Blog\Route\PersonalCabinet;
 use Blog\Slim\TwigMiddleware;
 use DI\ContainerBuilder;
 use PhpDevCommunity\DotEnv;
-use Psr\Http\Message\ResponseInterface as Response;
-use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\Factory\AppFactory;
 use Twig\Environment;
-use Twig\Loader\FilesystemLoader;
-use Blog\PostMapper;
 
 require __DIR__ . '/vendor/autoload.php';
-
-//$loader = new FilesystemLoader('Templates'); //alt dependency container, контейнер зависимостей
-//$view = new Environment($loader); //alt dependency container, контейнер зависимостей
 
 $builder = new ContainerBuilder(); // dependency container,контейнер зависимостей
 $builder->addDefinitions('config/di.php'); // dependency container,контейнер зависимостей
@@ -39,55 +25,22 @@ $app = AppFactory::create();
 $view = $container->get(Environment::class); // Временной контейнер зависимости/dependency container
 $app->add(new TwigMiddleware($view));
 
-$connection = $container->get(DataBase::class)->getConnection();
+$app->get('/user', PersonalCabinet::class);
 
+$app->get('/user/login', [UserController::class, 'showUserLoginPage']);
+$app->get('/user/registration', [UserController::class, 'showUserRegistrationPage']);
 
-// alt
-//$app->get('/', function (Request $request, Response $response) use ($view, $connection) { // Стартовая отрисовка
-//    $latestPosts = new LatestPosts($connection);
-//    $posts = $latestPosts->get(3); // Отрисовка постов на главной странице(С параметром в последние три поста)
-//
-//    $body = $view->render('index.twig', [
-//        'posts' => $posts
-//    ]);
-//    $response->getBody()->write($body);
-//    return $response;
-//}); // конец стартовой отрисовки alt
+$app->post('/user/login', [UserController::class, 'authorizeUser']);
+$app->post('/user/registration', [UserController::class, 'registerUser']);
 
-// Начало стартовой отрисовки находящейся по адресу Route\HomePage;
-$app->get('/', HomePage::class . ':execute'); // конец стартовой отрисовки
-// Начало стартовой отрисовки находящейся по адресу Route\AboutPage;
 $app->get('/about', AboutPage::class);
-$app->map(['GET', 'POST'],'/user/reg', UserRegistration::class);
-$app->map(['GET', 'POST'],'/user/login', UserLogin::class);
-//$app->map(['GET', 'POST'],'/newposts', NewPostsPage::class);
-//$app->map(['GET', 'POST'],'/newposts', CreateNewPostController::class);
+$app->get('/', [PostsController::class, 'showAllPosts']);
+$app->get('/posts', [PostsController::class, 'showAllPosts']);
+$app->get('/posts/builder', [PostsController::class, 'showPostBuilderPage']);
+$app->get('/posts/{post_id}', [PostsController::class, 'showPostPage']);
 
-$app->get('/posts', [CreateNewPostController::class, 'showNewPostPage']);
-$app->post('/posts/new', [CreateNewPostController::class, 'createNewPost']);
-
-$app->get('/personal-cabinet', PersonalCabinet::class);
+$app->post('/posts', [PostsController::class, 'createNewPost']);
 
 
-// Начало стартовой отрисовки находящейся по адресу Route\BlogPage;
-$app->get('/blog[/{page}]', BlogPage::class); // конец стартовой отрисовки
-$app->get('/{url_key}', PostPage::class);
-// alt post
-//$app->get('/{url_key}', function (Request $request, Response $response, $args) use ($view,$connection) {
-//    $postMapper = new PostMapper($connection);
-//
-//    $post = $postMapper->getByUrlKey((string) $args['url_key']);
-//
-//    if (empty($post)) {
-//        $body = $view->render('not-found.twig');
-//    } else {
-//    $body = $view ->render('post.twig',  [
-//        'post' => $post
-//    ]);
-//    }
-//    $response->getBody()->write($body);
-//    return $response;
-//});
-// end alt post
 
 $app->run();

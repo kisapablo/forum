@@ -4,7 +4,6 @@ namespace Blog\Route;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Slim\Psr7\Response;
 use Twig\Environment;
 
 class AboutPage

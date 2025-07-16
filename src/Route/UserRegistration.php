@@ -3,10 +3,10 @@
 namespace Blog\Route;
 
 require_once "config/database.php";
-require_once  'src/UserInfo.php';
+require_once 'src/UserRepository.php';
 require_once 'vendor/autoload.php';
 
-use Blog\UserInfo;
+use Blog\UserRepository;
 use Twig\Environment;
 //use Twig\Loader\FilesystemLoader;
 
@@ -19,9 +19,9 @@ use Twig\Error\SyntaxError;
 class UserRegistration
 {
     private Environment $twig;
-    private UserInfo $userInfo;
+    private UserRepository $userInfo;
 
-    public function __construct(Environment $twig, UserInfo $userInfo) {
+    public function __construct(Environment $twig, UserRepository $userInfo) {
         $this->twig = $twig;
         $this->userInfo = $userInfo;
     }

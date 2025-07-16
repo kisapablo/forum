@@ -1,23 +1,26 @@
 <?php
+
 namespace Blog;
 
-class UserInfo {
+class UserRepository
+{
     private string $filePath = 'users.json';
 
-    public function __construct() {
+    public function __construct()
+    {
         if (!file_exists($this->filePath)) {
             file_put_contents($this->filePath, json_encode([]));
         }
     }
 
-    public function addUser($login, $password): bool|int
+    public function addUser($login, $password)
     {
         $users = $this->getUsers();
 
         // Проверка на уникальность логина
         foreach ($users as $user) {
             if ($user['login'] === $login) {
-                return false; // Логин уже существует
+                return null; // Логин уже существует
             }
         }
 
@@ -31,10 +34,13 @@ class UserInfo {
             'password' => password_hash($password, PASSWORD_DEFAULT)
         ];
 
-        return $this->saveUsers($users);
+        $this->saveUsers($users);
+
+        return $users[$newId];
     }
 
-    public function verifyUser($login, $password) {
+    public function verifyUser($login, $password)
+    {
         $users = $this->getUsers();
         foreach ($users as $user) {
             if ($user['login'] === $login && password_verify($password, $user['password'])) {
@@ -44,7 +50,8 @@ class UserInfo {
         return false;
     }
 
-    private function getUsers() {
+    private function getUsers()
+    {
         $content = file_get_contents($this->filePath);
         return json_decode($content, true) ?: [];
     }
@@ -54,7 +61,8 @@ class UserInfo {
         return file_put_contents($this->filePath, json_encode($users, JSON_PRETTY_PRINT));
     }
 
-    public function getAllUsers() {
+    public function getAllUsers()
+    {
         return $this->getUsers();
     }
 }
