@@ -11,6 +11,8 @@ use Slim\Factory\AppFactory;
 use Twig\Environment;
 
 require __DIR__ . '/vendor/autoload.php';
+session_cache_limiter(false); // Disable cache limiter
+session_start();
 
 $builder = new ContainerBuilder(); // dependency container,контейнер зависимостей
 $builder->addDefinitions('config/di.php'); // dependency container,контейнер зависимостей

@@ -24,7 +24,9 @@ class PersonalCabinet
     // Отрисовка Создания постов
     public function __invoke($connect, ResponseInterface $response): ResponseInterface
     {
-        $body = $this->view->render('Navigation/PersonalCabinet.twig', );
+        error_log('Session is ' . json_encode($_SESSION));
+
+        $body = $this->view->render('Navigation/PersonalCabinet.twig');
         $response->getBody()->write($body);
         return $response;
         // Конец отрисовки

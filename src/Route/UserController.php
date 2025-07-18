@@ -47,7 +47,7 @@ class UserController
         if (!empty($login) && !empty($password)) {
             $user = $this->userRepository->addUser($login, $password);
             if ($user) {
-                $_SESSION['user'] = ['id' => $user['id'], 'login' => $user['login']];
+                $_SESSION['user'] = ['id' => $user['id'], 'name' => $user['name']];
                 return $response->withStatus(301)->withHeader('Location', '/user');
             } else {
                 $message = 'Ошибка: Неверный логин или пароль!';
@@ -70,9 +70,9 @@ class UserController
         $password = $_POST['password'];
 
         if (!empty($login) && !empty($password)) {
-            $user = $this->userRepository->verifyUser($login, $password);
+            $user = $this->userRepository->findUserByLoginAndPassword($login, $password);
             if ($user) {
-                $_SESSION['user'] = ['id' => $user['id'], 'login' => $user['login']];
+                $_SESSION['user'] = ['id' => $user['id'], 'name' => $user['name']];
             } else {
                 $message = 'Ошибка: Неверный логин или пароль!';
                 $body = $this->view->render('user-login.twig', ['message' => $message]);

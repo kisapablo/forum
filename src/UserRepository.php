@@ -4,66 +4,102 @@ namespace Blog;
 
 class UserRepository
 {
-    private string $filePath = 'users.json';
+    private DataBase $dataBase;
 
-    public function __construct()
+    public function __construct(DataBase $dataBase)
     {
-        if (!file_exists($this->filePath)) {
-            file_put_contents($this->filePath, json_encode([]));
-        }
+        $this->dataBase = $dataBase;
     }
 
-    public function addUser($login, $password)
+    public function addUser($login, $password, $role = 0)
     {
-        $users = $this->getUsers();
+        $salt = generateSalt();
+        $hash = generateHash($salt, $password);
 
-        // Проверка на уникальность логина
-        foreach ($users as $user) {
-            if ($user['login'] === $login) {
-                return null; // Логин уже существует
-            }
-        }
+        $connection = $this->dataBase->getConnection();
 
-        // Генерация нового ID
-        $newId = empty($users) ? 1 : max(array_keys($users)) + 1;
+        $statement = $connection->prepare(
+            'INSERT INTO user (name, password_hash, password_salt, role) 
+            values (:login, :hash, :salt, :role)
+            ',
+        );
 
-        // Добавление пользователя
-        $users[$newId] = [
-            'id' => $newId,
+        $result = $statement->execute([
             'login' => $login,
-            'password' => password_hash($password, PASSWORD_DEFAULT)
-        ];
+            'hash' => $hash,
+            'salt' => $salt,
+            'role' => $role
+        ]);
 
-        $this->saveUsers($users);
-
-        return $users[$newId];
-    }
-
-    public function verifyUser($login, $password)
-    {
-        $users = $this->getUsers();
-        foreach ($users as $user) {
-            if ($user['login'] === $login && password_verify($password, $user['password'])) {
-                return $user;
-            }
+        if (!$result) {
+            return null;
         }
-        return false;
+
+
+        return $this->findUserByLoginAndPassword($login, $password);
     }
 
-    private function getUsers()
+    public function findUserByLoginAndPassword($login, $password)
     {
-        $content = file_get_contents($this->filePath);
-        return json_decode($content, true) ?: [];
+        $connection = $this->dataBase->getConnection();
+
+        $statement = $connection->prepare('SELECT * from user where name = :login');
+
+        $result = $statement->execute([
+            'login' => $login
+        ]);
+
+        if (!$result) {
+            return null;
+        }
+
+        $users = $statement->fetchAll();
+
+        if (empty($users)) {
+            //todo: raise exception UserNotFound
+            error_log('No user is found');
+            return null;
+        }
+
+        $user = $users[0];
+        //todo: add logic to compute hash
+
+        $hash = generateHash($user['password_salt'], $password);
+
+        if ($user['password_hash'] != $hash) {
+            error_log('Invalid user password');
+            //todo: raise exception InvalidUserPassword
+            return null;
+        }
+
+        return $user;
     }
 
-    private function saveUsers($users): bool|int
-    {
-        return file_put_contents($this->filePath, json_encode($users, JSON_PRETTY_PRINT));
-    }
-
-    public function getAllUsers()
-    {
-        return $this->getUsers();
-    }
+//    private function getUsers()
+//    {
+//        $content = file_get_contents($this->filePath);
+//        return json_decode($content, true) ?: [];
+//    }
+//
+//    private function saveUsers($users): bool|int
+//    {
+//        return file_put_contents($this->filePath, json_encode($users, JSON_PRETTY_PRINT));
+//    }
+//
+//    public function getAllUsers()
+//    {
+//        return $this->getUsers();
+//    }
 }
 
+//fixme
+function generateSalt()
+{
+    return '64';
+}
+
+//fixme
+function generateHash($salt, $password)
+{
+    return $password;
+}

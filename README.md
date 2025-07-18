@@ -1,92 +1,17 @@
 # Forum on PHP and MySQL
 
-
-## Composer.json Settings
-
-
-
-### composer init
-
-### composer require slim/slim: "4.*'
-
-### composer require ext-pdo
-
-### composer require dump-autoload
-
-### composer require php-di/php-di:6
-
-
-
-
-## Create to MySQL base and settings
-
-ATTENTION! Some of the text is written specifically in caps because it is probably necessary in syntax MySQL, Please enter the text in the same way as it is specified in the README File.
-
- ### CREATE DATABASE blog_php
-
- #### Create TABLE post {
-
-
- #### post_id int(10) UNSIGNED NOT NULL AUTO_INCREMENT
-
-
- #### title VARCHAR(255) NOT NULL,
-
-
- #### url_key VARCHAR(255) NOT NULL,
-
-
- #### image_path varchar(255) NULL,
-
-
- #### content TEXT DEFAULT NULL, 
-
-
- #### description VARCHAR(255) DEFAULT NULL,
-
-
- #### published_date DATETIME NOT NULL,
-
-
- post_id int(10) UNSIGNED NOT NULL AUTO_INCREMENT
-
-
- title VARCHAR(255) NOT NULL,
-
-
- url_key VARCHAR(255) NOT NULL,
-
-
- image_path varchar(255) NULL,
-
-
- content TEXT DEFAULT NULL, 
-
-
- description VARCHAR(255) DEFAULT NULL,
-
-
- published_date DATETIME NOT NULL,
-
- #### PRIMARY KEY {post_id},
-
- #### UNIQUE KEY url_key (url_key)
-
-} ENGINE=InnoDB;
-
-
-
-## Authentication MySQL
-
-'' = ``
-
-CREATE TABLE `users` (
-`id` int unsigned NOT NULL AUTO_INCREMENT,
-`username` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-`password` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-PRIMARY KEY (`id`),
-UNIQUE KEY `username` (`username`)
-)
-ENGINE=InnoDB
-DEFAULT CHARSET=utf8mb4
-COLLATE=utf8mb4_general_ci;
+Todo List:
+1. fix all //todo and //fixme in code
+2. Изменить логику работу с пользователем:
+    - только авторизованные пользователи могут публикать посты
+    - только НЕ авторизованные пользователи видят кнопки login/reg
+    - только авторизованные пользователи видят кнопку logout
+3. Добавить комментарии
+    - Только авторизованные пользователи могут оставлять комментарии к существующим постам
+    - Создать CommentRepository
+4. Добавить меню выбора аватарки для пользователя
+5. Отображать аватарку в постах и комментариях
+6. Добавить прикрепляемые файлы и картинки в посты и комментарии
+    - картинки должны отображаться
+7. Если урл не доступен (нет обработчика), то выводить not_found.html
+8. Стили и UI
