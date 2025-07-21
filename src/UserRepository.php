@@ -2,6 +2,8 @@
 
 namespace Blog;
 
+use Exception;
+
 class UserRepository
 {
     private DataBase $dataBase;
@@ -39,6 +41,9 @@ class UserRepository
         return $this->findUserByLoginAndPassword($login, $password);
     }
 
+    /**
+     * @throws Exception
+     */
     public function findUserByLoginAndPassword($login, $password)
     {
         $connection = $this->dataBase->getConnection();
@@ -56,9 +61,8 @@ class UserRepository
         $users = $statement->fetchAll();
 
         if (empty($users)) {
-            //todo: raise exception UserNotFound
             error_log('No user is found');
-            return null;
+            throw new Exception('User is not found');
         }
 
         $user = $users[0];
@@ -68,8 +72,7 @@ class UserRepository
 
         if ($user['password_hash'] != $hash) {
             error_log('Invalid user password');
-            //todo: raise exception InvalidUserPassword
-            return null;
+            throw new Exception('User password is not valid');
         }
 
         return $user;
@@ -101,5 +104,15 @@ function generateSalt()
 //fixme
 function generateHash($salt, $password)
 {
+
+// check for have unhashing password
+
+//    $checkhash = // PDO fetch pass in findUserByLoginAndPassword and form authentication
+//    if (!empty($login) && !empty($password)) { view on all pass for unhashing else unhashing pass found drop and return for not found pass
+// generate hash
+//    }
+
+// return result all
+
     return $password;
 }
