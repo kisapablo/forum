@@ -2,6 +2,8 @@
 
 namespace Blog\Route;
 
+
+use Blog\CommentRepository;
 use Blog\DataBase;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
@@ -17,10 +19,12 @@ class PostsController
     private Environment $view;
 
     private DataBase $dataBase;
-    public function __construct(Environment $view, DataBase $dataBase)
+    private CommentRepository $commentRepository;
+    public function __construct(Environment $view, DataBase $dataBase, CommentRepository $commentRepository)
     {
         $this->view = $view;
         $this->dataBase = $dataBase;
+        $this->commentRepository = $commentRepository;
     }
 
     public function showPostBuilderPage(Request $request, Response $response): Response
@@ -84,9 +88,12 @@ class PostsController
         }
 
         $post = $posts[0];
+        $comments = $this->commentRepository->getAllComments($post['id']);
 
+        error_log('Session is ' . json_encode($_SESSION));
         $body = $this->view->render('post.twig', [
-            'post' => $post
+            'post' => $post,
+            'comments' => $comments
         ]);
         $response->getBody()->write($body);
 
@@ -114,6 +121,24 @@ class PostsController
 
         $body = $this->view->render('Navigation/CreateNewPosts.twig');
         $response->getBody()->write($body);
+        return $response;
+    }
+    function createNewPostComment(Request $request, Response $response, array $args): Response
+    {
+
+        $user = $_SESSION['user'];
+        if (!isset($user) || !$user['id']) {
+            return $response->withStatus(301)->withHeader('Location', '/user');
+        }
+
+
+        error_log('Initial to create for post');
+        $comment = [];
+        $comment['content'] = $_POST['content'];
+        $comment['post_id'] = $args['post_id'];
+        $comment['author_id'] = $user['id'];
+        error_log('include comment repository');
+        $this->commentRepository->createComment($comment);
         return $response;
     }
 }

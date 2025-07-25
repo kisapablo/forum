@@ -39,6 +39,7 @@ $app->get('/about', AboutPage::class);
 $app->get('/', [PostsController::class, 'showAllPosts']);
 $app->get('/posts', [PostsController::class, 'showAllPosts']);
 $app->get('/posts/builder', [PostsController::class, 'showPostBuilderPage']);
+$app->post('/posts/{post_id}/comments', [PostsController::class, 'createNewPostComment']);
 $app->get('/posts/{post_id}', [PostsController::class, 'showPostPage']);
 
 $app->post('/posts', [PostsController::class, 'createNewPost']);
