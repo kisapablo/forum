@@ -128,7 +128,7 @@ class PostsController
 
         $user = $_SESSION['user'];
         if (!isset($user) || !$user['id']) {
-            return $response->withStatus(301)->withHeader('Location', '/user');
+            return $response->withStatus(301)->withHeader('Location', '/user/login');
         }
 
 
