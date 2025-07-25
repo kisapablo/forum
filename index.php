@@ -41,6 +41,7 @@ $app->get('/posts', [PostsController::class, 'showAllPosts']);
 $app->get('/posts/builder', [PostsController::class, 'showPostBuilderPage']);
 $app->post('/posts/{post_id}/comments', [PostsController::class, 'createNewPostComment']);
 $app->get('/posts/{post_id}', [PostsController::class, 'showPostPage']);
+//$app->get('/posts/old/blog', [PostsController::class, 'getallOldPage']); // Заморожено, реабилитация страницы не эффективна
 
 $app->post('/posts', [PostsController::class, 'createNewPost']);
 

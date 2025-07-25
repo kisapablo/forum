@@ -27,6 +27,7 @@ class AssetExtension extends AbstractExtension
             new TwigFunction('asset_url', [$this, 'getAssetUrl']),
             new TwigFunction('url', [$this, 'getUrl']),
             new TwigFunction('base_url', [$this, 'getBaseUrl']),
+            new TwigFunction('SESSION_USER', [$this, 'getSESSION'])
         ];
     }
 
@@ -49,6 +50,14 @@ class AssetExtension extends AbstractExtension
         $scheme = $params['REQUEST_SCHEME'] ?? 'http';
 
         return $scheme . '://' . $params['HTTP_HOST'] . '/';
+    }
+
+    public function getSESSION() // На случай если нужно отобразить сессию с ником юзера
+    {
+        return
+        [
+            'user'=> $_SESSION['user']
+        ];
     }
 
     /**
