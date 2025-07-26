@@ -11,7 +11,7 @@
                     post(Beta) </a>
                 <a class="btn btn-outline-info mx-1" href="{{ url('user') }}">Personal Cabinet</a>
                 <a class="btn btn-outline-primary mx-1 mr-4" href="{{ url('user/logout') }}">Log Out</a>
-                <img src={# /public/images/favicon.png #} "{{ user.image_path }}" alt="Avatar"
+                <img src="{{ user.image_path |default('/public/images/favicon.png') }}"   alt="Avatar"
                      class="rounded-circle me-2 p-1" style="width: 45px; height: 45px;">
                 <span class="p-2">{#Kisapablo Restless#} {{ user.name }} </span>
                 </div>

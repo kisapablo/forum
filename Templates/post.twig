@@ -1,6 +1,7 @@
 {% extends 'base.twig' %}
 
 {% block body %}
+    {# Rendering content #}
     <div class="container">
         {% if post.image_path is not null %}
             <img src="{{ asset_url(post.image_path) }}" class="img-fluid" alt="Cool Photo">
@@ -16,42 +17,43 @@
         </div>
     </div>
     {#  Start Comment's #}
-<div class="container">
-    <h3 class="mt-5">Comments</h3>
-    {% if comments %}
-        {% for comment in comments %}
-            <div class="card mb-3">
-                <div class="card-body">
-                    <p class="card-text">   {{ comment.content | e }}</p>
-                    <p class="card-text text-muted">
-                        <small>{{ comment.author_id }}</small>
-                    </p>
+    <div class="container">
+        <h3 class="mt-5">Comments</h3>
+        {% if comments %}
+            {% for comment in comments %}
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <p class="card-text">   {{ comment.content | e }}</p>
+                        <p class="card-text text-muted">
+                            <small>{{ comment.author_id }}</small>
+                        </p>
+                    </div>
                 </div>
+            {% endfor %}
+        {% else %}
+            <div class="alert alert-info" role="alert">
+                No comments yet.
             </div>
-        {% endfor %}
-    {% else %}
-        <div class="alert alert-info" role="alert">
-            No comments yet.
-        </div>
-    {% endif %}
-{#    {% if auth_user %}#}
+        {% endif %}
+        {% if auth_user %}
 
 
-    <form method="POST" action="/posts/{{ post.id }}/comments" class="mb-5">
-        <div class="form-group">
-            <label class="mt-4" for="exampleFormControlTextarea1">Add new Comment, write your think of this post!</label>
-            <textarea required class="form-control" name="content" id="exampleFormControlTextarea1" rows="2"></textarea>
-            {% if form_error %}
-                <div class="invalid-feedback">
-                    {{ form_error }}
+            <form method="POST" action="/posts/{{ post.id }}/comments" class="mb-5">
+                <div class="form-group">
+                    <label class="mt-4" for="exampleFormControlTextarea1">Add new Comment, write your think of this
+                        post!</label>
+                    <textarea required class="form-control" name="content" id="exampleFormControlTextarea1"
+                              rows="2"></textarea>
+                    {% if form_error %}
+                        <div class="invalid-feedback">
+                            {{ form_error }}
+                        </div>
+                    {% endif %}
                 </div>
-            {% endif %}
-        </div>
-        <button type="submit" class="btn btn-info">Submit Comment</button>
-    </form>
-{#        {% else %}#}
-{##}
-{#    {% endif %}#}
-</div>
+                <button type="submit" class="btn btn-info">Submit Comment</button>
+            </form>
+        {% else %}
+        {% endif %}
+    </div>
 {% endblock %}
 

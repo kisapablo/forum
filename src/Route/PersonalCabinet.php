@@ -26,7 +26,9 @@ class PersonalCabinet
     {
         error_log('Session is ' . json_encode($_SESSION));
 
-        $body = $this->view->render('Navigation/PersonalCabinet.twig');
+        $body = $this->view->render('Navigation/PersonalCabinet.twig', [
+        'user'=> $_SESSION['user']
+        ]);
         $response->getBody()->write($body);
         return $response;
         // Конец отрисовки

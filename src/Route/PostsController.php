@@ -29,7 +29,14 @@ class PostsController
 
     public function showPostBuilderPage(Request $request, Response $response): Response
     {
-        $body = $this->view->render('Navigation/CreateNewPosts.twig');
+        error_log('Session is ' . json_encode($_SESSION));
+        $user = $_SESSION['user'];
+        if (!isset($user) || !$user['id']) {
+            return $response->withStatus(301)->withHeader('Location', '/user/login');
+        }
+        $body = $this->view->render('Navigation/CreateNewPosts.twig', [
+            'user'=> $_SESSION['user']
+        ]);
         $response->getBody()->write($body);
         return $response;
     }
