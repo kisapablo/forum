@@ -96,4 +96,9 @@ class UserController
             return $response;
         }
     }
+    public function DeleteSession(Request $request, Response $response): Response
+    {
+        unset($_SESSION['user']);
+        return $response->withStatus(301)->withHeader('Location', '/user/login');
+    }
 }

@@ -27,10 +27,11 @@ $app = AppFactory::create();
 $view = $container->get(Environment::class); // Временной контейнер зависимости/dependency container
 $app->add(new TwigMiddleware($view));
 
-$app->get('/user', PersonalCabinet::class);
+$app->get('/user', [PersonalCabinet::class, 'showPersonalCabinet']);
 
 $app->get('/user/login', [UserController::class, 'showUserLoginPage']);
 $app->get('/user/registration', [UserController::class, 'showUserRegistrationPage']);
+$app->get('/user/logout', [UserController::class, 'DeleteSession']);
 
 $app->post('/user/login', [UserController::class, 'authorizeUser']);
 $app->post('/user/registration', [UserController::class, 'registerUser']);
