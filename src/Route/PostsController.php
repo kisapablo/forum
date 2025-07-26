@@ -102,7 +102,8 @@ class PostsController
         error_log('Session is ' . json_encode($_SESSION));
         $body = $this->view->render('post.twig', [
             'post' => $post,
-            'comments' => $comments
+            'comments' => $comments,
+            'user'=> $_SESSION['user']
         ]);
         $response->getBody()->write($body);
 

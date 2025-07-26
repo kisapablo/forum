@@ -35,7 +35,7 @@
                 No comments yet.
             </div>
         {% endif %}
-        {% if auth_user %}
+        {% if user is not null %}
 
 
             <form method="POST" action="/posts/{{ post.id }}/comments" class="mb-5">
@@ -44,11 +44,11 @@
                         post!</label>
                     <textarea required class="form-control" name="content" id="exampleFormControlTextarea1"
                               rows="2"></textarea>
-                    {% if form_error %}
-                        <div class="invalid-feedback">
-                            {{ form_error }}
-                        </div>
-                    {% endif %}
+{#                    {% if form_error %}#}
+{#                        <div class="invalid-feedback">#}
+{#                            {{ form_error }}#}
+{#                        </div>#}
+{#                    {% endif %}#}
                 </div>
                 <button type="submit" class="btn btn-info">Submit Comment</button>
             </form>
