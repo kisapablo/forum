@@ -1,13 +1,16 @@
 {% extends 'base.twig' %}
 
+{% block title %}
+    Personal Cabinet
+{% endblock %}
 {% block body %}
-    <div class="card" style="width: 18rem;">
-        <img src="/public/images/kisapablo_classic.png" class="img-fluid card-img-top" alt="...">
+    <div class="cabinet" style="">
+        <img src="{{ user_image_path|default('/public/images/kisapablo_classic.png') }}" class="img-fluid card-img-top rounded" alt="..." STYLE="width: 18rem">
         <div class="card-body">
-            <h5 class="card-title personal">Kisapablo Restress</h5>
-            <h3 class="card-text">Account Info</h3>
-            <p class="card-text">Register 2025year<br>100000 LVL 1M posts<br>Last Activity: 1hour ago</p>
-            <a  class="btn btn-danger">Administrator</a>
+            <h5 class="card-title personal ">{#Kisapablo Restress#}{{ user.name }}</h5>
+            <a  class="nav-button cabinet-button{#danger#}">{{ user.role |default('User')}}{#Administrator#}</a>
+            <h3 class="card-text personals">Account Info</h3>
+                <p class="card-text personals">Register 2025year<br>100000 LVL 1M posts<br>Last Activity: 1hour ago</p>
         </div>
     </div>
 

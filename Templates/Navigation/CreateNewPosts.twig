@@ -1,20 +1,23 @@
 {% extends 'base.twig' %}
-
+{% block title %}
+    Builder New Posts
+{% endblock %}
 {% block body %}
     <form method="POST" action="{{ url('posts') }}">
         <div class="form-group">
             <label>
                 Post Title
-                <input type="text" class="form-control" name="title" placeholder="You Post Name">
+                <input required type="text" class="form-control" name="title" placeholder="You Post Name">
             </label>
         </div>
         <div class="form-group">
             <label>
                 Post Content
-                <textarea class="form-control" name="content" rows="3" placeholder="You Post content"></textarea>
+                <textarea required class="form-control" name="content" rows="3"
+                          placeholder="You Post content"></textarea>
             </label>
         </div>
-        <button type="submit" class="btn btn-info mx-1"> Push Public post</button>
+        <button type="submit" class="nav-button user-color mx-1"> Push Public post</button>
     </form>
 
 

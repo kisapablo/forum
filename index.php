@@ -27,25 +27,25 @@ $app = AppFactory::create();
 $view = $container->get(Environment::class); // Временной контейнер зависимости/dependency container
 $app->add(new TwigMiddleware($view));
 
+// Routing
 $app->get('/user', [PersonalCabinet::class, 'showPersonalCabinet']);
-
 $app->get('/user/login', [UserController::class, 'showUserLoginPage']);
 $app->get('/user/registration', [UserController::class, 'showUserRegistrationPage']);
 $app->get('/user/logout', [UserController::class, 'DeleteSession']);
-
 $app->post('/user/login', [UserController::class, 'authorizeUser']);
 $app->post('/user/registration', [UserController::class, 'registerUser']);
 
 $app->get('/about', AboutPage::class);
 $app->get('/', [PostsController::class, 'showAllPosts']);
 $app->get('/posts', [PostsController::class, 'showAllPosts']);
-$app->get('/posts/builder', [PostsController::class, 'showPostBuilderPage']);
+$app->get('/posts/all[/{page}]', [PostsController::class, 'showAllPosts']);
+$app->get('/posts/builders', [PostsController::class, 'showPostBuilderPage']);
 $app->post('/posts/{post_id}/comments', [PostsController::class, 'createNewPostComment']);
 $app->get('/posts/{post_id}', [PostsController::class, 'showPostPage']);
 //$app->get('/posts/old/blog', [PostsController::class, 'getallOldPage']); // Заморожено, реабилитация страницы не эффективна
 
 $app->post('/posts', [PostsController::class, 'createNewPost']);
 
-
+// end routing
 
 $app->run();
