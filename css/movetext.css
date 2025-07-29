@@ -1,6 +1,8 @@
 /* border обводка
 height - обозначение высоты
 width - ширина
+Убрать зависимость в отступах(margin, padding)
+pagination navbar form control footer
 */
 * {
     box-sizing: border-box;
@@ -14,7 +16,7 @@ body {
 }
 
 html {
-    background-color: #f8f9fa;
+    background-color: #aaaaaa;
     /*word-wrap: break-word;*/
     /*overflow-wrap: break-word;*/
 }
@@ -153,53 +155,90 @@ html {
     white-space: nowrap;
 }
 
+
+/* Вероятно необходимо перенести пагинацию и добавить фильтры и поиск*/
+.post {
+    /*width: 100%;*/
+    /*display: inline-block;*/
+    /*display: block;*/
+    /*position: relative;*/
+    margin: 0;
+}
 .button-nearby-post {
-    position: relative;
-    left: +60rem;
-    /*top: +3.5rem;*/
+        margin-left: .25rem;
+        margin-right: .25rem;
+        display: inline-block;
+        font-weight: 400;
+        text-align: center;
+        user-select: none;
+        background-color: transparent;
+        border: 1px solid transparent;
+        padding: .375rem .75rem;
+        font-size: 1rem;
+        line-height: 1.5;
+        border-radius: .25rem;
+        transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
 }
 
-.post-distance {
-    display: inline-block;
-    /*list-style: none;*/
-}
-
-
-.post-size {
+.post-body { /* container? */
+    border-radius: 5px;
+    background-color: #c5c3c3;
     display: flex;
     position: relative;
     flex-wrap: wrap;
     border-top: 1px solid #aaaaaa;
-    border-right: 1px solid #f4f4f4;
+    border-right: 1px solid #aaaaaa;
     align-items: center;
-    /*font-weight: 500;*/
     flex-direction: row;
     justify-content: space-between;
-    top: 0;
-    right: 0;
-    left: 0;
-    flex: 1 1 1180px;
-    /*border-top: 1px solid #aaaaaa;*/
-
-    /*margin-bottom: 20px;*/
 }
 
-.post-size:first-child {
+.post-body:first-child {
     border-top: 0;
 }
 
-.post-size:last-of-type {
+.post-body:last-of-type {
     border-bottom: 1px solid #aaaaaa;
 }
 
-.post-title {
-    font-size: large;
+.post-header{
+    display: flex;
+    position: relative;
+    flex-wrap: wrap;
+    align-items: center;
+    flex-direction: row;
+    justify-content: space-between;
 }
 
-.post {
-    /*display: block;*/
-    /*position: relative;*/
+.post-toolbar{
+    border-radius: 20px;
+    background-color: #6c6c6c;
+    /*background-color: #aaaaaa;*/
+    border-bottom: 1px solid #aaaaaa;
+    color: darkorange;
+}
 
+
+
+.post-title {
+    color: #007bff;
+    font-size: large;
+    position: relative;
+    text-align: right;
+    margin-bottom: 0.3rem;
+}
+
+.post-content{
+    position: relative;
+    /*text-align: right;*/
+    margin-bottom: 0.2rem;
+}
+.post-publication-date{
+    /*list-style: none;*/
+    list-style: none;
+margin-left: 50rem;
+    top: 10px;
+    color: darkgoldenrod;
 }
 
 .card-title {
@@ -242,12 +281,19 @@ html {
     border-bottom: 1px solid rgba(0, 0, 0, .125);
 }
 
+.post-toolbar-down{
+    border-radius: 10px;
+    /*background-color: #212529;*/
+    background-color: #aaaaaa;
+}
 
 .pagination {
     display: flex;
     padding-left: 0;
     list-style: none;
     border-radius: .25rem;
+    position: relative;
+    top: +7px;
 }
 
 .page-item.active .page-link {
@@ -268,7 +314,7 @@ html {
     display: block;
     padding: .5rem .75rem;
     line-height: 1.25;
-    border: 1px solid #dee2e6;
+    /*border: 1px solid #dee2e6;*/
 }
 
 .justify-content-center {
@@ -381,10 +427,6 @@ html {
     margin-top: 3rem;
 }
 
-/*.bac {*/
-/*    padding: 0.5rem*/
-/*}*/
-
 a {
     color: #007bff;
     text-decoration: none;
@@ -414,13 +456,9 @@ ul {
     margin-bottom: 1rem;
 }
 
-/*button, input {*/
-/*    overflow: visible;*/
-/*}*/
 
 textarea input button {
     margin: 0;
-    /*font-family: inherit;*/
 }
 
 input {
@@ -452,6 +490,4 @@ label {
     text-shadow: none;
 }
 
-/*.public{*/
-/*    margin-left: 25rem;*/
-/*}*/
+
