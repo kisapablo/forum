@@ -21,8 +21,8 @@ class UserRepository
         $connection = $this->dataBase->getConnection();
 
         $statement = $connection->prepare(
-            'INSERT INTO user (name, password_hash, password_salt, role) 
-            values (:login, :hash, :salt, :role)
+            'INSERT INTO user (name, password_hash, password_salt, role_id, icon_id, registration_date)  
+            values (:login, :hash, :salt, :role_id, :icon_id, CURRENT_DATE)
             ',
         );
 
@@ -30,7 +30,8 @@ class UserRepository
             'login' => $login,
             'hash' => $hash,
             'salt' => $salt,
-            'role' => $role
+            'role_id' => $role,
+            'icon_id' => 1
         ]);
 
         if (!$result) {

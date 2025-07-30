@@ -138,41 +138,19 @@ class PostsController
         return $response;
     }
 
-
-    /*
-     Заморожено до лучших времен(Малая эффективность для реабилитации страницы blog)
-    function getallOldPage(Response $response)
-    {
-        $page = isset($args['page']) ? (int) $args['page'] : 1; // проверка на обьявление переменной и отличие от значение null
-        $limit = 2; // Отрисовка страниц на /blog(Лимит отрисовки страниц на одной страницы /blog)
-
-        // извлечение всех записей блога для текущей страницы(blog/1 последние 2 поста, blog/2 последние 3-4 поста и так далее
-        $posts = $this->->showall($page, $limit, 'DESC');
-        $totalCount = $this->postMapper->getTotalCount(); // получение общего кол-ва постов для расчета выдачи постов для пагинации
-        // rendering .twig file(рендеринг .twig файла сохранение выходных данных в $body) and save data in $body
-        $body = $this->view->render('blog.twig', [
-            'posts' => $posts, // giving list posts for templates in display (выдача списка постов в шаблон для отображение)
-            'pagination' => [
-                'current' => $page, // current page number(текущ. номер страницы)
-                'paging' => ceil($totalCount / $limit) // вычисление всего кол-ва страниц через $totalCount деля на $limit и округления ceilом
-            ]
-        ]);
-        $response->getBody()->write($body);
-        return $response;
-    }
-*/
     public function createNewPost(Request $request, Response $response): Response
     {
         $title = $_POST['title'];
         $content = $_POST['content'];
+        $id = $_SESSION['id'];
 
         $connection = $this->dataBase->getConnection();
 
 
         // Вбивание данных из шаблонов
         $statement = $connection->prepare(
-            "INSERT INTO post (title, content, publication_date) 
-                VALUES ('$title', '1$content',  CURRENT_DATE)"
+            "INSERT INTO post (title, content, author_id, publication_date) 
+                VALUES ('$title', '$content', '$id', CURRENT_DATE)"
         );
 
 
