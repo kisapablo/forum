@@ -299,7 +299,7 @@ html {
 }
 
 .pagination-body {
-    margin-left: 15px;
+    margin-left: .95rem;
 }
 
 .toolbar-search-body {
@@ -332,11 +332,19 @@ html {
 }
 
 .post-toolbar-down {
-    margin-left: 24.5rem;
+    margin-left: 23.55rem;
     margin-right: 24.5rem;
     border-radius: 10px;
     /*background-color: #212529;*/
     background-color: #aaaaaa;
+}
+
+.post-toolbar-not-authorized {
+    margin-left: 24.5rem;
+    margin-right: 24.5rem;
+    border-radius: 10px;
+    /*background-color: #212529;*/
+    background-color: #6c6c6c;
 }
 
 .justify-content-center {

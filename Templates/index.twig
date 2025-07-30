@@ -5,12 +5,9 @@
         <h3 class="mt-3 latestPosts">Latest Posts</h3>
 
         <div class="container">
-            <div class="post-toolbar post-header">
-
-                <div class="pagination-body">
-                {% include 'Navigation/pagination.twig' with pagination %}
-
-                    {% if user is not null %}
+            {% if user is not null %}
+                <div class="post-toolbar post-header">
+                    {% include 'Navigation/pagination.twig' with pagination %}
                     <label class="toolbar-search-body">
                         Поиск
                         <input type="text" class="form-control" name="title" placeholder="Search">
@@ -21,14 +18,17 @@
                     </a>
                     <span class="Toolbar-text">Toolbar</span>
                 </div>
-                {% endif %}
-            </div>
-    </div>
-    </div>
+            {% else %}
+                <div class="post-toolbar-not-authorized">
+                    {% include 'Navigation/pagination.twig' with pagination %}
+                </div>
+            {% endif %}
+        </div>
 
-    {% include 'Navigation/posts.twig' with posts %}
+        {% include 'Navigation/posts.twig' with posts %}
         {#        <a href="{{ url('posts') }}">View all</a> #}
         <div class="post-toolbar-down">
             {% include 'Navigation/pagination.twig' with pagination %}
         </div>
+    </div>
 {% endblock %}
