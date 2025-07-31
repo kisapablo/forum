@@ -286,11 +286,16 @@ html {
     border-radius: .25rem;
 }
 
+.post_edit-body{
+    text-align: right;
+    position: relative;
+    top: -8rem;
+}
+
 .post-edit {
     padding: .25rem;
     width: 45px;
     height: 45px;
-    text-align: right;
 }
 
 .page-link {

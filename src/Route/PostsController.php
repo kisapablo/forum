@@ -5,6 +5,7 @@ namespace Blog\Route;
 
 use Blog\CommentRepository;
 use Blog\DataBase;
+use Blog\PostRepository;
 use PDO;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
@@ -21,12 +22,14 @@ class PostsController
 
     private DataBase $dataBase;
     private CommentRepository $commentRepository;
+    private PostRepository $postRepository;
 
-    public function __construct(Environment $view, DataBase $dataBase, CommentRepository $commentRepository)
+    public function __construct(Environment $view, DataBase $dataBase, CommentRepository $commentRepository, PostRepository $postRepository)
     {
         $this->view = $view;
         $this->dataBase = $dataBase;
         $this->commentRepository = $commentRepository;
+        $this->postRepository = $postRepository;
     }
 
     // rendering Create Post Builder(CreateNewPosts.twig)
@@ -42,49 +45,27 @@ class PostsController
         return $response;
     }
 
-    public function getTotalCount(): int
-    {
-        $connection = $this->dataBase->getConnection();
 
-        $statement = $connection->prepare( // Если не робит то добавь перед getConnection, dataBase->
-            'SELECT count(id) as total FROM post'
-        );
-
-
-        $statement->execute();
-
-        return (int) ($statement->fetchColumn() ?? 0);
-    }
 // rendering index.twig
-    function showAllPosts(Request $request, Response $response, array $args): Response
+    function showAllPosts(Request $request, Response $response, array $args = []): Response
     {
         // Проверяем переменная обьявлена ли и разницу с null
         $page = isset($args['page']) ? (int) $args['page'] : 1;
         // Лимит отрисовки страниц(если будет 5 постов то отрисуется только 3 из них если лимит равен 3)
         $limit = (int) 3;
-
         $start = (int) (($page - 1) * $limit);
 
-        $connection = $this->dataBase->getConnection();
+        $posts = $this->postRepository->findAllPosts($args, $page, $limit, $start);
 
-        $statement = $connection->prepare(
-            'SELECT * FROM post ORDER BY publication_date DESC LIMIT :limit OFFSET :start     ' //:start
-        );
-
-        $statement->bindValue(':limit', $limit, PDO::PARAM_INT);
-        $statement->bindValue('start', $start, PDO::PARAM_INT);
-        $statement->execute();
-
-
-        $posts = $statement->fetchAll();
-
-        $totalCount = $this->getTotalCount();
+        $totalCount = $this->postRepository->getTotalCount();
         error_log('Session is ' . json_encode($_SESSION));
+        error_log('Session id is ' . json_encode($_SESSION['id']));
         $body = $this->view->render('index.twig', [
             'posts' => $posts,
             'showAuthButton' => true,
             'showUserInfo' => false,
             'user' => $_SESSION['user'],
+            'id' => $_SESSION['id'],
             'pagination' => [
                 'current' => $page,  // current page number(текущ. номер страницы)
                 'paging' => ceil($totalCount / $limit) // вычисление всего кол-ва страниц через $totalCount деля на $limit и округления ceilом
@@ -144,19 +125,7 @@ class PostsController
         $content = $_POST['content'];
         $id = $_SESSION['id'];
 
-        $connection = $this->dataBase->getConnection();
-
-
-        // Вбивание данных из шаблонов
-        $statement = $connection->prepare(
-            "INSERT INTO post (title, content, author_id, publication_date) 
-                VALUES ('$title', '$content', '$id', CURRENT_DATE)"
-        );
-
-
-        if ($statement->execute()) {
-            header("Location: /");
-        }
+        $this->postRepository->addNewPost($title, $content, $id);
 
         $body = $this->view->render('Navigation/CreateNewPosts.twig');
         $response->getBody()->write($body);

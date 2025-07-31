@@ -1,0 +1,26 @@
+{% extends 'base.twig' %}
+{% block title %}
+Post Editor
+{% endblock %}
+{% block body %}
+    <form method="POST" action="{{ url('user/posts') }}">
+        <div class="form-group">
+
+            <div class="post-title mb-3">No one else can do your post. Editable your post chill.</div>
+            <label>
+                Editable Post title
+                <input required type="text" class="form-control" name="title" placeholder="You Post Name" value="{{ post.title }}  JORIK">
+            </label>
+        </div>
+        <div class="form-group">
+            <label>
+                Editable Post Content
+                <textarea required class="form-control" name="content" rows="3"
+                          placeholder="You Post content">{{ post.content }} JORIK </textarea>
+            </label>
+        </div>
+        <button type="submit" class="nav-button user-color mx-1"> Push Public post</button>
+    </form>
+
+
+{% endblock %}
