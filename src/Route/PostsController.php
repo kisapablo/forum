@@ -115,7 +115,8 @@ $posts = $this->postRepository->prepareInfoPost( (int) $post_id, $args);
     {
         $title = $_POST['title'];
         $content = $_POST['content'];
-        $id = '2';
+        $id = $_SESSION['id'];
+
 
         $this->postRepository->addNewPost($title, $content, $id);
 

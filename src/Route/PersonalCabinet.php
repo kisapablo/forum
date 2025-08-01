@@ -78,7 +78,8 @@ class PersonalCabinet
 
         $post = $posts[0];
 
-        error_log('Session is ' . json_encode($post));
+        error_log('Title Value is' . json_encode($post_id));
+        error_log('$post is ' . json_encode($post));
         $body = $this->view->render('Navigation/PostEditor.twig', [
             'post' => $post,
             'user'=> $_SESSION['user']
@@ -87,6 +88,17 @@ class PersonalCabinet
 
         return $response;
     }
-
-
+ /*   public function PostUpdate(Request $request, Response $response, array $args)
+    {
+        $title = $_POST['title'];
+        error_log('Title Value is' . json_encode($title));
+        $content = $_POST['content'];
+        error_log('Title Value is' . json_encode($content));
+//            $post_id = (int)$args['post_id'];
+//        $post_id = 3;
+//        error_log('ID Value is' . json_encode($post_id));
+        $update = $this->postRepository->updatePosts($title, $content); //$post_id
+        print_r($update);
+    }
+*/
 }

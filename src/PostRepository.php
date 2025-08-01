@@ -78,25 +78,36 @@ public function prepareInfoPost($post_id, array $args)
 
     return $statement->fetchAll();
 }
-
-public function getInfoPost($title)
+/*
+public function updatePosts($title, $content,) // ,$post_id
 {
-
-    // Вероятно необходимо извлекать из findAllPosts данные непосредством ида
-
     $connection = $this->dataBase->getConnection();
 
+
+    // Изменение данных из шаблонов
     $statement = $connection->prepare(
-        'SELECT * FROM post where title = :title'
+        "UPDATE post SET
+                content = '$content',
+                title = '$title'
+                WHERE id = 3"
+    //                content = :content,
+//                title = :title
+//                WHERE id = :id"
     );
 
-    $statement->execute([
-            'title' => $title
-    ]);
+
+    $statement->execute();
+//        [
+//        'id' => $post_id,
+//        'title' => $title,
+//        'content' => $content
+//    ]
+
 
     return $statement->fetchAll();
-
 }
+*/
+
 
 
 
