@@ -98,7 +98,8 @@ class PersonalCabinet
 //        $post_id = 3;
 //        error_log('ID Value is' . json_encode($post_id));
         $update = $this->postRepository->updatePosts($title, $content); //$post_id
-        print_r($update);
+//        print_r($update);
+        return $response->withStatus(301)->withHeader('Location', '/posts/' . (int)$args['post_id']);
     }
 
 }
