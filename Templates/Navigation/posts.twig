@@ -8,7 +8,7 @@
             <a href="{{ url('posts/' ~ post.id) }}">
                 <h5 class="post-title">{{ post.title|escape }}</h5></a>
             </div>
-            <br> {{post.id}}
+            <br> {{post.author_id}}
 
             <div class="post-content post-content-color"> <br>
                 This forum is for help, discussion, and announcements related to the Rust programming language. Please
@@ -30,7 +30,7 @@
 
 {#                <div class="collapse">#}
 {#                    <div class="d-flex align-items-center flex-align-center">#}
-                    <a href="{{ url('user/posts/PostEditor/') }}">Edit post</a>
+                    <a href="{{ url('user/posts/PostEditor/' ~ post.id) }}">Edit post</a>
                     <a href="{{ url('user') }}">Delete Post</a>
 {#                </div>#}
             </div>

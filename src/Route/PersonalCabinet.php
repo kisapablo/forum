@@ -2,6 +2,7 @@
 
 namespace Blog\Route;
 
+use Blog\PostRepository;
 use Blog\DataBase;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
@@ -17,13 +18,15 @@ class PersonalCabinet
 
     private DataBase $dataBase;
 
-    public function __construct(Environment $view, DataBase $dataBase)
+    private PostRepository $postRepository;
+    public function __construct(Environment $view, DataBase $dataBase, PostRepository $postRepository)
     {
         $this->view = $view;
         $this->dataBase = $dataBase;
+        $this->postRepository = $postRepository;
     }
 
-    // Отрисовка Личногокабинета
+    // Отрисовка Личного кабинета
     public function showPersonalCabinet($connect, Response $response): Response
     {
         error_log('Session is ' . json_encode($_SESSION));
@@ -39,54 +42,51 @@ class PersonalCabinet
         // Конец отрисовки
     }
 
-    public function showPostEditor($connect, Response $response, array $args): Response
-    {
-        $title = (int)$args['title'];
-
-        $connection = $this->dataBase->getConnection();
-
-        $statement = $connection->prepare(
-            'SELECT * FROM post where title = :title'
-        );
-
-        $statement->execute([
-//            'title' => $title
-'title' => 'Hello World'
-        ]);
-
-        $title = $statement->fetchAll();
-
-
-        error_log('Session is ' . json_encode($_SESSION));
-//        if (!isset($user) || !$user['id']) {
-//            return $response->withStatus(301)->withHeader('Location', '/user/login');
-//        }
+//    public function showPostEditor($connect, Response $response, array $args): Response
+//    {
 //
+////        if (!isset($user) || !$user['id']) {
+////            return $response->withStatus(301)->withHeader('Location', '/user/login');
+////        }
+////
+//        $body = $this->view->render('Navigation/PostEditor.twig', [
+//            'user' => $_SESSION['user'],
+////            'posts' => $infoPost
+//        ]);
+//        $response->getBody()->write($body);
+//        return $response;
+//        // Конец отрисовки
+//    }
+
+    public function getPostInfo(Request $request, Response $response, array $args)
+    {
+        if (!isset($args['post_id'])) {
+            $body = $this->view->render('not-found.twig');
+            $response->getBody()->write($body);
+            return $response;
+        }
+
+        $post_id = (int)$args['post_id'];
+
+        $posts = $this->postRepository->prepareInfoPost( (int) $post_id, $args);
+
+        if (empty($posts)) {
+            $body = $this->view->render('not-found.twig');
+            $response->getBody()->write($body);
+            return $response;
+        }
+
+        $post = $posts[0];
+
+        error_log('Session is ' . json_encode($post));
         $body = $this->view->render('Navigation/PostEditor.twig', [
-            'user' => $_SESSION['user'],
-            'posts' => $title
+            'post' => $post,
+            'user'=> $_SESSION['user']
         ]);
         $response->getBody()->write($body);
+
         return $response;
-        // Конец отрисовки
     }
 
 
-//    public function getRole(Request $request, Response $response, array $args): Response
-//    {
-//        error_log('Распределение ролей');
-//        $args = [];
-//        $args['User'] = [0];
-//        $args['admin'] = [1];
-//        $args['helper'] = [2];
-//        $connection = $this->dataBase->getConnection();
-//        $statement = $connection->prepare(
-//            ' SELECT * FROM user WHERE role = 0'
-//        );
-//        $statement->execute();
-//
-//        $role = $statement->fetchAll();
-//
-//        return $response;
-//    }
 }

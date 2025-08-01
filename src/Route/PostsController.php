@@ -87,17 +87,7 @@ class PostsController
 
         $post_id = (int)$args['post_id'];
 
-        $connection = $this->dataBase->getConnection();
-
-        $statement = $connection->prepare(
-            'SELECT * FROM post where id = :id'
-        );
-
-        $statement->execute([
-            'id' => $post_id
-        ]);
-
-        $posts = $statement->fetchAll();
+$posts = $this->postRepository->prepareInfoPost( (int) $post_id, $args);
 
         if (empty($posts)) {
             $body = $this->view->render('not-found.twig');
@@ -106,6 +96,8 @@ class PostsController
         }
 
         $post = $posts[0];
+
+
         $comments = $this->commentRepository->getAllComments($post['id']);
 
         error_log('Session is ' . json_encode($_SESSION));
@@ -123,7 +115,7 @@ class PostsController
     {
         $title = $_POST['title'];
         $content = $_POST['content'];
-        $id = $_SESSION['id'];
+        $id = '2';
 
         $this->postRepository->addNewPost($title, $content, $id);
 

@@ -18,7 +18,7 @@ class PostRepository
     {
         $connection = $this->dataBase->getConnection();
 
-        $statement = $connection->prepare( // Если не робит то добавь перед getConnection, dataBase->
+        $statement = $connection->prepare( // Если не робит то добавь перед getConnection, dataBase-> неактуально делай через $connection
             'SELECT count(id) as total FROM post'
         );
 
@@ -40,10 +40,9 @@ public function addNewPost ($title, $content, $id)
     );
 
 
-    if ($statement->execute()) {
-        header("Location: /");
-    }
+    $statement->execute();
 
+    return $statement->fetchAll();
 }
 
 public function findAllPosts(array $args, $page, $limit, $start)
@@ -63,4 +62,61 @@ public function findAllPosts(array $args, $page, $limit, $start)
     return $statement->fetchAll();
 }
 
+public function prepareInfoPost($post_id, array $args)
+{
+
+    $connection = $this->dataBase->getConnection();
+
+    $statement = $connection->prepare(
+        'SELECT * FROM post where id = :id'
+    );
+
+    $statement->execute([
+        'id' => $post_id
+    ]);
+
+
+    return $statement->fetchAll();
 }
+
+public function getInfoPost($title)
+{
+
+    // Вероятно необходимо извлекать из findAllPosts данные непосредством ида
+
+    $connection = $this->dataBase->getConnection();
+
+    $statement = $connection->prepare(
+        'SELECT * FROM post where title = :title'
+    );
+
+    $statement->execute([
+            'title' => $title
+    ]);
+
+    return $statement->fetchAll();
+
+}
+
+
+
+}
+
+
+//    public function getRole(Request $request, Response $response, array $args): Response
+//    {
+//        error_log('Распределение ролей');
+//        $args = [];
+//        $args['User'] = [0];
+//        $args['admin'] = [1];
+//        $args['helper'] = [2];
+//        $connection = $this->dataBase->getConnection();
+//        $statement = $connection->prepare(
+//            ' SELECT * FROM user WHERE role = 0'
+//        );
+//        $statement->execute();
+//
+//        $role = $statement->fetchAll();
+//
+//        return $response;
+//    }

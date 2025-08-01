@@ -41,12 +41,12 @@ $app->get('/posts', [PostsController::class, 'showAllPosts']);
 $app->get('/posts/all[/{page}]', [PostsController::class, 'showAllPosts']);
 $app->get('/posts/builders', [PostsController::class, 'showPostBuilderPage']);
 $app->post('/posts/{post_id}/comments', [PostsController::class, 'createNewPostComment']);
+$app->get('/user/posts/PostEditor/{post_id}', [PersonalCabinet::class, 'getPostInfo']);
 $app->get('/posts/{post_id}', [PostsController::class, 'showPostPage']);
-$app->get('/user/posts/PostEditor', [PersonalCabinet::class, 'showPostEditor']);
 //$app->get('/posts/old/blog', [PostsController::class, 'getallOldPage']); // Заморожено, реабилитация страницы не эффективна
 
 $app->post('/posts', [PostsController::class, 'createNewPost']);
-
+$app->post('/user/posts', [PersonalCabinet::class, 'getPostInfo']);
 // end routing
 
 $app->run();
