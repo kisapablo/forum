@@ -1,4 +1,6 @@
-# Forum on PHP and MySQL
+# Forum on PHP and MySQL 
+
+PHP Warning: Не забудь подправить варнинги в консоле 
 
 Todo List:
 1. fix all //todo and //fixme in code

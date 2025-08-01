@@ -2,7 +2,6 @@
 
 namespace Blog;
 
-use Exception;
 use PDO;
 
 class PostRepository
@@ -25,78 +24,82 @@ class PostRepository
 
         $statement->execute();
 
-        return (int) ($statement->fetchColumn() ?? 0);
+        return (int)($statement->fetchColumn() ?? 0);
     }
 
-public function addNewPost ($title, $content, $id)
-{
-    $connection = $this->dataBase->getConnection();
+    public function addNewPost($title, $content, $id)
+    {
+        $connection = $this->dataBase->getConnection();
 
 
-    // Вбивание данных из шаблонов
-    $statement = $connection->prepare(
-        "INSERT INTO post (title, content, author_id, publication_date) 
+        // Вбивание данных из шаблонов
+        $statement = $connection->prepare(
+            "INSERT INTO post (title, content, author_id, publication_date) 
                 VALUES ('$title', '$content', '$id', CURRENT_DATE)"
-    );
+        );
 
 
-    $statement->execute();
+        $statement->execute();
 
-    return $statement->fetchAll();
-}
+        return $statement->fetchAll();
+    }
 
-public function findAllPosts(array $args, $page, $limit, $start)
-{
-    // Проверяем переменная обьявлена ли и разницу с null
+    public function findAllPosts(array $args, $page, $limit, $start)
+    {
+        // Проверяем переменная обьявлена ли и разницу с null
 
-    $connection = $this->dataBase->getConnection();
+        $connection = $this->dataBase->getConnection();
 
-    $statement = $connection->prepare(
-        'SELECT * FROM post ORDER BY publication_date DESC LIMIT :limit OFFSET :start     ' //:start
-    );
+        $statement = $connection->prepare(
+            'SELECT * FROM post ORDER BY publication_date DESC LIMIT :limit OFFSET :start     ' //:start
+        );
 
-    $statement->bindValue(':limit', $limit, PDO::PARAM_INT);
-    $statement->bindValue('start', $start, PDO::PARAM_INT);
-    $statement->execute();
+        $statement->bindValue(':limit', $limit, PDO::PARAM_INT);
+        $statement->bindValue('start', $start, PDO::PARAM_INT);
+        $statement->execute();
 
-    return $statement->fetchAll();
-}
+        return $statement->fetchAll();
+    }
 
-public function prepareInfoPost($post_id, array $args)
-{
+    public function findPostById($post_id)
+    {
+        $connection = $this->dataBase->getConnection();
 
-    $connection = $this->dataBase->getConnection();
+        $statement = $connection->prepare(
+            'SELECT * FROM post where id = :id'
+        );
 
-    $statement = $connection->prepare(
-        'SELECT * FROM post where id = :id'
-    );
+        $statement->execute([
+            'id' => $post_id
+        ]);
 
-    $statement->execute([
-        'id' => $post_id
-    ]);
+        $posts =  $statement->fetchAll();
+
+        if (empty($posts)) {
+            return null;
+        }
+
+        return $posts[0];
+    }
+
+    public function updatePosts($title, $content) // ,$post_id
+    {
+        $connection = $this->dataBase->getConnection();
 
 
-    return $statement->fetchAll();
-}
-
-public function updatePosts($title, $content,) // ,$post_id
-{
-    $connection = $this->dataBase->getConnection();
-
-
-    // Изменение данных из шаблонов
-    $statement = $connection->prepare(
-        "UPDATE post SET
+        // Изменение данных из шаблонов
+        $statement = $connection->prepare(
+            "UPDATE post SET
                 content = '$content',
                 title = '$title'
                 WHERE id = 3"
-    //                content = :content,
+        //                content = :content,
 //                title = :title
 //                WHERE id = :id"
-    );
+        );
 
 
-    $statement->execute();
+        $statement->execute();
 //        [
 //        'id' => $post_id,
 //        'title' => $title,
@@ -104,10 +107,10 @@ public function updatePosts($title, $content,) // ,$post_id
 //    ]
 
 
-    return $statement->fetchAll();
-}
+        return $statement->fetchAll();
+    }
 
-    public function findAllPostsAuthor(array $args, $id)
+    public function findAllPostsByAuthorId($authorId): array
     {
         // Проверяем переменная обьявлена ли и разницу с null
 
@@ -117,12 +120,11 @@ public function updatePosts($title, $content,) // ,$post_id
             'SELECT * FROM post where author_id = :id' //
         );
 
-        $statement->bindValue(':id', $id, PDO::PARAM_INT);
+        $statement->bindValue(':id', $authorId, PDO::PARAM_INT);
         $statement->execute();
 
         return $statement->fetchAll();
     }
-
 
 
 }

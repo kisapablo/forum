@@ -10,24 +10,17 @@ use Twig\Environment;
 
 class PersonalCabinet
 {
-
-    /**
-     * @var Environment
-     */
     private Environment $view;
 
-    private DataBase $dataBase;
-
     private PostRepository $postRepository;
-    public function __construct(Environment $view, DataBase $dataBase, PostRepository $postRepository)
+    public function __construct(Environment $view, PostRepository $postRepository)
     {
         $this->view = $view;
-        $this->dataBase = $dataBase;
         $this->postRepository = $postRepository;
     }
 
     // Отрисовка Личного кабинета
-    public function showPersonalCabinet($connect, Response $response): Response
+    public function showPersonalCabinet(Request $request, Response $response): Response
     {
         error_log('Session is ' . json_encode($_SESSION));
 //        if (!isset($user) || !$user['id']) {
@@ -39,7 +32,6 @@ class PersonalCabinet
         ]);
         $response->getBody()->write($body);
         return $response;
-        // Конец отрисовки
     }
 
 //    public function showPostEditor($connect, Response $response, array $args): Response
@@ -68,15 +60,13 @@ class PersonalCabinet
 
         $post_id = (int)$args['post_id'];
 
-        $posts = $this->postRepository->prepareInfoPost( (int) $post_id, $args);
+        $post = $this->postRepository->findPostById( (int) $post_id);
 
-        if (empty($posts)) {
+        if ($post == null) {
             $body = $this->view->render('not-found.twig');
             $response->getBody()->write($body);
             return $response;
         }
-
-        $post = $posts[0];
 
         error_log('Title Value is' . json_encode($post_id));
         error_log('$post is ' . json_encode($post));
@@ -84,11 +74,13 @@ class PersonalCabinet
             'post' => $post,
             'user'=> $_SESSION['user']
         ]);
+
         $response->getBody()->write($body);
 
         return $response;
     }
-    public function PostUpdate(Request $request, Response $response, array $args)
+
+    public function updatePost(Request $request, Response $response, array $args)
     {
         $title = $_POST['title'];
         error_log('Title Value is' . json_encode($title));
@@ -102,21 +94,22 @@ class PersonalCabinet
         return $response->withStatus(301)->withHeader('Location', '/posts/' . (int)$args['post_id']);
     }
 
-    public function showSelectPosts(Request $request, Response $response, array $args = []): Response
+    public function showPublishedPosts(Request $request, Response $response, array $args = []): Response
     {
-        $id = $_SESSION['id'];
+        $user = $_SESSION['user'];
+        $userId = $user['id'];
 
-        error_log('ID Value is' . json_encode($id));
+        error_log('ID Value is' . json_encode($userId));
 
         $post_id = (int)$args['post_id'];
         error_log('Post_ID Value is' . json_encode($post_id));
 
-        $posts = $this->postRepository->findAllPostsAuthor($args, $post_id, $id);
+        $posts = $this->postRepository->findAllPostsByAuthorId($userId);
 
         error_log('Posts Value is' . json_encode($posts));
 
         error_log('Session is ' . json_encode($_SESSION));
-//        if (!isset($user) || !    $user['id']) {
+//        if (!isset($user) || !    $user['userId']) {
 //            return $response->withStatus(301)->withHeader('Location', '/user/login');
 //        }
 //

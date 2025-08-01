@@ -20,14 +20,14 @@ class PostsController
      */
     private Environment $view;
 
-    private DataBase $dataBase;
     private CommentRepository $commentRepository;
     private PostRepository $postRepository;
 
-    public function __construct(Environment $view, DataBase $dataBase, CommentRepository $commentRepository, PostRepository $postRepository)
+    public function __construct(Environment       $view,
+                                CommentRepository $commentRepository,
+                                PostRepository    $postRepository)
     {
         $this->view = $view;
-        $this->dataBase = $dataBase;
         $this->commentRepository = $commentRepository;
         $this->postRepository = $postRepository;
     }
@@ -37,11 +37,14 @@ class PostsController
     {
         error_log('Check for authorization');
         error_log('Session is ' . json_encode($_SESSION));
+
         $user = $_SESSION['user'];
         $body = $this->view->render('Navigation/CreateNewPosts.twig', [
-            'user' => $_SESSION['user']
+            'user' => $user,
         ]);
+
         $response->getBody()->write($body);
+
         return $response;
     }
 
@@ -50,10 +53,10 @@ class PostsController
     function showAllPosts(Request $request, Response $response, array $args = []): Response
     {
         // Проверяем переменная обьявлена ли и разницу с null
-        $page = isset($args['page']) ? (int) $args['page'] : 1;
+        $page = isset($args['page']) ? (int)$args['page'] : 1;
         // Лимит отрисовки страниц(если будет 5 постов то отрисуется только 3 из них если лимит равен 3)
-        $limit = (int) 3;
-        $start = (int) (($page - 1) * $limit);
+        $limit = 3;
+        $start = (int)(($page - 1) * $limit);
 
         $posts = $this->postRepository->findAllPosts($args, $page, $limit, $start);
 
@@ -74,7 +77,6 @@ class PostsController
 
         $response->getBody()->write($body);
         return $response;
-
     }
 
     public function showPostPage(Request $request, Response $response, array $args = [])
@@ -87,16 +89,13 @@ class PostsController
 
         $post_id = (int)$args['post_id'];
 
-$posts = $this->postRepository->prepareInfoPost( (int) $post_id, $args);
+        $post = $this->postRepository->findPostById($post_id);
 
-        if (empty($posts)) {
+        if ($post == null) {
             $body = $this->view->render('not-found.twig');
             $response->getBody()->write($body);
             return $response;
         }
-
-        $post = $posts[0];
-
 
         $comments = $this->commentRepository->getAllComments($post['id']);
 
@@ -104,7 +103,7 @@ $posts = $this->postRepository->prepareInfoPost( (int) $post_id, $args);
         $body = $this->view->render('post.twig', [
             'post' => $post,
             'comments' => $comments,
-            'user'=> $_SESSION['user']
+            'user' => $_SESSION['user']
         ]);
         $response->getBody()->write($body);
 
@@ -127,20 +126,21 @@ $posts = $this->postRepository->prepareInfoPost( (int) $post_id, $args);
 
     function createNewPostComment(Request $request, Response $response, array $args): Response
     {
-
         $user = $_SESSION['user'];
         if (!isset($user) || !$user['id']) {
             return $response->withStatus(301)->withHeader('Location', '/user/login');
         }
 
-
         error_log('Initial to create for post');
-        $comment = [];
-        $comment['content'] = $_POST['content'];
-        $comment['post_id'] = $args['post_id'];
-        $comment['author_id'] = $user['id'];
+        $comment = [
+            'content' => $_POST['content'],
+            'post_id' => $args['post_id'],
+            'author_id' => $user['id']
+        ];
+
         error_log('include comment repository');
         $this->commentRepository->createComment($comment);
-        return $response;
+
+        return $response->withStatus(301)->withHeader('Location', '/posts/'.$args['post_id']);
     }
 }
