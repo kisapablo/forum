@@ -78,7 +78,7 @@ public function prepareInfoPost($post_id, array $args)
 
     return $statement->fetchAll();
 }
-/*
+
 public function updatePosts($title, $content,) // ,$post_id
 {
     $connection = $this->dataBase->getConnection();
@@ -106,7 +106,7 @@ public function updatePosts($title, $content,) // ,$post_id
 
     return $statement->fetchAll();
 }
-*/
+
 
 
 

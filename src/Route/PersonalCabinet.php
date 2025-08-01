@@ -88,7 +88,7 @@ class PersonalCabinet
 
         return $response;
     }
- /*   public function PostUpdate(Request $request, Response $response, array $args)
+    public function PostUpdate(Request $request, Response $response, array $args)
     {
         $title = $_POST['title'];
         error_log('Title Value is' . json_encode($title));
@@ -100,5 +100,5 @@ class PersonalCabinet
         $update = $this->postRepository->updatePosts($title, $content); //$post_id
         print_r($update);
     }
-*/
+
 }

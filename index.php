@@ -46,7 +46,7 @@ $app->get('/posts/{post_id}', [PostsController::class, 'showPostPage']);
 //$app->get('/posts/old/blog', [PostsController::class, 'getallOldPage']); // Заморожено, реабилитация страницы не эффективна
 
 $app->post('/posts', [PostsController::class, 'createNewPost']);
-$app->post('/user/posts', [PersonalCabinet::class, 'PostUpdate']);
+$app->post('/user/posts/PostEditor/{post_id}', [PersonalCabinet::class, 'PostUpdate']);
 // end routing
 
 $app->run();
