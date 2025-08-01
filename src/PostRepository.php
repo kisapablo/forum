@@ -107,7 +107,21 @@ public function updatePosts($title, $content,) // ,$post_id
     return $statement->fetchAll();
 }
 
+    public function findAllPostsAuthor(array $args, $id)
+    {
+        // Проверяем переменная обьявлена ли и разницу с null
 
+        $connection = $this->dataBase->getConnection();
+
+        $statement = $connection->prepare(
+            'SELECT * FROM post where author_id = :id' //
+        );
+
+        $statement->bindValue(':id', $id, PDO::PARAM_INT);
+        $statement->execute();
+
+        return $statement->fetchAll();
+    }
 
 
 

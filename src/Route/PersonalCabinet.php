@@ -93,7 +93,7 @@ class PersonalCabinet
         $title = $_POST['title'];
         error_log('Title Value is' . json_encode($title));
         $content = $_POST['content'];
-        error_log('Title Value is' . json_encode($content));
+        error_log('Content Value is' . json_encode($content));
 //            $post_id = (int)$args['post_id'];
 //        $post_id = 3;
 //        error_log('ID Value is' . json_encode($post_id));
@@ -104,12 +104,19 @@ class PersonalCabinet
 
     public function showSelectPosts(Request $request, Response $response, array $args = []): Response
     {
-        $post_id = (int)$args['post_id'];
+        $id = $_SESSION['id'];
 
-        $posts = $this->postRepository->prepareInfoPost( (int) $post_id, $args);
+        error_log('ID Value is' . json_encode($id));
+
+        $post_id = (int)$args['post_id'];
+        error_log('Post_ID Value is' . json_encode($post_id));
+
+        $posts = $this->postRepository->findAllPostsAuthor($args, $post_id, $id);
+
+        error_log('Posts Value is' . json_encode($posts));
 
         error_log('Session is ' . json_encode($_SESSION));
-//        if (!isset($user) || !$user['id']) {
+//        if (!isset($user) || !    $user['id']) {
 //            return $response->withStatus(301)->withHeader('Location', '/user/login');
 //        }
 //
