@@ -47,6 +47,7 @@ $app->get('/posts/{post_id}', [PostsController::class, 'showPostPage']);
 
 $app->post('/posts', [PostsController::class, 'createNewPost']);
 $app->post('/user/posts/PostEditor/{post_id}', [PersonalCabinet::class, 'PostUpdate']);
+$app->get('/user/posts/select', [PersonalCabinet::class, 'showSelectPosts']);
 // end routing
 
 $app->run();

@@ -102,4 +102,25 @@ class PersonalCabinet
         return $response->withStatus(301)->withHeader('Location', '/posts/' . (int)$args['post_id']);
     }
 
+    public function showSelectPosts(Request $request, Response $response, array $args = []): Response
+    {
+        $post_id = (int)$args['post_id'];
+
+        $posts = $this->postRepository->prepareInfoPost( (int) $post_id, $args);
+
+        error_log('Session is ' . json_encode($_SESSION));
+//        if (!isset($user) || !$user['id']) {
+//            return $response->withStatus(301)->withHeader('Location', '/user/login');
+//        }
+//
+        $body = $this->view->render('Navigation/PersonalCabinet-SelectPosts.twig', [
+            'posts' => $posts,
+            'user' => $_SESSION['user']
+        ]);
+        $response->getBody()->write($body);
+        return $response;
+        // Конец отрисовки
+    }
+
+
 }
