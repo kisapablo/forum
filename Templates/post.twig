@@ -11,6 +11,7 @@
             <div class="row">
                 <span class="text-muted">Kisapablo Restless | {{ post.published_date|date("F d, Y") }}</span>
             </div>
+
             <span>
                 {{ post.content|raw }}
             </span>
@@ -44,11 +45,7 @@
                         post!</label>
                     <textarea required class="form-control" name="content" id="exampleFormControlTextarea1"
                               rows="2"></textarea>
-{#                    {% if form_error %}#}
-{#                        <div class="invalid-feedback">#}
-{#                            {{ form_error }}#}
-{#                        </div>#}
-{#                    {% endif %}#}
+                    <input type="file" id="avatar" name="avatar" class="" accept="image/png, image/jpeg"/>
                 </div>
                 <button type="submit" class="nav-button user-color">Submit Comment</button>
             </form>
