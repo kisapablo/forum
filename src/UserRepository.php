@@ -15,8 +15,8 @@ class UserRepository
 
     public function addUser($login, $password, $role = 0)
     {
-        $salt = generateSalt();
-        $hash = generateHash($salt, $password);
+        $salt = $this->generateSalt();
+        $hash = $this->generateHash($salt, $password);
 
         $connection = $this->dataBase->getConnection();
 
@@ -69,7 +69,7 @@ class UserRepository
         $user = $users[0];
         //todo: add logic to compute hash
 
-        $hash = generateHash($user['password_salt'], $password);
+        $hash = $this->generateHash($user['password_salt'], $password);
 
         if ($user['password_hash'] != $hash) {
             error_log('Invalid user password');
@@ -94,17 +94,32 @@ class UserRepository
 //    {
 //        return $this->getUsers();
 //    }
-}
+
+
+    public function getUserIconView()
+    {
+        $connection = $this->dataBase->getConnection();
+
+        $statement = $connection->prepare(
+            'select * from user_icon_view;'
+        );
+
+        $statement->execute();
+
+        return $statement->fetchAll();
+
+    }
+
 
 //fixme
-function generateSalt()
-{
-    return '64';
-}
+    function generateSalt()
+    {
+        return '64';
+    }
 
 //fixme
-function generateHash($salt, $password)
-{
+    function generateHash($salt, $password)
+    {
 
 // check for have unhashing password
 
@@ -115,5 +130,6 @@ function generateHash($salt, $password)
 
 // return result all
 
-    return $password;
+        return $password;
+    }
 }

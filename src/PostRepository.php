@@ -51,7 +51,7 @@ class PostRepository
         $connection = $this->dataBase->getConnection();
 
         $statement = $connection->prepare(
-            'SELECT * FROM post ORDER BY publication_date DESC LIMIT :limit OFFSET :start     ' //:start
+            'SELECT * FROM user_post_view ORDER BY publication_date DESC LIMIT :limit OFFSET :start     ' //:start
         );
 
         $statement->bindValue(':limit', $limit, PDO::PARAM_INT);
@@ -126,8 +126,24 @@ class PostRepository
         return $statement->fetchAll();
     }
 
+    public function getPostAttachmentView() //
+    {
+        $connection = $this->dataBase->getConnection();
 
+        $statement = $connection->prepare(
+            'select * from post_attachment_view' //
+        );
+
+        $statement->execute();
+
+        return $statement->fetchAll();
+
+    }
 }
+
+
+
+
 
 
 //    public function getRole(Request $request, Response $response, array $args): Response

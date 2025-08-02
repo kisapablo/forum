@@ -54,4 +54,17 @@ class CommentRepository
             throw new Exception('Incorrect comment');
         }
     }
+    public function getCommentAttachmentView() //
+    {
+        $connection = $this->dataBase->getConnection();
+
+        $statement = $connection->prepare(
+            'select * from comment_attachment_view' //
+        );
+
+        $statement->execute();
+
+        return $statement->fetchAll();
+
+    }
 }

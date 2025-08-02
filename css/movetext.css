@@ -3,6 +3,7 @@ height - обозначение высоты
 width - ширина
 Убрать зависимость в отступах(margin, padding)
 pagination navbar form control footer
+color через hover плохая идея
 */
 * {
     box-sizing: border-box;
@@ -215,6 +216,7 @@ html {
     color: #007bff;
 }
 
+
 .post-content {
     margin-top: 0.3rem;
     font-size: large;
@@ -289,7 +291,7 @@ html {
 .post_edit-body{
     text-align: right;
     position: relative;
-    top: -8rem;
+    top: -7rem;
 }
 
 .post-edit {
@@ -457,6 +459,14 @@ html {
 .user {
     padding: .5rem;
 }
+.username-color{
+    color: #212529;
+    transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+}
+
+.username-color:hover{
+    color: #212529;
+}
 
 .footer {
     display: block;
@@ -519,7 +529,7 @@ html {
 }
 
 a {
-    color: #007bff;
+    /*color: #007bff;*/
     text-decoration: none;
     background-color: transparent;
 }
