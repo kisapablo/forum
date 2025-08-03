@@ -126,15 +126,17 @@ class PostRepository
         return $statement->fetchAll();
     }
 
-    public function getPostAttachmentView() //
+    public function getPostAttachmentView($post_id) //
     {
         $connection = $this->dataBase->getConnection();
 
         $statement = $connection->prepare(
-            'select * from post_attachment_view' //
+            'select * from post_attachment_view where post_id = :post_id' //
         );
 
-        $statement->execute();
+        $statement->execute([
+            'post_id' => $post_id
+        ]);
 
         return $statement->fetchAll();
 

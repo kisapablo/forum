@@ -5,6 +5,7 @@
 {% endblock %}
 {% block body %}
     <div class="cabinet" style="">
+        {{ if  }}
         <img src="{{ user_image_path|default('/public/images/kisapablo_classic.png') }}" class="img-fluid card-img-top rounded" alt="..." STYLE="width: 18rem">
         <div class="card-body">
             <h5 class="card-title personal ">{#Kisapablo Restress#}{{ user.name }}</h5>

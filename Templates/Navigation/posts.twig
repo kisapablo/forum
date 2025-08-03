@@ -1,42 +1,24 @@
-{#        <div class="flex-align-center"> #}
-
-
 {% for post in posts %}
     <div class="post">
         <div class="post__body post__body-colors">
             <div class="post-title">
-            <a href="{{ url('posts/' ~ post.id) }}">
-                <h5 class="post-title">{{ post.title|escape }}</h5></a>
+                <a href="{{ url('posts/' ~ post.id) }}">
+                    <h5 class="post-title">{{ post.title|escape }}</h5></a>
             </div>
-            <br> {{post.author_name}}
-
-            <div class="post-content post-content-color"> <br>
-                 {{ post.content }}
+            {{ post.author_name }}
+            <div class="post-tags">Tags:</div>
+            <div class="post-content post-content-color"><br>
+                {{ post.content }}
             </div>
             <div class="post_read-more">
                 <a href="{{ url('posts/' ~ post.id) }}">Read more</a>
             </div>
-{#            {% if author_id is not null %}#}
+            {#            {% if author_id is not null %} #}
             <div class="post_edit-body">
-
-{#                <button class="nav-button mb-3 collapse-color mr-2" type="button" data-toggle="collapse"
-                        data-target="post_edit" aria-expanded="false" aria-controls="post_edit">
-                    <img src="/public/images/favicon.png" class="post-edit" alt="post-edit">
-                    <span  class="Toolbar-text" >Post Editor</span>
-                </button>
-#}
-
-{#                <div class="collapse">#}
-{#                    <div class="d-flex align-items-center flex-align-center">#}
-                    <a href="{{ url('user/posts/PostEditor/' ~ post.id) }}">Edit post</a>
-                    <a href="{{ url('user') }}">Delete Post</a>
-{#                </div>#}
+                <a href="{{ url('user/posts/PostEditor/' ~ post.id) }}">Edit post</a>
+                <a href="{{ url('user') }}">Delete Post</a>
             </div>
-{#            </div>#}
-{#            {% endif %}#}
             <li class="post-publication-date">{{ post.publication_data|date("F d, Y, H:m ") }}</li>
+        </div>
     </div>
-            </div>
-    {#    </div> #}
-    {#    </div> #}
 {% endfor %}

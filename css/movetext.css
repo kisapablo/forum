@@ -180,6 +180,7 @@ html {
 }
 
 .post__body { /* container? */
+color: #084c9a;
     border-radius: 5px;
     background-color: transparent;
     display: flex;
@@ -191,7 +192,7 @@ html {
 }
 
 .post__body:hover {
-    color: #32b1ff;
+    /*color: #32b1ff;*/
     background-color: #dcdfde;
     border: 4px solid #dcdfde;
 }
@@ -222,6 +223,10 @@ html {
     font-size: large;
     position: relative;
     top: -0.7rem;
+}
+
+.post-tags{
+    margin-top: 0.5rem;
 }
 
 .post_read-more {
@@ -266,6 +271,7 @@ html {
 
 .pagination-body {
     margin-left: .95rem;
+    margin-right: .95rem;
 }
 
 .toolbar-search-body {
@@ -309,20 +315,17 @@ html {
     /*border: 1px solid #dee2e6;*/
 }
 
+.post-filter{
+    color: #d1c5c5;
+    margin-right: .25rem;
+}
+
 .post-toolbar-down {
     margin-left: 23.55rem;
     margin-right: 24.5rem;
     border-radius: 10px;
     /*background-color: #212529;*/
     background-color: #aaaaaa;
-}
-
-.post-toolbar-not-authorized {
-    margin-left: 23.55rem;
-    margin-right: 24.5rem;
-    border-radius: 10px;
-    /*background-color: #212529;*/
-    background-color: #6c6c6c;
 }
 
 .card-title {
@@ -421,10 +424,14 @@ html {
 
 .search-color:hover {
     color: #fff;
-    background: linear-gradient(#007bff, #28a745);
+    background-color: #28a745;
     border-color: #28a745;
 }
 
+.collapse-body{
+    margin-bottom: 1rem;
+    margin-right: .5rem;
+}
 
 .collapse-color {
     color: #6c6c6c;
@@ -452,8 +459,8 @@ html {
 }
 
 .collapse-ico {
-    width: 19px;
-    height: 19px;
+    width: 2rem;
+    height: 2rem;
 }
 
 .user {
@@ -570,4 +577,16 @@ textarea {
 label {
     display: inline-block;
     margin-bottom: .5rem;
+}
+.alert{
+    position: relative;
+    padding: .75rem 1.25rem;
+    margin-bottom: 1rem;
+    border: 1px solid transparent;
+    border-radius: .25rem;
+}
+.alert-danger{
+    color: #721c24;
+    background-color: #f8d7da;
+    border-color: #f5c6cb;
 }

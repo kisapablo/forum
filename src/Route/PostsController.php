@@ -90,7 +90,7 @@ class PostsController
         $post_id = (int)$args['post_id'];
 
         $post = $this->postRepository->findPostById($post_id);
-
+$attachment = $this->postRepository->getPostAttachmentView($post_id);
         if ($post == null) {
             $body = $this->view->render('not-found.twig');
             $response->getBody()->write($body);
@@ -103,7 +103,8 @@ class PostsController
         $body = $this->view->render('post.twig', [
             'post' => $post,
             'comments' => $comments,
-            'user' => $_SESSION['user']
+            'user' => $_SESSION['user'],
+            'attachment' => $attachment
         ]);
         $response->getBody()->write($body);
 
