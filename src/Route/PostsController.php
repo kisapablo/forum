@@ -63,6 +63,7 @@ class PostsController
         $totalCount = $this->postRepository->getTotalCount();
         error_log('Session is ' . json_encode($_SESSION));
         error_log('Session id is ' . json_encode($_SESSION['id']));
+        error_log('Session id i ' . json_encode($posts['author_name']));
         $body = $this->view->render('index.twig', [
             'posts' => $posts,
             'showAuthButton' => true,
@@ -90,7 +91,7 @@ class PostsController
         $post_id = (int)$args['post_id'];
 
         $post = $this->postRepository->findPostById($post_id);
-$attachment = $this->postRepository->getPostAttachmentView($post_id);
+        $postAttachment = $this->postRepository->getPostAttachmentView($post_id);
         if ($post == null) {
             $body = $this->view->render('not-found.twig');
             $response->getBody()->write($body);
@@ -98,13 +99,17 @@ $attachment = $this->postRepository->getPostAttachmentView($post_id);
         }
 
         $comments = $this->commentRepository->getAllComments($post['id']);
-
+        $commentsAttachment = $this->commentRepository->getCommentAttachmentView();
+        print_r($commentsAttachment);
         error_log('Session is ' . json_encode($_SESSION));
+        error_log('Attachment is ' . json_encode($postAttachment));
+        error_log('CAttachment name is ' . json_encode($commentsAttachment));
         $body = $this->view->render('post.twig', [
             'post' => $post,
             'comments' => $comments,
             'user' => $_SESSION['user'],
-            'attachment' => $attachment
+            'post_attachments' => $postAttachment,
+            'comments_attachments' => $commentsAttachment
         ]);
         $response->getBody()->write($body);
 
@@ -142,6 +147,6 @@ $attachment = $this->postRepository->getPostAttachmentView($post_id);
         error_log('include comment repository');
         $this->commentRepository->createComment($comment);
 
-        return $response->withStatus(301)->withHeader('Location', '/posts/'.$args['post_id']);
+        return $response->withStatus(301)->withHeader('Location', '/posts/' . $args['post_id']);
     }
 }

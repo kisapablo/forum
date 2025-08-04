@@ -19,7 +19,7 @@ class CommentRepository
         $connection = $this->dataBase->getConnection();
         error_log('fetch comments');
         $statement = $connection->prepare(
-            "SELECT * from comment where post_id = :post_id"
+                "SELECT * from comment where post_id = :post_id"
         );
 
         $statement->execute([
@@ -54,15 +54,18 @@ class CommentRepository
             throw new Exception('Incorrect comment');
         }
     }
-    public function getCommentAttachmentView() //
+    public function getCommentAttachmentView(/*int $commentID*/) //
     {
         $connection = $this->dataBase->getConnection();
 
         $statement = $connection->prepare(
-            'select * from comment_attachment_view' //
+            'select * from comment_attachment_view where comment_id = :comment_id'
         );
 
-        $statement->execute();
+        $statement->execute([
+            'comment_id' => 2
+//            'comment_id' => (int) $commentID
+        ]);
 
         return $statement->fetchAll();
 
