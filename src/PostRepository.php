@@ -82,7 +82,7 @@ class PostRepository
         return $posts[0];
     }
 
-    public function updatePosts($title, $content) // ,$post_id
+    public function updatePosts($title, $content, $post_id)
     {
         $connection = $this->dataBase->getConnection();
 
@@ -90,21 +90,16 @@ class PostRepository
         // Изменение данных из шаблонов
         $statement = $connection->prepare(
             "UPDATE post SET
-                content = '$content',
-                title = '$title'
-                WHERE id = 3"
-        //                content = :content,
-//                title = :title
-//                WHERE id = :id"
-        );
+                content = :content,
+                title = :title
+                WHERE id = :post_id" );
 
 
-        $statement->execute();
-//        [
-//        'id' => $post_id,
-//        'title' => $title,
-//        'content' => $content
-//    ]
+        $statement->execute([
+        'post_id' => $post_id,
+        'title' => $title,
+        'content' => $content
+        ]);
 
 
         return $statement->fetchAll();

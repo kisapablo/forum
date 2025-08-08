@@ -41,12 +41,14 @@ $app->get('/posts', [PostsController::class, 'showAllPosts']);
 $app->get('/posts/all[/{page}]', [PostsController::class, 'showAllPosts']);
 $app->get('/posts/builders', [PostsController::class, 'showPostBuilderPage']);
 $app->post('/posts/{post_id}/comments', [PostsController::class, 'createNewPostComment']);
-$app->get('/user/posts/PostEditor/{post_id}', [PersonalCabinet::class, 'getPostInfo']);
+$app->get('/user/posts/PostEditor/{post_id}', [PostsController::class, 'getPostInfo']);
 $app->get('/posts/{post_id}', [PostsController::class, 'showPostPage']);
 //$app->get('/posts/old/blog', [PostsController::class, 'getallOldPage']); // Заморожено, реабилитация страницы не эффективна
 
 $app->post('/posts', [PostsController::class, 'createNewPost']);
-$app->post('/user/posts/PostEditor/{post_id}', [PersonalCabinet::class, 'updatePost']);
+$app->post('/user/posts/PostEditor/{post_id}', [PostsController::class, 'updatePost']);
+$app->get('/user/UserEditor', [PersonalCabinet::class, 'showUserEditor']);
+$app->post('/user/UserEditor/debug', [PersonalCabinet::class, 'addUserIco']);
 $app->get('/user/posts/select', [PersonalCabinet::class, 'showPublishedPosts']);
 // end routing
 

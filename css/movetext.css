@@ -13,12 +13,11 @@ color через hover плохая идея
 body {
     font-size: 1rem;
     line-height: 1.5;
-    color: #212529;
-}
+    color: #ffffff;
+    }
 
 html {
-    /*background-color: #222222;*/
-    background-color: #f8f9fa
+    background-color: #15171e;
 }
 
 .container {
@@ -75,7 +74,7 @@ html {
 }
 
 .navbar {
-    background-color: #f8f9fa;
+    background-color: #2b2b30;
     display: flex;
     flex-wrap: wrap;
     align-items: center;
@@ -86,9 +85,9 @@ html {
     right: 0;
     left: 0;
     z-index: 1030;
-    border-top: 1px solid #dee2e6;
-    border-bottom: 1px solid #dee2e6;
-    color: rgba(0, 0, 0, .9);
+    border-top: 1px solid #5a5a63;
+    border-bottom: 1px solid #5a5a63;
+    color: #ffffff
 }
 
 .container-fluid {
@@ -104,7 +103,7 @@ html {
 }
 
 .navbar-brand {
-    color: rgba(0, 0, 0, .9);
+    color: #fff;
     display: inline-block;
     padding-top: .3125rem;
     padding-bottom: .3125rem;
@@ -115,7 +114,6 @@ html {
 }
 
 
-/* Вероятно необходимо перенести пагинацию и добавить фильтры и поиск */
 .post {
     margin: 0;
 }
@@ -155,9 +153,9 @@ html {
 
 
 .post__body-colors {
-    border-top: 1px solid #aaaaaa;
-    border-right: 1px solid #aaaaaa;
-    background-color: #c5c3c3;
+    border-top: 1px solid #5a5a63;
+    border-right: 1px solid #5a5a63;
+    background-color: #23252b;
 }
 
 .post-title {
@@ -185,13 +183,16 @@ html {
     margin-top: 0.5rem;
 }
 
+.post-tags-color {
+    border: #3ead28;
+    color: #3ead28;
+}
+
 .post_read-more {
     font-size: smaller;
 }
 
 .post-publication-date {
-    list-style: none;
-    top: 10px;
     color: darkgoldenrod;
     text-align: right;
 }
@@ -206,43 +207,60 @@ html {
 }
 
 .post-toolbar {
+    width: fit-content;
     border-radius: 20px;
-    background-color: #6c6c6c;
-    border-bottom: 1px solid #aaaaaa;
+    background-color: #2f3031;
+    border-bottom: 1px solid #5a5a63;
     color: darkorange;
     margin-bottom: 5px;
 }
 
-.profile {
-    margin: 0;
-    border: 8px solid transparent;
-    color: #ffffff
+
+.post-filter {
+    color: #d1c5c5;
+    margin-right: .25rem;
 }
 
-.profile-body {
+.toolbar-dbody {
     display: flex;
-    background: #4a4a4a; /* Slightly brighter card background */
-    border: 2px solid #ff6200; /* Orange peel outline */
+    justify-content: center;
+}
+
+.post-toolbar-down {
+    width: fit-content;
+    border-radius: 10px;
+    background-color: #aaaaaa;
+}
+
+.profile__body {
+    display: flex;
+    background: #4a4a4a;
     border-radius: 0.5rem;
     width: fit-content;
     flex-wrap: wrap;
     transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+    border: 8px solid transparent;
+    color: #ffffff
 }
 
-.profile-body:hover {
+.profile__body-color {
+    border: 2px solid #ff6200;
+}
+
+.profile__body:hover {
     box-shadow: 0.375rem 0 0.75rem rgba(255, 98, 0, 0.4), -0.375rem 0 0.75rem rgba(255, 98, 0, 0.4); /* Enhanced glow on hover */
 }
 
 .profile_info {
-    margin-bottom: 0.3rem;
+    /*margin-bottom: 0.3rem;*/
 }
 
 .avatar-full {
-    border-radius: 5px;
-    width: 7rem;
+    border-radius: 50%;
+    /*width: 7rem;*/
     display: flex;
-    align-items: center;
-    justify-content: center;
+    /*align-items: center;*/
+    /*justify-content: center;*/
     color: #ffffff;
 }
 
@@ -256,6 +274,8 @@ html {
 }
 
 .pagination-body {
+    display: flex;
+    justify-content: center;
     margin-left: .95rem;
     margin-right: .95rem;
 }
@@ -281,11 +301,14 @@ html {
 }
 
 .post_edit-body {
-    text-align: right;
-    position: relative;
-    top: -7rem;
+    /*text-align: right;*/
+    margin-top: 0.25rem;
 }
 
+.upload_user-ico{
+    margin-top: 0.25rem;
+    margin-bottom: 0.35rem;
+}
 .post-edit {
     padding: .25rem;
     width: 45px;
@@ -306,11 +329,14 @@ html {
     margin-right: .25rem;
 }
 
+.toolbar-dbody {
+    display: flex;
+    justify-content: center;
+}
+
 .post-toolbar-down {
-    margin-left: 23.55rem;
-    margin-right: 24.5rem;
+    width: fit-content;
     border-radius: 10px;
-    /*background-color: #212529;*/
     background-color: #aaaaaa;
 }
 
@@ -330,7 +356,7 @@ html {
     flex-direction: column;
     min-width: 0;
     word-wrap: break-word;
-    background-color: #fff;
+    /*background-color: #fff;*/
     background-clip: border-box;
     border: 1px solid rgba(0, 0, 0, .125);
     border-radius: .25rem;
@@ -340,6 +366,7 @@ html {
     flex: 1 1 auto;
     min-height: 1px;
     padding: 1.25rem;
+    background-color: #23252b;
 }
 
 .card-text {
@@ -408,9 +435,26 @@ html {
     border-color: #28a745;
 }
 
+.info-color{
+    color: #d9a336;
+    border-color: #d9a336;
+}
+
+.info-color:hover{
+    color: #ffffff;
+    background-color: #d9a336;
+    border-color: #d9a336;
+}
+
 .profile-role {
     background-color: #9c9694;
     color: #ffffff;
+}
+
+.collapse:not(.show) {
+    display: none;
+    /* transition: ; */
+
 }
 
 .collapse-body {
@@ -423,7 +467,7 @@ html {
     border-color: #6c6c6c;
 }
 
-.collapse-color:hover {
+.collaps-color:hover {
     color: #fff;
     background-color: #6c6c6c;
     border-color: #6c6c6c;
@@ -434,6 +478,7 @@ html {
     background-color: #007bff;
     border-color: #007bff;
 }
+
 
 .avatar {
     border-radius: 50%;
@@ -447,6 +492,7 @@ html {
     width: 2rem;
     height: 2rem;
 }
+
 
 .user {
     padding: .5rem;
@@ -465,7 +511,6 @@ html {
     display: block;
 
     position: marker;
-    background-color: #f8f9fa;
 
     padding: 1rem;
 
@@ -571,3 +616,5 @@ label {
     background-color: #f8d7da;
     border-color: #f5c6cb;
 }
+
+

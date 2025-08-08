@@ -1,30 +1,32 @@
 {% extends 'base.twig' %}
 
 {% block title %}
-Selecting your posts...
+    Selecting your posts...
 {% endblock %}
 {% block body %}
+    {% for post in posts %}
     <div class="post">
         <div class="post__body post__body-colors">
             <div class="post-title">
-                <a href="{{ url('posts/' ~ post.id) }}">
+                <a target="_blank" href="{{ url('posts/' ~ post.id) }}">
                     <h5 class="post-title">{{ post.title|escape }}</h5></a>
             </div>
-            <br> {{post.author_id}}
+            <br> {{ post.author_id }}
 
-            <div class="post-content post-content-color"> <br>
-                 {{ post.content }}
+            <div class="post-content post-content-color"><br>
+                {{ post.content }}
             </div>
             <div class="post_read-more">
-                <a href="{{ url('posts/' ~ post.id) }}">Read more</a>
+                <a target="_blank" href="{{ url('posts/' ~ post.id) }}">Read more</a>
             </div>
             <div class="post_edit-body">
 
 
                 <a href="{{ url('user/posts/PostEditor/' ~ post.id) }}">Edit post</a>
-                <a href="{{ url('user') }}">Delete Post</a>
+                <a target="_blank" href="{{ url('user') }}">Delete Post</a>
             </div>
-            <li class="post-publication-date">{{ post.publication_data|date("F d, Y, H:m ") }}</li>
+            <span class="post-publication-date">{{ post.publication_data|date("F d, Y, H:m ") }}</span>
         </div>
     </div>
+    {% endfor %}
 {% endblock %}

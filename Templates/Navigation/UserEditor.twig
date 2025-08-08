@@ -1,0 +1,20 @@
+{% extends 'base.twig' %}
+{% block title %}
+User Editor
+{% endblock %}
+{% block body %}
+    <form method="POST" action="{{ url('user/UserEditor/debug') }}" class="mb-5">
+        <div class="form-group">
+{#            <label>#}
+{#                <input required type="text" class="form-control" name="Username" placeholder="Username"#}
+{#                       value="{{ user.name }}">#}
+{#                <input required type="text" class="form-control" name="Username" placeholder="Update your Password"#}
+{#                       value="{{ generatedhash }}">#}
+{#                <textarea required class="form-control" name="content" rows="3"#}
+{#                          placeholder="Bio">Jorikk</textarea>#}
+{#            </label>#}
+            <input type="file" id="avatar" name="avatar" class="" accept="image/**"/>
+        </div>
+        <button type="submit" class="nav-button user-color mx-1">Submit Comment</button>
+    </form>
+{% endblock %}

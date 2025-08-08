@@ -100,7 +100,6 @@ class PostsController
 
         $comments = $this->commentRepository->getAllComments($post['id']);
         $commentsAttachment = $this->commentRepository->getCommentAttachmentView();
-        print_r($commentsAttachment);
         error_log('Session is ' . json_encode($_SESSION));
         error_log('Attachment is ' . json_encode($postAttachment));
         error_log('CAttachment name is ' . json_encode($commentsAttachment));
@@ -116,11 +115,12 @@ class PostsController
         return $response;
     }
 
+    // PostBuilder Post Builder
     public function createNewPost(Request $request, Response $response): Response
     {
         $title = $_POST['title'];
         $content = $_POST['content'];
-        $id = $_SESSION['id'];
+        $id = $_SESSION['user']['id'];
 
 
         $this->postRepository->addNewPost($title, $content, $id);
@@ -148,5 +148,47 @@ class PostsController
         $this->commentRepository->createComment($comment);
 
         return $response->withStatus(301)->withHeader('Location', '/posts/' . $args['post_id']);
+    }
+    // rendering Post Editor
+    public function getPostInfo(Request $request, Response $response, array $args)
+    {
+        if (!isset($args['post_id'])) {
+            $body = $this->view->render('not-found.twig');
+            $response->getBody()->write($body);
+            return $response;
+        }
+
+        $post_id = (int)$args['post_id'];
+
+        $post = $this->postRepository->findPostById((int)$post_id);
+
+        if ($post == null) {
+            $body = $this->view->render('not-found.twig');
+            $response->getBody()->write($body);
+            return $response;
+        }
+
+        error_log('Title Value is' . json_encode($post_id));
+        error_log('$post is ' . json_encode($post));
+        $body = $this->view->render('Navigation/PostEditor.twig', [
+            'post' => $post,
+            'user' => $_SESSION['user']
+        ]);
+
+        $response->getBody()->write($body);
+
+        return $response;
+    }
+
+    public function updatePost(Request $request, Response $response, array $args)
+    {
+        $title = $_POST['title'];
+        error_log('Title Value is' . json_encode($title));
+        $content = $_POST['content'];
+        error_log('Content Value is' . json_encode($content));
+            $post_id = (int)$args['post_id'];
+        error_log('ID Value is' . json_encode($post_id));
+        $update = $this->postRepository->updatePosts($title, $content, $post_id);
+        return $response->withStatus(301)->withHeader('Location', '/posts/' . (int)$args['post_id']);
     }
 }

@@ -1,24 +1,19 @@
 {% for post in posts %}
-    <div class="post">
-        <div class="post__body post__body-colors">
-            <div class="post-title">
-                <a href="{{ url('posts/' ~ post.id) }}">
-                    <h5 class="post-title">{{ post.title|escape }}</h5></a>
-            </div>
-            {{ post.author_name }}
-            <div class="post-tags">Tags:</div>
-            <div class="post-content post-content-color"><br>
-                {{ post.content }}
-            </div>
-            <div class="post_read-more">
-                <a href="{{ url('posts/' ~ post.id) }}">Read more</a>
-            </div>
-            {#            {% if author_id is not null %} #}
-            <div class="post_edit-body">
-                <a href="{{ url('user/posts/PostEditor/' ~ post.id) }}">Edit post</a>
-                <a href="{{ url('user') }}">Delete Post</a>
-            </div>
-            <li class="post-publication-date">{{ post.publication_data|date("F d, Y, H:m ") }}</li>
+    <div class="post__body post__body-colors">
+        <div class="post-title">
+            <a href="{{ url('posts/' ~ post.id) }}">
+                <h5 class="post-title">{{ post.title|escape }}</h5></a>
         </div>
+        <div style="margin-bottom: 1.56rem">
+            {{ post.author_name }}
+        </div>
+        <div class="post-tags, post-tags-color">Tags: This Tags, Very Tags</div>
+        <div class="post-content post-content-color">
+            <br>{{ post.content }}
+        </div>
+        <div class="post_read-more">
+            <a href="{{ url('posts/' ~ post.id) }}">Read more</a>
+        </div>
+        <span class="post-publication-date">{{ post.publication_data|date("F d, Y, H:m ") }}</span>
     </div>
 {% endfor %}

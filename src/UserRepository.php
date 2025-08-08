@@ -3,6 +3,7 @@
 namespace Blog;
 
 use Exception;
+use PDO;
 
 class UserRepository
 {
@@ -96,20 +97,62 @@ class UserRepository
 //    }
 
 
-    public function getUserIconView()
+    public function findUserIcon($user_id)
     {
         $connection = $this->dataBase->getConnection();
 
         $statement = $connection->prepare(
-            'select * from user_icon_view;'
+            'SELECT * from user_icon_view where user_id = :user_id;'
         );
 
-        $statement->execute();
+        $statement->execute([
+            'user_id' => $user_id
+        ]);
 
         return $statement->fetchAll();
 
     }
 
+    public function saveUserIcon($fileName, $userId)
+    {
+        $connection = $this->dataBase->getConnection();
+
+        $statement = $connection->prepare(
+            'call ADDUserIcon(:fileName, :userId, TRUE, @id); select $id'
+        );
+//        $statement->bindParam('attachmentId', $attachmentId, PDO::PARAM_INT | PDO::PARAM_INPUT_OUTPUT, 4000);
+        $statement->bindParam('fileName', $fileName);
+        $statement->bindParam('userId', $userId);
+
+        $statement->execute();
+        $iconId =  $statement->fetchAll()[0];
+//        $statement->execute([
+//            'fileName' => $fileName,
+//            'userId' => $userId,
+//            'attachmentId' => $attachmentId
+//        ]);
+
+        error_log('Icon Id = '. $iconId);
+    }
+
+//    public function updated($Username, $UserContent,$Newavatar, $password)
+//    {
+//        $connection = $this->dataBase->getConnection();
+//
+//        $statement = $connection->prepare(
+//            'call ADDUserIcon(:fileName, :userId, FALSE, @attachment_id);'
+//        );
+//
+//        $statement->execute([
+//            'username' => $Username,
+//            'password' => $password,
+//            'userContent' => $UserContent,
+//            'avatar' => $Newavatar
+//        ]);
+//
+//        return $statement->fetchAll();
+//
+//    }
 
 //fixme
     function generateSalt()
@@ -132,4 +175,5 @@ class UserRepository
 
         return $password;
     }
+
 }

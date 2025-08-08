@@ -2,6 +2,7 @@
 
 namespace Blog\Route;
 
+use Blog\UserRepository;
 use Blog\PostRepository;
 use Blog\DataBase;
 use Psr\Http\Message\ResponseInterface as Response;
@@ -13,87 +14,43 @@ class PersonalCabinet
     private Environment $view;
 
     private PostRepository $postRepository;
-    public function __construct(Environment $view, PostRepository $postRepository)
+
+    private UserRepository $userRepository;
+
+    public function __construct(Environment $view, PostRepository $postRepository, UserRepository $userRepository)
     {
         $this->view = $view;
         $this->postRepository = $postRepository;
+        $this->userRepository = $userRepository;
     }
 
     // Отрисовка Личного кабинета
-    public function showPersonalCabinet(Request $request, Response $response): Response
+    public function showPersonalCabinet(Request $request, Response $response, array $args): Response
     {
+        $user = $_SESSION['user'];
+
+        $icon = $this->userRepository->findUserIcon($user['id']);
         error_log('Session is ' . json_encode($_SESSION));
+        error_log('user' . json_encode($user));
+        error_log('ico' . json_encode($icon));
+        error_log('icon = ' . json_encode($icon['icon_name']));
 //        if (!isset($user) || !$user['id']) {
 //            return $response->withStatus(301)->withHeader('Location', '/user/login');
 //        }
-//
+
         $body = $this->view->render('Navigation/PersonalCabinet.twig', [
-            'user' => $_SESSION['user']
+            'user' => $_SESSION['user'],
+            'icons' => $icon
         ]);
         $response->getBody()->write($body);
         return $response;
     }
 
-//    public function showPostEditor($connect, Response $response, array $args): Response
-//    {
-//
-////        if (!isset($user) || !$user['id']) {
-////            return $response->withStatus(301)->withHeader('Location', '/user/login');
-////        }
-////
-//        $body = $this->view->render('Navigation/PostEditor.twig', [
-//            'user' => $_SESSION['user'],
-////            'posts' => $infoPost
-//        ]);
-//        $response->getBody()->write($body);
-//        return $response;
-//        // Конец отрисовки
-//    }
 
-    public function getPostInfo(Request $request, Response $response, array $args)
-    {
-        if (!isset($args['post_id'])) {
-            $body = $this->view->render('not-found.twig');
-            $response->getBody()->write($body);
-            return $response;
-        }
 
-        $post_id = (int)$args['post_id'];
 
-        $post = $this->postRepository->findPostById( (int) $post_id);
 
-        if ($post == null) {
-            $body = $this->view->render('not-found.twig');
-            $response->getBody()->write($body);
-            return $response;
-        }
-
-        error_log('Title Value is' . json_encode($post_id));
-        error_log('$post is ' . json_encode($post));
-        $body = $this->view->render('Navigation/PostEditor.twig', [
-            'post' => $post,
-            'user'=> $_SESSION['user']
-        ]);
-
-        $response->getBody()->write($body);
-
-        return $response;
-    }
-
-    public function updatePost(Request $request, Response $response, array $args)
-    {
-        $title = $_POST['title'];
-        error_log('Title Value is' . json_encode($title));
-        $content = $_POST['content'];
-        error_log('Content Value is' . json_encode($content));
-//            $post_id = (int)$args['post_id'];
-//        $post_id = 3;
-//        error_log('ID Value is' . json_encode($post_id));
-        $update = $this->postRepository->updatePosts($title, $content); //$post_id
-//        print_r($update);
-        return $response->withStatus(301)->withHeader('Location', '/posts/' . (int)$args['post_id']);
-    }
-
+    // Selecting Posts... Personal Cabinet SelectPosts
     public function showPublishedPosts(Request $request, Response $response, array $args = []): Response
     {
         $user = $_SESSION['user'];
@@ -122,5 +79,45 @@ class PersonalCabinet
         // Конец отрисовки
     }
 
+    public function showUserEditor(Request $request, Response $response)
+    {
+        $user = $_SESSION['user'];
 
+        $icon = $this->userRepository->findUserIcon($user['id']);
+//        $password = 'helpme';
+//$hash = password_hash($password, PASSWORD_DEFAULT); //метод под вопросом
+        $body = $this->view->render('Navigation/UserEditor.twig', [
+            'user' => $_SESSION['user'],
+            'icons' => $icon,
+//            'generatedhash' => $hash
+        ]);
+        $response->getBody()->write($body);
+        return $response;
+    }
+
+    public function addUserIco(Request $request, Response $response)
+    {
+        $iconName = $_POST['avatar'];
+        $user = $_SESSION['user'];
+        $userId = $user['id'];
+
+        $fileDir = '/public/images/' . $userId;
+        $fileName = $fileDir . $iconName;
+        file_put_contents("/dir/joradir.txt", 'img?', 0, null);
+//        return $response;
+        $this->userRepository->saveUserIcon($fileName, $userId);
+        return $response->withStatus(301)->withHeader('Location', '/user');
+    }
+    /*
+    public function updateUserInfo(Request $request, Response $response)
+    {
+        $UserName = $_POST['Username'];
+        $User_Content = $_POST['user_content'];
+        $Newavatar = $_POST['avatar'];
+        error_log('$_POST Value is' . json_encode($_POST));
+        error_log('$User_Content Value is' . json_encode($User_Content));
+        error_log('$Username Value is' . json_encode($UserName));
+        error_log('$NewAvatar Value is' . json_encode($Newavatar));
+    }
+    */
 }

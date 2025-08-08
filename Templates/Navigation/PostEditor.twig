@@ -1,16 +1,17 @@
 {% extends 'base.twig' %}
 {% block title %}
-Post Editor
+    Post Editor
 {% endblock %}
 {% block body %}
     <form method="post" action="{# {{ url('user/posts') }} #}">
         <div class="form-group">
             <label>
-{#                Editable Post title#}
-                <input required type="text" class="form-control" name="title" placeholder="You Post Name" value="{{ post.title|escape }}">
-{#                Editable Post Content#}
+                {# Editable Post title #}
+                <input required type="text" class="form-control" name="title" placeholder="You Post Name"
+                       value="{{ post.title|escape }}">
+                {#  Editable Post Content #}
                 <textarea required class="form-control" name="content" rows="3"
-                          placeholder="You Post content" >{{ post.content }}</textarea>
+                          placeholder="You Post content">{{ post.content }}</textarea>
             </label>
         </div>
         <button type="submit" class="nav-button user-color mx-1"> Push Public post</button>
