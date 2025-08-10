@@ -113,46 +113,23 @@ class UserRepository
 
     }
 
-    public function saveUserIcon($fileName, $userId)
+    public function saveUserIcon($fileName, $userId, )
     {
         $connection = $this->dataBase->getConnection();
 
         $statement = $connection->prepare(
             'call ADDUserIcon(:fileName, :userId, TRUE, @id); select $id'
         );
-//        $statement->bindParam('attachmentId', $attachmentId, PDO::PARAM_INT | PDO::PARAM_INPUT_OUTPUT, 4000);
         $statement->bindParam('fileName', $fileName);
         $statement->bindParam('userId', $userId);
 
         $statement->execute();
         $iconId =  $statement->fetchAll()[0];
-//        $statement->execute([
-//            'fileName' => $fileName,
-//            'userId' => $userId,
-//            'attachmentId' => $attachmentId
-//        ]);
-
         error_log('Icon Id = '. $iconId);
+        return $statement->fetchAll();
+
     }
 
-//    public function updated($Username, $UserContent,$Newavatar, $password)
-//    {
-//        $connection = $this->dataBase->getConnection();
-//
-//        $statement = $connection->prepare(
-//            'call ADDUserIcon(:fileName, :userId, FALSE, @attachment_id);'
-//        );
-//
-//        $statement->execute([
-//            'username' => $Username,
-//            'password' => $password,
-//            'userContent' => $UserContent,
-//            'avatar' => $Newavatar
-//        ]);
-//
-//        return $statement->fetchAll();
-//
-//    }
 
 //fixme
     function generateSalt()

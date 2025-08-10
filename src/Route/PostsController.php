@@ -80,6 +80,8 @@ class PostsController
         return $response;
     }
 
+
+    // Rendering Post.twig
     public function showPostPage(Request $request, Response $response, array $args = [])
     {
         if (!isset($args['post_id'])) {

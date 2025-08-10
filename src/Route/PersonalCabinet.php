@@ -97,16 +97,12 @@ class PersonalCabinet
 
     public function addUserIco(Request $request, Response $response)
     {
-        $iconName = $_POST['avatar'];
+        $iconName = $_FILES['avatar']['name'];
         $user = $_SESSION['user'];
         $userId = $user['id'];
 
-//        $fileDir = '/public/images/' . $userId;
-        $fileDir = './public/images/';
+        $fileDir = "/public/images/" ;
         $fileName = $fileDir . $iconName;
-//        $filemove = $fileDir . $_FILES['avatar']['name'];
-//        $tryfirst = "/public/images" . $_FILES['file']['name'];
-//        move_uploaded_file($_FILES['avatar']['tmp_name'], $tryfirst);
         if (isset($_FILES) && $_FILES['avatar']['error'] == 0)
         {
             $dir = "./public/images/" . $_FILES['avatar']['name'];
@@ -118,15 +114,12 @@ class PersonalCabinet
         {
             exit("error!");
         }
-//        file_put_contents($fileName, 'img?', 0, null);
         error_log('Bag is ' . json_encode($fileName));
-//        error_log('Bag is ' . json_encode($_POST));
         error_log('Files is ' . json_encode($_FILES));
-//        print_r($fileName);
-//        print_r($_POST);
-        print_r($_FILES);
+//        print_r($_FILES);
+        $icon = $this->userRepository->saveUserIcon($fileName, $userId);
+         print_r($icon);
                 return $response;
-//        $this->userRepository->saveUserIcon($fileName, $userId);
 //        return $response->withStatus(301)->withHeader('Location', '/user');
     }
 
