@@ -1,0 +1,13 @@
+# write docker compose file to run php application exposing 8081 
+version: '3.8'
+services:
+  php-app:
+    image: petos-forum-app
+    ports:
+      - "8081:8081"
+    # volumes:
+    #   - ./src:/var/www/html
+    # environment:
+    #   - APACHE_DOCUMENT_ROOT=/var/www/html/public
+    # networks:
+    #   - app-network
