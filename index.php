@@ -49,7 +49,9 @@ $app->post('/posts', [PostsController::class, 'createNewPost']);
 $app->post('/user/posts/PostEditor/{post_id}', [PostsController::class, 'updatePost']);
 $app->get('/user/UserEditor', [PersonalCabinet::class, 'showUserEditor']);
 $app->post('/user/UserEditor/debug', [PersonalCabinet::class, 'addUserIco']);
+$app->post('/debug', [PersonalCabinet::class, 'getglobalvariable']);
 $app->get('/user/posts/select', [PersonalCabinet::class, 'showPublishedPosts']);
+$app->get('/user/registration/finally', [PersonalCabinet::class, 'showFinallyRegistrationStage']);
 // end routing
 
 $app->run();

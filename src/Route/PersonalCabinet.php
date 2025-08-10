@@ -101,12 +101,54 @@ class PersonalCabinet
         $user = $_SESSION['user'];
         $userId = $user['id'];
 
-        $fileDir = '/public/images/' . $userId;
+//        $fileDir = '/public/images/' . $userId;
+        $fileDir = './public/images/';
         $fileName = $fileDir . $iconName;
-        file_put_contents("/dir/joradir.txt", 'img?', 0, null);
-//        return $response;
-        $this->userRepository->saveUserIcon($fileName, $userId);
-        return $response->withStatus(301)->withHeader('Location', '/user');
+//        $filemove = $fileDir . $_FILES['avatar']['name'];
+//        $tryfirst = "/public/images" . $_FILES['file']['name'];
+//        move_uploaded_file($_FILES['avatar']['tmp_name'], $tryfirst);
+        if (isset($_FILES) && $_FILES['avatar']['error'] == 0)
+        {
+            $dir = "./public/images/" . $_FILES['avatar']['name'];
+            error_log('File name '. $dir);
+            move_uploaded_file($_FILES['avatar']['tmp_name'], $dir);
+
+        }
+        else
+        {
+            exit("error!");
+        }
+//        file_put_contents($fileName, 'img?', 0, null);
+        error_log('Bag is ' . json_encode($fileName));
+//        error_log('Bag is ' . json_encode($_POST));
+        error_log('Files is ' . json_encode($_FILES));
+//        print_r($fileName);
+//        print_r($_POST);
+        print_r($_FILES);
+                return $response;
+//        $this->userRepository->saveUserIcon($fileName, $userId);
+//        return $response->withStatus(301)->withHeader('Location', '/user');
+    }
+
+    public function showFinallyRegistrationStage(Request $request, Response $response)
+    {
+        $body = $this->view->render('Navigation/SelectAvatar.twig', [
+            'user' => $_SESSION['user'],
+        ]);
+        $response->getBody()->write($body);
+        return $response;
+    }
+
+    public function getglobalvariable()
+    {
+        echo 'Post Value is ';
+        print_r($_POST);
+        echo '<br> Files Value is ';
+        print_r($_FILES);
+        echo '<br> Session Value is ';
+        print_r($_SESSION);
+        echo '<br> Cookie Value is ';
+        print_r($_COOKIE);
     }
     /*
     public function updateUserInfo(Request $request, Response $response)

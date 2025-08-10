@@ -301,8 +301,8 @@ html {
 }
 
 .post_edit-body {
-    /*text-align: right;*/
-    margin-top: 0.25rem;
+    text-align: right;
+    margin-top: 0.50rem;
 }
 
 .upload_user-ico{
@@ -350,6 +350,38 @@ html {
     margin-left: 0.3rem;
 }
 
+.ico__view-body{
+    align-items: center;
+    flex-direction: column;
+    margin-bottom: 10px;
+    }
+
+.ico__view-bodycolors{
+    display: inline-block;
+    width: 15rem;
+    height: 15rem;
+    border-radius:5rem;
+    background-color: #ffffff;
+}
+.text-avatar{
+    position: relative;
+    left: 3.8rem;
+    color: #2f3031;
+    font-size: xx-large;
+}
+
+.select-avatar{
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    width: 7rem;
+    height: 12rem;
+    align-content: space-between;
+    /*align-items: center;*/
+    border-radius: 10% 20%;
+    margin-left: 3.9rem;
+    /*justify-self: center;*/
+}
 .card {
     position: relative;
     display: flex;
