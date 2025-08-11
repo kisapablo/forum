@@ -32,7 +32,7 @@ class UserRepository
             'hash' => $hash,
             'salt' => $salt,
             'role_id' => $role,
-            'icon_id' => 1
+            'icon_id' => null
         ]);
 
         if (!$result) {
@@ -113,7 +113,7 @@ class UserRepository
 
     }
 
-    public function saveUserIcon($fileName, $userId, )
+    public function saveUserIcon($fileName, $userId)
     {
         $connection = $this->dataBase->getConnection();
 
@@ -130,6 +130,22 @@ class UserRepository
 
     }
 
+    public function savedefaulticon($defaultIcon, $userId)
+    {
+        $connection = $this->dataBase->getConnection();
+
+        $statement = $connection->prepare(
+            'call ADDUserIcon(:defaultIcon, :userId, TRUE, @id); select $id'
+        );
+        $statement->bindParam('defaultIcon', $defaultIcon);
+        $statement->bindParam('userId', $userId);
+
+        $statement->execute();
+        $iconId =  $statement->fetchAll()[0];
+        error_log('Icon Id = '. $iconId);
+        return $statement->fetchAll();
+
+    }
 
 //fixme
     function generateSalt()

@@ -146,7 +146,7 @@ html {
     transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
 }
 
-.post__body:hover {
+.post__body-hover:hover {
     transform: scale(1.02);
     box-shadow: 0.25rem 0 0.5rem rgba(94, 94, 94, 0.3), -0.25rem 0 0.5rem rgba(94, 94, 94, 0.3);
 }
@@ -230,6 +230,10 @@ html {
     width: fit-content;
     border-radius: 10px;
     background-color: #aaaaaa;
+}
+
+.comment-color{
+    background-color: #23252b;
 }
 
 .profile__body {
@@ -356,11 +360,21 @@ html {
     margin-bottom: 10px;
     }
 
+
 .ico__view-bodycolors{
     display: inline-block;
     width: 15rem;
     height: 15rem;
     border-radius:5rem;
+    background-color: transparent;
+}
+.ico__view-visible-colors{
+    background-color: #898da1;
+    border-radius: 5rem;
+}
+.ico__view-bodycolors:hover{
+    transform: scale(1.02);
+    box-shadow: 0.25rem 0 0.5rem rgb(184, 182, 182), -0.25rem 0 0.5rem rgb(184, 182, 182);
     background-color: #ffffff;
 }
 .text-avatar{
@@ -370,18 +384,22 @@ html {
     font-size: xx-large;
 }
 
+
 .select-avatar{
     display: flex;
     flex-wrap: wrap;
     flex-direction: column;
     width: 7rem;
-    height: 12rem;
+    height: 7rem;
+    /*height: 12rem;*/
     align-content: space-between;
     /*align-items: center;*/
     border-radius: 10% 20%;
     margin-left: 3.9rem;
     /*justify-self: center;*/
 }
+
+
 .card {
     position: relative;
     display: flex;
@@ -398,7 +416,6 @@ html {
     flex: 1 1 auto;
     min-height: 1px;
     padding: 1.25rem;
-    background-color: #23252b;
 }
 
 .card-text {
@@ -649,4 +666,8 @@ label {
     border-color: #f5c6cb;
 }
 
+
+.d-flex{
+    display: flex;
+}
 

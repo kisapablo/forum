@@ -50,8 +50,9 @@ $app->post('/user/posts/PostEditor/{post_id}', [PostsController::class, 'updateP
 $app->get('/user/UserEditor', [PersonalCabinet::class, 'showUserEditor']);
 $app->post('/user/UserEditor/debug', [PersonalCabinet::class, 'addUserIco']);
 $app->post('/debug', [PersonalCabinet::class, 'getglobalvariable']);
+$app->post('/user/icons/debug', [PersonalCabinet::class, 'getSelectedDefaultIco']);
 $app->get('/user/posts/select', [PersonalCabinet::class, 'showPublishedPosts']);
-$app->get('/user/registration/finally', [PersonalCabinet::class, 'showFinallyRegistrationStage']);
+$app->get('/user/icons/default', [PersonalCabinet::class, 'showDefaultIconsSelect']);
 // end routing
 
 $app->run();

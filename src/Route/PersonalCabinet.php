@@ -119,17 +119,36 @@ class PersonalCabinet
 //        print_r($_FILES);
         $icon = $this->userRepository->saveUserIcon($fileName, $userId);
          print_r($icon);
-                return $response;
-//        return $response->withStatus(301)->withHeader('Location', '/user');
+//                return $response;
+        return $response->withStatus(301)->withHeader('Location', '/user');
     }
 
-    public function showFinallyRegistrationStage(Request $request, Response $response)
+    public function showDefaultIconsSelect(Request $request, Response $response)
     {
         $body = $this->view->render('Navigation/SelectAvatar.twig', [
             'user' => $_SESSION['user'],
         ]);
         $response->getBody()->write($body);
         return $response;
+    }
+
+    public function getSelectedDefaultIco(Request $request, Response $response)
+    {
+        echo 'Post Value is ';
+        print_r($_POST);
+        echo '<br> Files Value is ';
+        print_r($_FILES);
+        echo '<br> Session Value is ';
+        print_r($_SESSION);
+        echo '<br> Cookie Value is ';
+        print_r($_COOKIE);
+        $defaultIcon = '/public/images/default_ico/' . $_POST['selected_icon'];
+        $user = $_SESSION['user'];
+        $userId = $user['id'];
+        $Defaultico = $this->userRepository->savedefaulticon($defaultIcon, $userId);
+        echo '<br> Default Ico is value';
+        print_r($Defaultico);
+        return $response->withStatus(301)->withHeader('Location', '/user');
     }
 
     public function getglobalvariable()

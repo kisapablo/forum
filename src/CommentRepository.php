@@ -54,7 +54,7 @@ class CommentRepository
             throw new Exception('Incorrect comment');
         }
     }
-    public function getCommentAttachmentView(/*int $commentID*/) //
+    public function getCommentAttachmentView(int $commentID) //
     {
         $connection = $this->dataBase->getConnection();
 
@@ -63,8 +63,8 @@ class CommentRepository
         );
 
         $statement->execute([
-            'comment_id' => 2
-//            'comment_id' => (int) $commentID
+//            'comment_id' => 2
+            'comment_id' => (int) $commentID
         ]);
 
         return $statement->fetchAll();

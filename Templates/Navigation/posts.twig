@@ -1,5 +1,5 @@
 {% for post in posts %}
-    <div class="post__body post__body-colors">
+    <div class="post__body post__body-colors post__body-hover">
         <div class="post-title">
             <a href="{{ url('posts/' ~ post.id) }}">
                 <h5 class="post-title">{{ post.title|escape }}</h5></a>

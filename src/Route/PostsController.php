@@ -2,7 +2,7 @@
 
 namespace Blog\Route;
 
-
+use Blog\UserRepository;
 use Blog\CommentRepository;
 use Blog\DataBase;
 use Blog\PostRepository;
@@ -22,14 +22,16 @@ class PostsController
 
     private CommentRepository $commentRepository;
     private PostRepository $postRepository;
+    private UserRepository $userRepository;
 
     public function __construct(Environment       $view,
                                 CommentRepository $commentRepository,
-                                PostRepository    $postRepository)
+                                PostRepository    $postRepository, UserRepository $userRepository)
     {
         $this->view = $view;
         $this->commentRepository = $commentRepository;
         $this->postRepository = $postRepository;
+        $this->userRepository = $userRepository;
     }
 
     // rendering Create Post Builder(CreateNewPosts.twig)
@@ -90,6 +92,10 @@ class PostsController
             return $response;
         }
 
+        $user = $_SESSION['user'];
+
+        $icon = $this->userRepository->findUserIcon($user['id']);
+
         $post_id = (int)$args['post_id'];
 
         $post = $this->postRepository->findPostById($post_id);
@@ -101,16 +107,23 @@ class PostsController
         }
 
         $comments = $this->commentRepository->getAllComments($post['id']);
-        $commentsAttachment = $this->commentRepository->getCommentAttachmentView();
+        for ($i = 0; $i < count($comments); $i++) {
+            $comment = $comments[$i];
+            $comments[$i]['attachments'] = $this->commentRepository->getCommentAttachmentView($comment['id']);
+        }
+
+        error_log( 'New Comments ' . json_encode($comments));
+//        $commentsAttachment = $this->commentRepository->getCommentAttachmentView($comments);
         error_log('Session is ' . json_encode($_SESSION));
         error_log('Attachment is ' . json_encode($postAttachment));
-        error_log('CAttachment name is ' . json_encode($commentsAttachment));
+        error_log('CAttachments is ' . json_encode($comments['attachments']));
+//        error_log('CAttachment name is ' . json_encode($commentsAttachment));
         $body = $this->view->render('post.twig', [
             'post' => $post,
             'comments' => $comments,
             'user' => $_SESSION['user'],
             'post_attachments' => $postAttachment,
-            'comments_attachments' => $commentsAttachment
+            'icons' => $icon
         ]);
         $response->getBody()->write($body);
 
@@ -151,6 +164,7 @@ class PostsController
 
         return $response->withStatus(301)->withHeader('Location', '/posts/' . $args['post_id']);
     }
+
     // rendering Post Editor
     public function getPostInfo(Request $request, Response $response, array $args)
     {
@@ -188,7 +202,7 @@ class PostsController
         error_log('Title Value is' . json_encode($title));
         $content = $_POST['content'];
         error_log('Content Value is' . json_encode($content));
-            $post_id = (int)$args['post_id'];
+        $post_id = (int)$args['post_id'];
         error_log('ID Value is' . json_encode($post_id));
         $update = $this->postRepository->updatePosts($title, $content, $post_id);
         return $response->withStatus(301)->withHeader('Location', '/posts/' . (int)$args['post_id']);
