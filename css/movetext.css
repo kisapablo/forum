@@ -399,6 +399,29 @@ html {
     /*justify-self: center;*/
 }
 
+.postmain-img{
+    width: 25rem
+}
+
+.postmain-title{
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
+
+.comment-text{
+    margin-bottom: .75rem;
+}
+
+.Comment__Desc-main{
+    margin-top: 1.5rem;
+}
+
+.comment_h3-body{
+    margin-top: 3rem;
+}
+.comment-img{
+    width: 7.5rem;
+}
 
 .card {
     position: relative;
@@ -665,7 +688,17 @@ label {
     background-color: #f8d7da;
     border-color: #f5c6cb;
 }
+.alert-info{
+    color: #0c5460;
+    background-color: #d1ecf1;
+    border-color: #bee5eb;
+}
 
+.alert-success{
+    color: #155724;
+    background-color: #d4edda;
+    border-color: #c3e6cb;
+}
 
 .d-flex{
     display: flex;

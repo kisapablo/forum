@@ -59,8 +59,10 @@ class PostsController
         // Лимит отрисовки страниц(если будет 5 постов то отрисуется только 3 из них если лимит равен 3)
         $limit = 3;
         $start = (int)(($page - 1) * $limit);
+        $user = $_SESSION['user'];
 
         $posts = $this->postRepository->findAllPosts($args, $page, $limit, $start);
+        $icon = $this->userRepository->findUserIcon($user['id']);
 
         $totalCount = $this->postRepository->getTotalCount();
         error_log('Session is ' . json_encode($_SESSION));
@@ -72,6 +74,7 @@ class PostsController
             'showUserInfo' => false,
             'user' => $_SESSION['user'],
             'id' => $_SESSION['id'],
+            'icons' => $icon,
             'pagination' => [
                 'current' => $page,  // current page number(текущ. номер страницы)
                 'paging' => ceil($totalCount / $limit) // вычисление всего кол-ва страниц через $totalCount деля на $limit и округления ceilом
