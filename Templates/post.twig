@@ -2,12 +2,8 @@
 
 {% block body %}
     {# Rendering content #}
-    <div>
-    {% for post_attachment in post_attachments %}
-        <img src="{{ post_attachment.attachment_name }}" alt="PostPhoto" class="postmain-img">
-    {% endfor %}
-    <h1 class="postmain-title">{{ post.title|escape }}</h1>
-    <div class="container">
+    <div class="PostPreview">
+        <h1 class="PostPreview-title">{{ post.title|escape }}</h1>
         <div class="d-flex post__body">
             {% for icon in icons %}
                 <img src="{{ icon.icon_name }}" alt="Avatar"
@@ -18,7 +14,13 @@
                 {{ post.content|raw }}
             </span>
         </div>
-    </div>
+        <div class="post_img_body">
+            {% for post_attachment in post_attachments %}
+                <div class="post_img_body-shadow">
+                    <img src="{{ post_attachment.attachment_name }}" alt="PostPhoto" class="post-img">
+                </div>
+            {% endfor %}
+        </div>
     </div>
     {#  Start Comment's #}
     <div class="container">
@@ -28,8 +30,7 @@
                 <div class="post__body comment-color">
                     <p class="comment-text">   {{ comment.content | e }}</p>
                     {% for icon in icons %}
-                        <img src="{{ icon.icon_name }}" alt="Avatar"
-                             class="avatar">
+                        <img src="{{ icon.icon_name }}" alt="Avatar" class="avatar">
                     {% endfor %}
                     <p class="comment-text text-muted">
                         <small>{{ comment.author_id }}</small>
@@ -49,7 +50,8 @@
 
             <form method="POST" action="/posts/{{ post.id }}/comments" class="mb-5">
                 <div class="form-group">
-                    <label class="Comment__Desc-main" for="exampleFormControlTextarea1">Add new Comment, write your think of this
+                    <label class="Comment__Desc-main" for="exampleFormControlTextarea1">Add new Comment, write your
+                        think of this
                         post!</label>
                     <textarea required class="form-control" name="content" id="exampleFormControlTextarea1"
                               rows="2"></textarea>
