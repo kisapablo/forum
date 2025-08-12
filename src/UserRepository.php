@@ -147,6 +147,37 @@ class UserRepository
 
     }
 
+    public function findAuthorIcon($postid)
+    {
+        $connection = $this->dataBase->getConnection();
+
+        $statement = $connection->prepare(
+            'SELECT * from user_icon_view where user_id = :post_id;'
+        );
+
+        $statement->execute([
+            'post_id' => $postid
+        ]);
+
+        return $statement->fetchAll();
+
+    }
+    public function FindCommentAuthorIcon ( int $authorID)
+    {
+        $connection = $this->dataBase->getConnection();
+
+        $statement = $connection->prepare(
+            'SELECT * from user_icon_view where user_id = :author_id;'
+        );
+
+        $statement->execute([
+            'author_id' => $authorID
+        ]);
+
+        return $statement->fetchAll();
+
+    }
+
 //fixme
     function generateSalt()
     {

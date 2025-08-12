@@ -5,11 +5,11 @@
     <div class="PostPreview">
         <h1 class="PostPreview-title">{{ post.title|escape }}</h1>
         <div class="d-flex post__body">
-            {% for icon in icons %}
+            {% for icon in Authoricon %}
                 <img src="{{ icon.icon_name }}" alt="Avatar"
                      class="avatar">
             {% endfor %}
-            <span class="text-muted">Kisapablo Restless | {{ post.published_date|date("F d, Y") }}</span>
+            <span class="text-muted">{#  Kisapablo Restless #} {{ post.author_id}} | {{ post.published_date|date("F d, Y") }}</span>
             <span>
                 {{ post.content|raw }}
             </span>
@@ -29,12 +29,17 @@
             {% for comment in comments %}
                 <div class="post__body comment-color">
                     <p class="comment-text">   {{ comment.content | e }}</p>
-                    {% for icon in icons %}
-                        <img src="{{ icon.icon_name }}" alt="Avatar" class="avatar">
+                    {% for avatar in comment.author_ico %}
+                        <img src="{{ avatar.icon_name }}" alt="avatars" class="avatar">
                     {% endfor %}
+{#                    {% for icon in icons %}#}
+{#                        <img src="{{ icon.icon_name }}" alt="Avatar" class="avatar">#}
+{#                    {% endfor %}#}
+                    {% for author in comment.attachments %}
                     <p class="comment-text text-muted">
-                        <small>{{ comment.author_id }}</small>
+                        <small>{{ author.author_name }}</small>
                     </p>
+                    {% endfor %}
                     {% for comments_attachment in comment.attachments %}
                         <img src="{{ comments_attachment.attachment_name }}" alt="Never" class="comment-img">
                     {% endfor %}

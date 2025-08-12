@@ -97,12 +97,13 @@ class PostsController
 
         $user = $_SESSION['user'];
 
-        $icon = $this->userRepository->findUserIcon($user['id']);
+        $CommentAvatar = $this->userRepository->findUserIcon($user['id']);
 
         $post_id = (int)$args['post_id'];
 
         $post = $this->postRepository->findPostById($post_id);
         $postAttachment = $this->postRepository->getPostAttachmentView($post_id);
+        $icons = $this->userRepository->findAuthorIcon($post['author_id']);
         if ($post == null) {
             $body = $this->view->render('not-found.twig');
             $response->getBody()->write($body);
@@ -113,27 +114,30 @@ class PostsController
         for ($i = 0; $i < count($comments); $i++) {
             $comment = $comments[$i];
             $comments[$i]['attachments'] = $this->commentRepository->getCommentAttachmentView($comment['id']);
+            $comments[$i]['author_ico'] = $this->userRepository->FindCommentAuthorIcon($comments[$i]['author_id']);
         }
 
-        error_log( 'New Comments ' . json_encode($comments));
+        error_log('New Comments ' . json_encode($comments));
 //        $commentsAttachment = $this->commentRepository->getCommentAttachmentView($comments);
         error_log('Session is ' . json_encode($_SESSION));
         error_log('Attachment is ' . json_encode($postAttachment));
+        error_log('Post is ' . json_encode($post));
         error_log('CAttachments is ' . json_encode($comments['attachments']));
-//        error_log('CAttachment name is ' . json_encode($commentsAttachment));
         $body = $this->view->render('post.twig', [
             'post' => $post,
             'comments' => $comments,
             'user' => $_SESSION['user'],
             'post_attachments' => $postAttachment,
-            'icons' => $icon
+            'icons' => $CommentAvatar,
+            'Authoricon' => $icons,
         ]);
+
         $response->getBody()->write($body);
 
         return $response;
     }
 
-    // PostBuilder Post Builder
+    // PostBuilder Post Builder rendering
     public function createNewPost(Request $request, Response $response): Response
     {
         $title = $_POST['title'];
