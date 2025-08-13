@@ -125,8 +125,10 @@ class PersonalCabinet
 
     public function showDefaultIconsSelect(Request $request, Response $response)
     {
+        $icon = $this->userRepository->getdefaultIcon();
         $body = $this->view->render('Navigation/SelectAvatar.twig', [
             'user' => $_SESSION['user'],
+            'icons' => $icon
         ]);
         $response->getBody()->write($body);
         return $response;

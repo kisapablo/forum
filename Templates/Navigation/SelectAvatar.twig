@@ -7,64 +7,15 @@
         <h1 class="latestPosts">Выберите иконку из ниже предоставленных.</h1>
         <form method="POST" action="{{ url('user/icons/debug') }}" class="mb-5">
             <div class="ico__view-body ico__view-visible-colors">
-            <span class="ico__view-bodycolors">
+                {% for icon in icons %}
+                <span class="ico__view-bodycolors">
                 <label>
-<input type="radio" name="selected_icon" value="50" style="display: none;">
-        <span class="text-avatar">One ico</span>
-        <img src="/public/images/default_ico/default-avatar.png" alt="One Icon" class="select-avatar">
+<input type="radio" name="selected_icon" value="{{ icon.id }}" style="display: none;">
+                     <span class="text-avatar">One Ico</span>
+        <img src="{{ icon.icon_name }}" alt="One Icon" class="select-avatar">
                     </label>
     </span>
-                <span class="ico__view-bodycolors">
-                    <label>
-<input type="radio" name="selected_icon" value="51" style="display: none;">
-                                <span class="text-avatar">One ico</span>
-        <img src="/public/images/default_ico/default-avatar-2.png" alt="One Icon" class="select-avatar">
-</label>
-    </span>
-                <span class="ico__view-bodycolors">
-                                        <label>
-<input type="radio" name="selected_icon" value="52" style="display: none;">
-        <span class="text-avatar">One ico</span>
-        <img src="/public/images/default_ico/default-avatar-3.png" alt="One Icon" class="select-avatar">
-                                        </label>
-    </span>
-                <span class="ico__view-bodycolors">
-                                        <label>
-<input type="radio" name="selected_icon" value="53" style="display: none;">
-        <span class="text-avatar">One ico</span>
-                    <img src="/public/images/default_ico/default-avatar-4.png" alt="One Icon" class="select-avatar">
-                                        </label>
-    </span>
-            </div>
-            <div class="ico__view-body ico__view-visible-colors">
-    <span class="ico__view-bodycolors">
-                            <label>
-<input type="radio" name="selected_icon" value="54" style="display: none;">
-        <span class="text-avatar">Two ico</span>
-        <img src="/public/images/default_ico/default-avatar-5.png" alt="One Icon" class="select-avatar">
-                            </label>
-    </span>
-                <span class="ico__view-bodycolors">
-                                        <label>
-<input type="radio" name="selected_icon" value="55" style="display: none;">
-        <span class="text-avatar">Two ico</span>
-        <img src="/public/images/default_ico/default-avatar-6.png" alt="One Icon" class="select-avatar">
-                                        </label>
-    </span>
-                <span class="ico__view-bodycolors">
-                                        <label>
-<input type="radio" name="selected_icon" value="56" style="display: none;">
-        <span class="text-avatar">Two ico</span>
-        <img src="/public/images/default_ico/default-avatar-7.png" alt="One Icon" class="select-avatar">
-                                        </label>
-    </span>
-                <span class="ico__view-bodycolors">
-                                        <label>
-<input type="radio" name="selected_icon" value="57" style="display: none;">
-        <span class="text-avatar">Two ico</span>
-        <img src="/public/images/default_ico/Face-tiger-full.png" alt="One Icon" class="select-avatar">
-                                        </label>
-    </span>
+                {% endfor %}
             </div>
             <div class="mt-3">
                 <button type="submit" class="nav-button user-color mx-1">Готово</button>

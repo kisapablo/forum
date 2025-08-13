@@ -169,6 +169,17 @@ class UserRepository
         return $statement->fetchAll();
 
     }
+
+    public function getdefaultIcon()
+    {
+        $connection = $this->dataBase->getConnection();
+
+        $statement = $connection->prepare(
+         'SELECT * from user_icon_view where is_default = 0'
+         );
+        $statement->execute();
+        return $statement->fetchAll();
+    }
 //    public function FindCommentAuthorIcon ( int $authorID)
 //    {
 //        $connection = $this->dataBase->getConnection();
