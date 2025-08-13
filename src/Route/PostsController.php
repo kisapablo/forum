@@ -100,8 +100,9 @@ class PostsController
         $CommentAvatar = $this->userRepository->findUserIcon($user['id']);
 
         $post_id = (int)$args['post_id'];
-
+error_log('Post ID is ' . json_encode($post_id));
         $post = $this->postRepository->findPostById($post_id);
+        error_log('post value ' . json_encode($post));
         $postAttachment = $this->postRepository->getPostAttachmentView($post_id);
         $icons = $this->userRepository->findAuthorIcon($post['author_id']);
         error_log('icons value is' . json_encode($icons));
@@ -128,7 +129,7 @@ class PostsController
             'user' => $_SESSION['user'],
             'post_attachments' => $postAttachment,
             'icons' => $CommentAvatar,
-            'authoricon' => $icons,
+            'icon' => $icons,
         ]);
 
         $response->getBody()->write($body);

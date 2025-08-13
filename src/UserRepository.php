@@ -152,16 +152,18 @@ class UserRepository
 
     }
 
-    public function findAuthorIcon($postid)
+    public function findAuthorIcon(int $postid) /* post twig*/
     {
         $connection = $this->dataBase->getConnection();
 
         $statement = $connection->prepare(
-            'SELECT * from user_icon_view where user_id = :post_id;'
+            'select u.id as user_id, uiv.icon_name as icon_name from user as u
+                    join user_icon_view uiv on u.icon_id = uiv.id
+                    where user_id = :user_id'
         );
 
         $statement->execute([
-            'post_id' => $postid
+            'user_id' => $postid
         ]);
 
         return $statement->fetchAll();

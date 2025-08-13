@@ -416,10 +416,7 @@ html {
 }
 
 .post-img{
-    width: 25rem;
-    /*height: 25rem;*/
-    /*width: 80%;*/
-    /*height: 80%;*/
+    height: 25rem;
 }
 .post-img:first-of-type{
 

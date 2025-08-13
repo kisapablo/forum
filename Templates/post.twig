@@ -5,8 +5,9 @@
     <div class="PostPreview">
         <h1 class="PostPreview-title">{{ post.title|escape }}</h1>
         <div class="d-flex post__body">
-                <img src="{{ authoricon.icon_name }}" alt="Avatar"
-                     class="avatar">
+            {% for authoricon in icon %}
+                <img src="{{ authoricon.icon_name }}" alt="Avatar" class="avatar">
+            {% endfor %}
             <span class="text-muted">{#  Kisapablo Restless #} {{ post.author_id}} | {{ post.published_date|date("F d, Y") }}</span>
             <span>
                 {{ post.content|raw }}
