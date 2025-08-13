@@ -97,20 +97,27 @@ class UserRepository
 //    }
 
 
-    public function findUserIcon($user_id)
+    public function findUserIcon($userId)
     {
         $connection = $this->dataBase->getConnection();
 
         $statement = $connection->prepare(
-            'SELECT * from user_icon_view where user_id = :user_id;'
+            'select u.id as user_id, uiv.icon_name as icon_name from user as u
+                    join user_icon_view uiv on u.icon_id = uiv.id
+                    where user_id = :user_id'
         );
 
         $statement->execute([
-            'user_id' => $user_id
+            'user_id' => $userId
         ]);
 
-        return $statement->fetchAll();
+        $icons = $statement->fetchAll();
 
+        if (empty($icons)) {
+            return null;
+        }
+
+        return $icons[0];
     }
 
     public function saveUserIcon($fileName, $userId)
@@ -124,25 +131,23 @@ class UserRepository
         $statement->bindParam('userId', $userId);
 
         $statement->execute();
-        $iconId =  $statement->fetchAll()[0];
-        error_log('Icon Id = '. $iconId);
+        $iconId = $statement->fetchAll()[0];
+        error_log('Icon Id = ' . $iconId);
         return $statement->fetchAll();
 
     }
 
-    public function savedefaulticon($defaultIcon, $userId)
+    public function saveDefaultIcon($defaultIcon, $userId)
     {
         $connection = $this->dataBase->getConnection();
 
         $statement = $connection->prepare(
-            'call ADDUserIcon(:defaultIcon, :userId, TRUE, @id); select $id'
+            "UPDATE user SET icon_id = :defaultIcon WHERE id = :userId"
         );
         $statement->bindParam('defaultIcon', $defaultIcon);
         $statement->bindParam('userId', $userId);
 
         $statement->execute();
-        $iconId =  $statement->fetchAll()[0];
-        error_log('Icon Id = '. $iconId);
         return $statement->fetchAll();
 
     }
@@ -162,21 +167,21 @@ class UserRepository
         return $statement->fetchAll();
 
     }
-    public function FindCommentAuthorIcon ( int $authorID)
-    {
-        $connection = $this->dataBase->getConnection();
-
-        $statement = $connection->prepare(
-            'SELECT * from user_icon_view where user_id = :author_id;'
-        );
-
-        $statement->execute([
-            'author_id' => $authorID
-        ]);
-
-        return $statement->fetchAll();
-
-    }
+//    public function FindCommentAuthorIcon ( int $authorID)
+//    {
+//        $connection = $this->dataBase->getConnection();
+//
+//        $statement = $connection->prepare(
+//            'SELECT * from user_icon_view where user_id = :author_id;'
+//        );
+//
+//        $statement->execute([
+//            'author_id' => $authorID
+//        ]);
+//
+//        return $statement->fetchAll();
+//
+//    }
 
 //fixme
     function generateSalt()

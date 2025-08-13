@@ -5,19 +5,17 @@
 {% endblock %}
 {% block body %}
     <div class="profile__body profile__body-color">
-        {% for icon in icons %}
-            <img src="{{ icon.icon_name|default('/public/images/kisapablo_classic.png') }}"
-                 class="avatar-full" alt="..." STYLE="width: 9rem; height: 9rem">
-        {% endfor %}
+            <img src="{{ icons.icon_name }}"
+                 class="avatar-full" alt="UserIcon" STYLE="height: 9rem">
         {#                Необходимо для наилучшей работы что то из двух одно без стиля другое контейнер #}
         {# <div class="container"> #}
         <div class="profile-text">
             <h5 class="profile-title">{# Kisapablo Restress #}{{ user.name }}</h5>
-            <a class="nav-button profile-role"> {{ user.role |default('User') }}</a>
-            <div class="desc" style="margin-top: 0.85rem;">Desc</div>
+            <a class="nav-button profile-role"> {{ user.role_id |default('User') }}</a>
+            <div class="desc" style="margin-top: 0.85rem;">{{ user.moto |default('Very Cool Description') }}</div>
             <h3 class="profile_info-title">Account Info</h3>
-            <span class="registration-date">Register on: </span>
-            <p class="profile_info-content">100000 LVL 1M posts<br>Last Activity: 1hour ago</p>
+            <span class="registration-date">Register on: {{ user.registration_date|default('2025.08.13') }}</span>
+            <p class="profile_info-content">100000 LVL 1M posts<br>Last Activity: {{ user.last_visit_date|default('1hour ago')}}</p>
             <a href="{{ url('user/posts/select') }}" class="nav-button builder-color">Search Your Posts</a>
             <a class="nav-button user-color" href="{{ url('user/icons/default') }}">Select default ico</a>
             <div class="profile_info">

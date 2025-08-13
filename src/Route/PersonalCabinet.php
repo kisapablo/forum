@@ -114,7 +114,7 @@ class PersonalCabinet
         {
             exit("error!");
         }
-        error_log('Bag is ' . json_encode($fileName));
+        error_log('filename is ' . json_encode($fileName));
         error_log('Files is ' . json_encode($_FILES));
 //        print_r($_FILES);
         $icon = $this->userRepository->saveUserIcon($fileName, $userId);
@@ -136,18 +136,12 @@ class PersonalCabinet
     {
         echo 'Post Value is ';
         print_r($_POST);
-        echo '<br> Files Value is ';
-        print_r($_FILES);
         echo '<br> Session Value is ';
         print_r($_SESSION);
-        echo '<br> Cookie Value is ';
-        print_r($_COOKIE);
-        $defaultIcon = '/public/images/default_ico/' . $_POST['selected_icon'];
+        $defaultIcon = $_POST['selected_icon'];
         $user = $_SESSION['user'];
         $userId = $user['id'];
-        $Defaultico = $this->userRepository->savedefaulticon($defaultIcon, $userId);
-        echo '<br> Default Ico is value';
-        print_r($Defaultico);
+        $this->userRepository->saveDefaultIcon($defaultIcon, $userId);
         return $response->withStatus(301)->withHeader('Location', '/user');
     }
 
