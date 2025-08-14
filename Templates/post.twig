@@ -3,6 +3,11 @@
 {% block body %}
     {# Rendering content #}
     <div class="PostPreview">
+        <div class="post_edit-body">
+            <a class="nav-button auth-color" href="{{ url('user/posts/PostEditor/' ~ post.id) }}">Edit
+                post</a>
+            <a class="nav-button logout-color" href="{{ url('user') }}">Delete Post</a>
+        </div>
         <h1 class="PostPreview-title">{{ post.title|escape }}</h1>
         <div class="d-flex post__body">
             <img src="{{ icons.icon_name }}" alt="Avatar" class="avatar">

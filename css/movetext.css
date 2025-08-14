@@ -218,7 +218,7 @@ html {
 }
 
 
-.post-filter {
+.post-filter__body {
     color: #d1c5c5;
     margin-right: .25rem;
 }
@@ -328,10 +328,6 @@ html {
     /*border: 1px solid #dee2e6;*/
 }
 
-.post-filter {
-    color: #d1c5c5;
-    margin-right: .25rem;
-}
 
 .toolbar-dbody {
     display: flex;

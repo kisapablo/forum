@@ -9,15 +9,23 @@
         <div class="post-toolbar post-header">
             {% include 'Navigation/pagination.twig' with pagination %}
 
-            <label class="toolbar-search-body">
-                Поиск
-                <input type="text" class="form-control" name="title" placeholder="Search">
-                <input type="text" class="form-control" name="title"
-                       placeholder="Search with author_id">
-                <a href="" class="nav-button builder-color">Search</a>
-            </label>
+            <form method="POST" action="{{ url('/debug') }}" class="mb-5">
+                <label class="toolbar-search-body">
+                    Поиск
+                    <input type="text" class="form-control" name="title" placeholder="Search">
+                    <input type="text" class="form-control" name="title" placeholder="Search with author_id">
+                    <a class="nav-button builder-color">Search</a>
+                </label>
+            </form>
+            <div class="post-filter__body">
+                <label for="filter">
 
-            <div class="post-filter">Фильтры</div>
+                <select name="filter" id="filter" class="form-control">
+                    <option selected value="joriik">Latest Update</option>
+                    <option value="joriik">New Posts!</option>
+                </select>
+                </label>
+            </div>
             {% if user is not null %}
             <a type="button" class="button-nearby-post builder-color"
                href="{{ url('posts/builders') }}">
