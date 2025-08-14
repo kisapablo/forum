@@ -7,7 +7,7 @@
         <h1 class="latestPosts">Выберите иконку из ниже предоставленных.</h1>
         <form method="POST" action="{{ url('user/icons/debug') }}" class="mb-5">
             <div class="ico__view-body ico__view-visible-colors">
-                {% for icon in icons %}
+                {% for icon in dicons %}
                     <span class="ico__view-bodycolors">
                 <label>
 <input type="radio" name="selected_icon" value="{{ icon.id }}" style="display: none;">

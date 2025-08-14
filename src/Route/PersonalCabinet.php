@@ -47,6 +47,27 @@ class PersonalCabinet
     }
 
 
+    public function showAdminPanel(Request $request, Response $response, array $args): Response
+    {
+            $user = $_SESSION['user'];
+
+            $icon = $this->userRepository->findUserIcon($user['id']);
+            if ($icon == null) {
+                error_log("User#" . $user['id'] . " has no icon");
+            }
+        error_log('Session is ' . json_encode($_SESSION));
+//        if (!isset($user) || !$user['id']) {
+//            return $response->withStatus(301)->withHeader('Location', '/user/login');
+//        }
+
+        $body = $this->view->render('Navigation/admin.twig', [
+            'user' => $_SESSION['user'],
+            'icons' => $icon
+        ]);
+        $response->getBody()->write($body);
+        return $response;
+    }
+
     // Selecting Posts... Personal Cabinet SelectPosts
     public function showPublishedPosts(Request $request, Response $response, array $args = []): Response
     {
@@ -67,9 +88,15 @@ class PersonalCabinet
 //            return $response->withStatus(301)->withHeader('Location', '/user/login');
 //        }
 //
+        $icon = $this->userRepository->findUserIcon($_SESSION['user']['id']);
+        if ($icon == null) {
+            error_log("User#" . $_SESSION['user']['id'] . " has no icon");
+        }
+
         $body = $this->view->render('Navigation/PersonalCabinet-SelectPosts.twig', [
             'posts' => $posts,
-            'user' => $_SESSION['user']
+            'user' => $_SESSION['user'],
+            'icons' => $icon
         ]);
         $response->getBody()->write($body);
         return $response;
@@ -119,10 +146,18 @@ class PersonalCabinet
 
     public function showDefaultIconsSelect(Request $request, Response $response)
     {
+        $user = $_SESSION['user'];
+
+        $icons = $this->userRepository->findUserIcon($user['id']);
+        if ($icons == null) {
+            error_log("User#" . $user['id'] . " has no icon");
+        }
+
         $icon = $this->userRepository->getdefaultIcon();
         $body = $this->view->render('Navigation/SelectAvatar.twig', [
             'user' => $_SESSION['user'],
-            'icons' => $icon
+            'dicons' => $icon,
+            'icons' => $icons
         ]);
         $response->getBody()->write($body);
         return $response;

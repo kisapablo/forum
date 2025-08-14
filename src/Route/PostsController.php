@@ -202,12 +202,17 @@ class PostsController
             $response->getBody()->write($body);
             return $response;
         }
+        $icon = $this->userRepository->findUserIcon($_SESSION['user']['id']);
+        if ($icon == null) {
+            error_log("User#" . $_SESSION['user']['id'] . " has no icon");
+        }
 
         error_log('Title Value is' . json_encode($post_id));
         error_log('$post is ' . json_encode($post));
         $body = $this->view->render('Navigation/PostEditor.twig', [
             'post' => $post,
-            'user' => $_SESSION['user']
+            'user' => $_SESSION['user'],
+            'icons' => $icon
         ]);
 
         $response->getBody()->write($body);

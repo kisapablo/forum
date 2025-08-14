@@ -16,14 +16,17 @@ body {
     font-size: 1rem;
     line-height: 1.5;
     color: #ffffff;
-    }
+}
 
 html {
     background-color: #15171e;
 }
 
-.container {
+.container-visible {
     padding-top: 120px; /* 70 default*/
+}
+
+.container {
     max-width: 1140px;
     width: 100%;
     padding-right: 15px;
@@ -234,7 +237,7 @@ html {
     background-color: #aaaaaa;
 }
 
-.comment-color{
+.comment-color {
     /* background-color: #23252b; */
 }
 
@@ -258,7 +261,7 @@ html {
 }
 
 .profile_info {
-    margin-bottom: 0.3rem;
+    margin-top: 0.3rem;
 }
 
 .avatar-full {
@@ -309,10 +312,6 @@ html {
     margin-top: 0.50rem;
 }
 
-.upload_user-ico{
-    margin-top: 0.25rem;
-    margin-bottom: 0.35rem;
-}
 .post-edit {
     padding: .25rem;
     width: 45px;
@@ -341,47 +340,44 @@ html {
 }
 
 .profile-title {
-    margin-top: .1rem;
-    margin-bottom: .1rem;
     color: #e0e0e0;
     font-size: x-large;
-    position: relative;
-    /*bottom: 2.55rem;*/
-    margin-left: 0.3rem;
 }
 
-.ico__view-body{
+.ico__view-body {
     align-items: center;
     flex-direction: column;
     margin-bottom: 10px;
-    }
+}
 
 
-.ico__view-bodycolors{
+.ico__view-bodycolors {
     display: inline-block;
     width: 15rem;
     height: 15rem;
-    border-radius:5rem;
+    border-radius: 5rem;
     background-color: transparent;
 }
-.ico__view-visible-colors{
+
+.ico__view-visible-colors {
     background-color: #898da1;
     border-radius: 5rem;
 }
-.ico__view-bodycolors:hover{
+
+.ico__view-bodycolors:hover {
     transform: scale(1.02);
     box-shadow: 0.25rem 0 0.5rem rgb(184, 182, 182), -0.25rem 0 0.5rem rgb(184, 182, 182);
     background-color: #ffffff;
 }
-.text-avatar{
+
+.text-avatar {
     position: relative;
     left: 3.8rem;
     color: #2f3031;
     font-size: xx-large;
 }
 
-
-.select-avatar{
+.select-avatar {
     display: flex;
     flex-wrap: wrap;
     flex-direction: column;
@@ -391,7 +387,7 @@ html {
     margin-left: 3.9rem;
 }
 
-.post_img_body{
+.post_img_body {
     background-color: #9a8b8b;
     align-items: center;
     flex-direction: row;
@@ -402,34 +398,36 @@ html {
     height: fit-content;
 }
 
-.post_img_body-shadow:hover{
+.post_img_body-shadow:hover {
     transform: scale(1.02);
     border-radius: 2.5rem;
     box-shadow: 0.25rem 0 0.5rem rgba(255, 255, 255, 0.3), -0.25rem 0 0.5rem rgba(248, 241, 241, 0.3);
 }
 
-.post-img{
+.post-img {
     height: 25rem;
 }
-.post-img:first-of-type{
+
+.post-img:first-of-type {
 
 }
 
-.PostPreview-title{
+.PostPreview-title {
 }
 
-.comment-text{
+.comment-text {
     margin-bottom: .75rem;
 }
 
-.Comment__Desc-main{
+.Comment__Desc-main {
     margin-top: 1.5rem;
 }
 
-.comment_h3-body{
+.comment_h3-body {
     margin-top: 3rem;
 }
-.comment-img{
+
+.comment-img {
     width: 7.5rem;
     /*
     Or height: 7.5rem;
@@ -497,7 +495,6 @@ html {
     border-color: #17a2b8;
 }
 
-
 .auth-color {
     color: #007bff;
     border-color: #007bff;
@@ -520,15 +517,26 @@ html {
     border-color: #28a745;
 }
 
-.info-color{
+.info-color {
     color: #d9a336;
     border-color: #d9a336;
 }
 
-.info-color:hover{
+.info-color:hover {
     color: #ffffff;
     background-color: #d9a336;
     border-color: #d9a336;
+}
+
+.secret-color {
+    color: #0f773d;
+    border-color: #0f773d;
+}
+
+.secret-color:hover {
+    color: #ffffff;
+    background-color: #0f773d;
+    border-color: #0f773d;
 }
 
 .profile-role {
@@ -564,7 +572,6 @@ html {
     border-color: #007bff;
 }
 
-
 .avatar {
     border-radius: 50%;
     border-style: none;
@@ -577,7 +584,6 @@ html {
     width: 2rem;
     height: 2rem;
 }
-
 
 .user {
     padding: .5rem;
@@ -602,7 +608,6 @@ html {
     margin-top: 6rem;
 
 }
-
 
 .row {
     display: flex;
@@ -666,15 +671,6 @@ ul {
     margin-bottom: 1rem;
 }
 
-
-textarea input button {
-    margin: 0;
-}
-
-input {
-    margin: 0;
-}
-
 textarea.form-control {
     height: auto;
 }
@@ -702,19 +698,24 @@ label {
     background-color: #f8d7da;
     border-color: #f5c6cb;
 }
-.alert-info{
+
+.alert-info {
     color: #0c5460;
     background-color: #d1ecf1;
     border-color: #bee5eb;
 }
 
-.alert-success{
+.alert-success {
     color: #155724;
     background-color: #d4edda;
     border-color: #c3e6cb;
 }
 
-.d-flex{
+.d-flex {
     display: flex;
 }
 
+.nav__body-buttons {
+    display: flex;
+    height: 2.5rem;
+}

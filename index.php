@@ -29,6 +29,7 @@ $app->add(new TwigMiddleware($view));
 
 // Routing
 $app->get('/user', [PersonalCabinet::class, 'showPersonalCabinet']);
+$app->get('/admin', [PersonalCabinet::class, 'showAdminPanel']);
 $app->get('/user/login', [UserController::class, 'showUserLoginPage']);
 $app->get('/user/registration', [UserController::class, 'showUserRegistrationPage']);
 $app->get('/user/logout', [UserController::class, 'DeleteSession']);

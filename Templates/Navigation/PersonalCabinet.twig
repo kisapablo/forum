@@ -11,7 +11,7 @@
                  class="avatar-full" alt="UserIcon" STYLE="height: 9rem">
         {% endif %}
         {#                Необходимо для наилучшей работы что то из двух одно без стиля другое контейнер #}
-        {# <div class="container"> #}
+{#                 <div class="container">#}
         <div class="profile-text">
             <h5 class="profile-title">{# Kisapablo Restress #}{{ user.name }}</h5>
             <a class="nav-button profile-role"> {{ user.role_id |default('User') }}</a>
@@ -23,9 +23,8 @@
             <a href="{{ url('user/posts/select') }}" class="nav-button builder-color">Search Your Posts</a>
             <a class="nav-button user-color" href="{{ url('user/icons/default') }}">Select default ico</a>
             <div class="profile_info">
-                <div class="upload_user-ico">
                     <a class="nav-button info-color" href="{{ url('user/UserEditor') }}">Update user info</a>
-                </div>
+                    <a class="nav-button secret-color" href="{{ url('admin') }}">Admin panel</a>
             </div>
         </div>
     </div>
