@@ -104,7 +104,7 @@ class UserRepository
         $statement = $connection->prepare(
             'select u.id as user_id, uiv.icon_name as icon_name from user as u
                     join user_icon_view uiv on u.icon_id = uiv.id
-                    where user_id = :user_id'
+                    where u.id = :user_id'
         );
 
         $statement->execute([
@@ -137,14 +137,14 @@ class UserRepository
 
     }
 
-    public function saveDefaultIcon($defaultIcon, $userId)
+    public function setUserIcon($iconId, $userId)
     {
         $connection = $this->dataBase->getConnection();
 
         $statement = $connection->prepare(
             "UPDATE user SET icon_id = :defaultIcon WHERE id = :userId"
         );
-        $statement->bindParam('defaultIcon', $defaultIcon);
+        $statement->bindParam('defaultIcon', $iconId);
         $statement->bindParam('userId', $userId);
 
         $statement->execute();
@@ -175,8 +175,8 @@ class UserRepository
         $connection = $this->dataBase->getConnection();
 
         $statement = $connection->prepare(
-         'SELECT * from user_icon_view where is_default = 0'
-         );
+            'SELECT * from user_icon_view where is_default = 0'
+        );
         $statement->execute();
         return $statement->fetchAll();
     }

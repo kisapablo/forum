@@ -34,15 +34,22 @@ class PostsController
         $this->userRepository = $userRepository;
     }
 
-    // rendering Create Post Builder(CreateNewPosts.twig)
+    // rendering Create Post Builder(CreateNewPosts.twig) PostBuilder Post Builder rendering
     public function showPostBuilderPage(Request $request, Response $response): Response
     {
         error_log('Check for authorization');
         error_log('Session is ' . json_encode($_SESSION));
 
         $user = $_SESSION['user'];
+
+        $icon = $this->userRepository->findUserIcon($user['id']);
+        if ($icon == null) {
+            error_log("User#" . $user['id'] . " has no icon");
+        }
+
         $body = $this->view->render('Navigation/CreateNewPosts.twig', [
-            'user' => $user,
+            'user' => $_SESSION['user'],
+            'icons' => $icon
         ]);
 
         $response->getBody()->write($body);
@@ -100,12 +107,13 @@ class PostsController
         $CommentAvatar = $this->userRepository->findUserIcon($user['id']);
 
         $post_id = (int)$args['post_id'];
-error_log('Post ID is ' . json_encode($post_id));
+        error_log('Post ID is ' . json_encode($post_id));
         $post = $this->postRepository->findPostById($post_id);
         error_log('post value ' . json_encode($post));
         $postAttachment = $this->postRepository->getPostAttachmentView($post_id);
-        $icons = $this->userRepository->findAuthorIcon($post['author_id']);
+        $icons = $this->userRepository->findUserIcon($post['author_id']);
         error_log('icons value is' . json_encode($icons));
+
         if ($post == null) {
             $body = $this->view->render('not-found.twig');
             $response->getBody()->write($body);
@@ -136,18 +144,22 @@ error_log('Post ID is ' . json_encode($post_id));
 
         return $response;
     }
-
-    // PostBuilder Post Builder rendering
     public function createNewPost(Request $request, Response $response): Response
     {
         $title = $_POST['title'];
         $content = $_POST['content'];
         $id = $_SESSION['user']['id'];
-
+        $user = $_SESSION['user'];
+        $icon = $this->userRepository->findUserIcon($_SESSION['user']['id']);
+        if ($icon == null) {
+            error_log("User#" . $user['id'] . " has no icon");
+        }
 
         $this->postRepository->addNewPost($title, $content, $id);
 
-        $body = $this->view->render('Navigation/CreateNewPosts.twig');
+        $body = $this->view->render('Navigation/CreateNewPosts.twig', [
+        'icons' => $icon
+            ]);
         $response->getBody()->write($body);
         return $response;
     }
@@ -159,14 +171,14 @@ error_log('Post ID is ' . json_encode($post_id));
             return $response->withStatus(301)->withHeader('Location', '/user/login');
         }
 
-        error_log('Initial to create for post');
+//        error_log('Initial to create for post');
         $comment = [
             'content' => $_POST['content'],
             'post_id' => $args['post_id'],
             'author_id' => $user['id']
         ];
 
-        error_log('include comment repository');
+//        error_log('include comment repository');
         $this->commentRepository->createComment($comment);
 
         return $response->withStatus(301)->withHeader('Location', '/posts/' . $args['post_id']);

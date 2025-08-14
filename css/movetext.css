@@ -9,6 +9,7 @@ color через hover плохая идея
     box-sizing: border-box;
     font-family: roboto sans-serif;
     margin: 0;
+    padding: 0;
 }
 
 body {
@@ -257,7 +258,7 @@ html {
 }
 
 .profile_info {
-    /*margin-bottom: 0.3rem;*/
+    margin-bottom: 0.3rem;
 }
 
 .avatar-full {
@@ -388,14 +389,10 @@ html {
     display: flex;
     flex-wrap: wrap;
     flex-direction: column;
-    width: 7rem;
     height: 7rem;
-    /*height: 12rem;*/
     align-content: space-between;
-    /*align-items: center;*/
     border-radius: 10% 20%;
     margin-left: 3.9rem;
-    /*justify-self: center;*/
 }
 
 .post_img_body{
@@ -438,6 +435,9 @@ html {
 }
 .comment-img{
     width: 7.5rem;
+    /*
+    Or height: 7.5rem;
+     */
 }
 
 .card {
@@ -619,6 +619,7 @@ html {
     display: flex;
     flex-wrap: wrap;
     margin-bottom: .5rem;
+    margin-top: 1rem;
 }
 
 .mb-3 {

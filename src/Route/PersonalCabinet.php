@@ -30,10 +30,10 @@ class PersonalCabinet
         $user = $_SESSION['user'];
 
         $icon = $this->userRepository->findUserIcon($user['id']);
+        if ($icon == null) {
+            error_log("User#" . $user['id'] . " has no icon");
+        }
         error_log('Session is ' . json_encode($_SESSION));
-        error_log('user' . json_encode($user));
-        error_log('ico' . json_encode($icon));
-        error_log('icon = ' . json_encode($icon['icon_name']));
 //        if (!isset($user) || !$user['id']) {
 //            return $response->withStatus(301)->withHeader('Location', '/user/login');
 //        }
@@ -45,9 +45,6 @@ class PersonalCabinet
         $response->getBody()->write($body);
         return $response;
     }
-
-
-
 
 
     // Selecting Posts... Personal Cabinet SelectPosts
@@ -101,24 +98,21 @@ class PersonalCabinet
         $user = $_SESSION['user'];
         $userId = $user['id'];
 
-        $fileDir = "/public/images/" ;
+        $fileDir = "/public/images/";
         $fileName = $fileDir . $iconName;
-        if (isset($_FILES) && $_FILES['avatar']['error'] == 0)
-        {
+        if (isset($_FILES) && $_FILES['avatar']['error'] == 0) {
             $dir = "./public/images/" . $_FILES['avatar']['name'];
-            error_log('File name '. $dir);
+            error_log('File name ' . $dir);
             move_uploaded_file($_FILES['avatar']['tmp_name'], $dir);
 
-        }
-        else
-        {
+        } else {
             exit("error!");
         }
         error_log('filename is ' . json_encode($fileName));
         error_log('Files is ' . json_encode($_FILES));
 //        print_r($_FILES);
         $icon = $this->userRepository->saveUserIcon($fileName, $userId);
-         print_r($icon);
+        print_r($icon);
 //                return $response;
         return $response->withStatus(301)->withHeader('Location', '/user');
     }
@@ -141,9 +135,8 @@ class PersonalCabinet
         echo '<br> Session Value is ';
         print_r($_SESSION);
         $defaultIcon = $_POST['selected_icon'];
-        $user = $_SESSION['user'];
-        $userId = $user['id'];
-        $this->userRepository->saveDefaultIcon($defaultIcon, $userId);
+        $userId = $_SESSION['user']['id'];
+        $this->userRepository->setUserIcon($defaultIcon, $userId);
         return $response->withStatus(301)->withHeader('Location', '/user');
     }
 
