@@ -1,0 +1,30 @@
+<button class="nav-button collapse-body collapse-color" type="button" data-toggle="collapse"
+        data-target="#toolbarCollapse" aria-expanded="false" aria-controls="toolbarCollapse">
+    <img class="collapse-ico" src="/public/images/default_ico/favicon.png" alt="Hello">
+    <span {# class="Toolbar-text" #}>Toolbar</span>
+</button>
+<div class="collapse" id="toolbarCollapse">
+    <div class="d-flex align-items-center flex-align-center">
+
+        <div class="post-toolbar post-header">
+            {% include 'Navigation/pagination.twig' with pagination %}
+
+            <label class="toolbar-search-body">
+                Поиск
+                <input type="text" class="form-control" name="title" placeholder="Search">
+                <input type="text" class="form-control" name="title"
+                       placeholder="Search with author_id">
+                <a href="" class="nav-button builder-color">Search</a>
+            </label>
+
+            <div class="post-filter">Фильтры</div>
+            {% if user is not null %}
+            <a type="button" class="button-nearby-post builder-color"
+               href="{{ url('posts/builders') }}">
+                Publish new post
+                {% else %}
+                {% endif %}
+            </a>
+        </div>
+    </div>
+</div>

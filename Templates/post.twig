@@ -5,10 +5,8 @@
     <div class="PostPreview">
         <h1 class="PostPreview-title">{{ post.title|escape }}</h1>
         <div class="d-flex post__body">
-            {% for authoricon in icon %}
-                <img src="{{ authoricon.icon_name }}" alt="Avatar" class="avatar">
-            {% endfor %}
-            <span class="text-muted">{#  Kisapablo Restless #} {{ post.author_id}} | {{ post.published_date|date("F d, Y") }}</span>
+            <img src="{{ icons.icon_name }}" alt="Avatar" class="avatar">
+            <span class="text-muted">{#  Kisapablo Restless #} {{ post.author_id }} | {{ post.published_date|date("F d, Y") }}</span>
             <span>
                 {{ post.content|raw }}
             </span>
@@ -28,14 +26,14 @@
             {% for comment in comments %}
                 <div class="post__body comment-color">
                     <p class="comment-text">   {{ comment.content | e }}</p>
-                        <img src="{{ comment.author_ico.icon_name }}" alt="avatars" class="avatar">
-{#                    {% for icon in icons %}#}
-{#                        <img src="{{ icon.icon_name }}" alt="Avatar" class="avatar">#}
-{#                    {% endfor %}#}
+                    <img src="{{ comment.author_ico.icon_name }}" alt="avatars" class="avatar">
+                    {#                    {% for icon in icons %} #}
+                    {#                        <img src="{{ icon.icon_name }}" alt="Avatar" class="avatar"> #}
+                    {#                    {% endfor %} #}
                     {% for author in comment.attachments %}
-                    <p class="comment-text text-muted">
-                        <small>{{ author.author_name }}</small>
-                    </p>
+                        <p class="comment-text text-muted">
+                            <small>{{ author.author_name }}</small>
+                        </p>
                     {% endfor %}
                     {% for comments_attachment in comment.attachments %}
                         <img src="{{ comments_attachment.attachment_name }}" alt="Never" class="comment-img">

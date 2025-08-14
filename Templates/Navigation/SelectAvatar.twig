@@ -8,7 +8,7 @@
         <form method="POST" action="{{ url('user/icons/debug') }}" class="mb-5">
             <div class="ico__view-body ico__view-visible-colors">
                 {% for icon in icons %}
-                <span class="ico__view-bodycolors">
+                    <span class="ico__view-bodycolors">
                 <label>
 <input type="radio" name="selected_icon" value="{{ icon.id }}" style="display: none;">
                      <span class="text-avatar">One Ico</span>

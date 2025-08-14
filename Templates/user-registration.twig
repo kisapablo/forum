@@ -1,29 +1,31 @@
 {% extends 'base.twig' %}
 
 {% block body %}
-<div class="container mt-5">
-    {% if message %}
-        <div class="alert {% if message starts with 'Ошибка' %}alert-danger{% else %}alert-success{% endif %}" role="alert">
-            {{ message }}
-        </div>
-    {% endif %}
-    <div class="card">
-        <div class="card-header">
-            <h3>Регистрация пользователя</h3>
-        </div>
-        <div class="card-body">
-            <form method="POST" action="/user/registration">
-                <div class="mb-3">
-                    <label for="login" class="form-label">Логин</label>
-                    <input type="text" class="form-control" name="login" id="login" placeholder="Введите логин" required>
-                </div>
-                <div class="mb-3">
-                    <label for="password" class="form-label">Пароль</label>
-                    <input type="password" class="form-control" name="password" id="password" placeholder="Введите пароль" required>
-                </div>
-                <button type="submit" class="nav-button auth-button">Зарегистрировать</button>
-            </form>
+    <div class="container mt-5">
+        {% if message %}
+            <div class="alert {% if message starts with 'Ошибка' %}alert-danger{% else %}alert-success{% endif %}" role="alert">
+                {{ message }}
+            </div>
+        {% endif %}
+        <div class="card">
+            <div class="card-header">
+                <h3>Регистрация пользователя</h3>
+            </div>
+            <div class="card-body">
+                <form method="POST" action="/user/registration">
+                    <div class="mb-3">
+                        <label for="login" class="form-label">Логин</label>
+                        <input type="text" class="form-control" name="login" id="login" placeholder="Введите логин"
+                               required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="password" class="form-label">Пароль</label>
+                        <input type="password" class="form-control" name="password" id="password"
+                               placeholder="Введите пароль" required>
+                    </div>
+                    <button type="submit" class="nav-button auth-button">Зарегистрировать</button>
+                </form>
+            </div>
         </div>
     </div>
-</div>
 {% endblock %}
