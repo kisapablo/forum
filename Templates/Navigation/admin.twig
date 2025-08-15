@@ -9,9 +9,13 @@
             <img src="{{ icons.icon_name }}"
                  class="avatar-full" alt="UserIcon" STYLE="height: 9rem">
         {% endif %}
-        <div class="container">
+        {#                Необходимо для наилучшей работы что то из двух одно без стиля другое контейнер #}
+        {#                 <div class="container">#}
+        <div class="profile-text">
+            <div>
             <h5 class="profile-title">{# Kisapablo Restress #}{{ user.name }}</h5>
-            <a class="nav-button profile-role"> {{ user.role_id |default('User') }}</a>
+            <a class="nav-button profile__role-color"> {{ user.role_id |default('User') }}</a>
+            </div>
         </div>
-        </div>
+    </div>
 {% endblock %}

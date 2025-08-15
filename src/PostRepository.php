@@ -27,6 +27,22 @@ class PostRepository
         return (int)($statement->fetchColumn() ?? 0);
     }
 
+    public function getTotalCountUsers($userId): int
+    {
+        $connection = $this->dataBase->getConnection();
+
+        $statement = $connection->prepare( // Если не робит то добавь перед getConnection, dataBase-> неактуально делай через $connection
+            'SELECT count(id) as total FROM post where author_id = :author_id'
+        );
+
+
+        $statement->execute([
+            'author_id' => $userId
+        ]);
+
+        return (int)($statement->fetchColumn() ?? 0);
+    }
+
     public function addNewPost($title, $content, $id)
     {
         $connection = $this->dataBase->getConnection();

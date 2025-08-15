@@ -5,16 +5,15 @@
 {% endblock %}
 {% block body %}
     <div class="profile__body profile__body-color">
-
         {% if icons.icon_name is not null %}
             <img src="{{ icons.icon_name }}"
-                 class="avatar-full" alt="UserIcon" STYLE="height: 9rem">
+                 class="avatar-full" alt="UserIcon">
         {% endif %}
         {#                Необходимо для наилучшей работы что то из двух одно без стиля другое контейнер #}
 {#                 <div class="container">#}
         <div class="profile-text">
             <h5 class="profile-title">{# Kisapablo Restress #}{{ user.name }}</h5>
-            <a class="nav-button profile-role"> {{ user.role_id |default('User') }}</a>
+            <a class="nav-button profile__role-color"> {{ user.role_id |default('User') }}</a>
             <div class="desc" style="margin-top: 0.85rem;">{{ user.moto |default('Very Cool Description') }}</div>
             <h3 class="profile_info-title">Account Info</h3>
             <span class="registration-date">Register on: {{ user.registration_date|default('2025.08.13') }}</span>

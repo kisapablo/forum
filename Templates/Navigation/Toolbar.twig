@@ -1,10 +1,10 @@
-<button class="nav-button collapse-body collapse-color" type="button" data-toggle="collapse"
+<button class="collapse-button collapse-color" type="button" data-toggle="collapse"
         data-target="#toolbarCollapse" aria-expanded="false" aria-controls="toolbarCollapse">
     <img class="collapse-ico" src="/public/images/default_ico/favicon.png" alt="Hello">
     <span {# class="Toolbar-text" #}>Toolbar</span>
 </button>
 <div class="collapse" id="toolbarCollapse">
-    <div class="d-flex align-items-center flex-align-center">
+    <div class="collapse_settings">
 
         <div class="post-toolbar post-header">
             {% include 'Navigation/pagination.twig' with pagination %}

@@ -9,7 +9,7 @@
             <a class="nav-button logout-color" href="{{ url('user') }}">Delete Post</a>
         </div>
         <h1 class="PostPreview-title">{{ post.title|escape }}</h1>
-        <div class="d-flex post__body">
+        <div class="post__body">
             <img src="{{ icons.icon_name }}" alt="Avatar" class="avatar">
             <span class="text-muted">{#  Kisapablo Restless #} {{ post.author_id }} | {{ post.published_date|date("F d, Y") }}</span>
             <span>
@@ -31,18 +31,19 @@
             {% for comment in comments %}
                 <div class="post__body comment-color">
                     <p class="comment-text">   {{ comment.content | e }}</p>
+                    <div class="position">
+                        {% for comments_attachment in comment.attachments %}
+                            <img src="{{ comments_attachment.attachment_name }}" alt="Never" class="comment-img" style="margin-left: 0.3rem;">
+                        {% endfor %}
+                    </div>
+{#                    {% for author in comment.attachments %}#}
+                    <p class="comment-text text-muted">
+                        <small>{{ comment.attachments.author_name }}</small>
+                    </p>
+{#                    {% endfor %}#}
                     <img src="{{ comment.author_ico.icon_name }}" alt="avatars" class="avatar">
-                    {#                    {% for icon in icons %} #}
-                    {#                        <img src="{{ icon.icon_name }}" alt="Avatar" class="avatar"> #}
-                    {#                    {% endfor %} #}
-                    {% for author in comment.attachments %}
-                        <p class="comment-text text-muted">
-                            <small>{{ author.author_name }}</small>
-                        </p>
-                    {% endfor %}
-                    {% for comments_attachment in comment.attachments %}
-                        <img src="{{ comments_attachment.attachment_name }}" alt="Never" class="comment-img">
-                    {% endfor %}
+{#                    {% for author in comment.attachments %}#}
+{#                    {% endfor %}#}
                 </div>
             {% endfor %}
         {% else %}

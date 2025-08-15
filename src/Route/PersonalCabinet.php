@@ -73,6 +73,11 @@ class PersonalCabinet
     {
         $user = $_SESSION['user'];
         $userId = $user['id'];
+        $page = isset($args['page']) ? (int)$args['page'] : 1;
+        $totalCount = $this->postRepository->getTotalCountUsers($userId);
+        $limit = 3;
+        $start = (int)(($page - 1) * $limit);
+
 
         error_log('ID Value is' . json_encode($userId));
 
@@ -96,7 +101,11 @@ class PersonalCabinet
         $body = $this->view->render('Navigation/PersonalCabinet-SelectPosts.twig', [
             'posts' => $posts,
             'user' => $_SESSION['user'],
-            'icons' => $icon
+            'icons' => $icon,
+             'pagination' => [
+        'current' => $page,  // current page number(текущ. номер страницы)
+        'paging' => ceil($totalCount / $limit) // вычисление всего кол-ва страниц через $totalCount деля на $limit и округления ceilом
+    ]
         ]);
         $response->getBody()->write($body);
         return $response;
