@@ -5,6 +5,7 @@ pagination navbar form control footer
 color через hover плохая идея
 */
 * {
+
     box-sizing: border-box;
     font-family: roboto sans-serif;
     margin: 0;
@@ -45,19 +46,48 @@ html {
     margin-right: auto;
     margin-left: auto;
 }
-.forms{
-    /*display: flex;*/
-    /*flex-direction: column;*/
+
+.form_body_EditorBuilder {
+    display: inline-flex;
+    justify-content: center;
+    align-content: center;
+    align-items: center;
+    text-align: center;
+
 }
 
-.formEditor
-{
+.form-color {
+    display: flex;
+    flex-direction: column;
+    background-color: #24242d;
+    border-radius: 3.5%;
 
 }
+
+.body_form_builderFlex {
+    display: flex;
+    justify-content: center;
+    align-content: center;
+}
+
+.little-form {
+}
+
+.form_EditorBuilder {
+    padding: .8rem .4rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    color: #ffffff;
+    background-color: #3d3d3f;
+    background-clip: padding-box;
+    border: 1px solid #ced4da;
+    border-radius: .25rem;
+    width: 80%;
+    height: 80%;
+}
+
 
 .form-group {
-    /*display: flex;*/
-    /*flex-direction: column;*/
     margin-bottom: 1rem;
 }
 
@@ -143,6 +173,22 @@ html {
     font-weight: 400;
     text-align: center;
     user-select: none;
+    background-color: transparent;
+    border: 1px solid transparent;
+    padding: .375rem .75rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    border-radius: .25rem;
+    transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+}
+
+.form__body-button {
+    justify-content: center;
+    display: flex;
+}
+
+.form-button {
+    display: flex;
     background-color: transparent;
     border: 1px solid transparent;
     padding: .375rem .75rem;
@@ -344,8 +390,6 @@ html {
 }
 
 .ico__view-body {
-    align-items: center;
-    flex-direction: column;
     margin-bottom: 10px;
 }
 
@@ -406,7 +450,7 @@ html {
      */
 }
 
-.card-alt{
+.card-alt {
     /*position: relative;*/
     /*display: flex;*/
     /*flex-direction: column;*/
@@ -431,7 +475,6 @@ html {
     /*min-height: 1px;*/
     /*padding: 1.25rem;*/
 }
-
 
 
 .card-header {
@@ -636,6 +679,10 @@ ul {
 }
 
 textarea.form-control {
+    height: auto;
+}
+
+textarea.form_EditorBuilder {
     height: auto;
 }
 

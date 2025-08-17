@@ -27,11 +27,9 @@ class PersonalCabinet
     // Отрисовка Личного кабинета
     public function showPersonalCabinet(Request $request, Response $response, array $args): Response
     {
-        $user = $_SESSION['user'];
-
-        $icon = $this->userRepository->findUserIcon($user['id']);
+        $icon = $this->userRepository->findUserIcon($_SESSION['user']['id']);
         if ($icon == null) {
-            error_log("User#" . $user['id'] . " has no icon");
+            error_log("User#" . $_SESSION['user']['id'] . " has no icon");
         }
         error_log('Session is ' . json_encode($_SESSION));
 //        if (!isset($user) || !$user['id']) {
@@ -49,11 +47,9 @@ class PersonalCabinet
 
     public function showAdminPanel(Request $request, Response $response, array $args): Response
     {
-            $user = $_SESSION['user'];
-
-            $icon = $this->userRepository->findUserIcon($user['id']);
+            $icon = $this->userRepository->findUserIcon($_SESSION['user']['id']);
             if ($icon == null) {
-                error_log("User#" . $user['id'] . " has no icon");
+                error_log("User#" . $_SESSION['user']['id'] . " has no icon");
             }
         error_log('Session is ' . json_encode($_SESSION));
 //        if (!isset($user) || !$user['id']) {
@@ -71,8 +67,7 @@ class PersonalCabinet
     // Selecting Posts... Personal Cabinet SelectPosts
     public function showPublishedPosts(Request $request, Response $response, array $args = []): Response
     {
-        $user = $_SESSION['user'];
-        $userId = $user['id'];
+        $userId = $_SESSION['user']['id'];
         $page = isset($args['page']) ? (int)$args['page'] : 1;
         $totalCount = $this->postRepository->getTotalCountUsers($userId);
         $limit = 3;
@@ -114,9 +109,7 @@ class PersonalCabinet
 
     public function showUserEditor(Request $request, Response $response)
     {
-        $user = $_SESSION['user'];
-
-        $icon = $this->userRepository->findUserIcon($user['id']);
+        $icon = $this->userRepository->findUserIcon($_SESSION['user']['id']);
 //        $password = 'helpme';
 //$hash = password_hash($password, PASSWORD_DEFAULT); //метод под вопросом
         $body = $this->view->render('Navigation/UserEditor.twig', [
@@ -131,8 +124,7 @@ class PersonalCabinet
     public function addUserIco(Request $request, Response $response)
     {
         $iconName = $_FILES['avatar']['name'];
-        $user = $_SESSION['user'];
-        $userId = $user['id'];
+        $userId = $_SESSION['user']['id'];
 
         $fileDir = "/public/images/";
         $fileName = $fileDir . $iconName;
@@ -155,11 +147,9 @@ class PersonalCabinet
 
     public function showDefaultIconsSelect(Request $request, Response $response)
     {
-        $user = $_SESSION['user'];
-
-        $icons = $this->userRepository->findUserIcon($user['id']);
+        $icons = $this->userRepository->findUserIcon($_SESSION['user']['id']);
         if ($icons == null) {
-            error_log("User#" . $user['id'] . " has no icon");
+            error_log("User#" . $_SESSION['user']['id'] . " has no icon");
         }
 
         $icon = $this->userRepository->getdefaultIcon();

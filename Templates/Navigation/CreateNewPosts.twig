@@ -4,19 +4,21 @@
 {% endblock %}
 {% block body %}
     <form method="POST" action="{{ url('posts') }}">
-        <div class="form-group">
-            <label>
-                Post Title
-                <input required type="text" class="form-control" name="title" placeholder="You Post Name">
-            </label>
-        </div>
-        <div class="form-group">
-            <label>
-                Post Content
-                <textarea required class="form-control" name="content" rows="3"
+        <div class="form_body_EditorBuilder">
+            <div class="form-color">
+                <label>
+                    <input required type="text" class="form_EditorBuilder little-form" name="title" placeholder="You Post Name">
+                </label>
+
+                <label>
+                <textarea required class="form_EditorBuilder" name="content" rows="3"
                           placeholder="You Post content"></textarea>
-            </label>
+                </label>
+                <div class="form__body-button">
+                    <button type="submit" class="form-button user-color"> Push Public post</button>
+                </div>
+            </div>
         </div>
-        <button type="submit" class="nav-button user-color mx-1"> Push Public post</button>
+
     </form>
 {% endblock %}

@@ -40,11 +40,9 @@ class PostsController
         error_log('Check for authorization');
         error_log('Session is ' . json_encode($_SESSION));
 
-        $user = $_SESSION['user'];
-
-        $icon = $this->userRepository->findUserIcon($user['id']);
+        $icon = $this->userRepository->findUserIcon($_SESSION['user']['id']);
         if ($icon == null) {
-            error_log("User#" . $user['id'] . " has no icon");
+            error_log("User#" . $_SESSION['user']['id'] . " has no icon");
         }
 
         $body = $this->view->render('Navigation/CreateNewPosts.twig', [
@@ -66,10 +64,9 @@ class PostsController
         // Лимит отрисовки страниц(если будет 5 постов то отрисуется только 3 из них если лимит равен 3)
         $limit = 3;
         $start = (int)(($page - 1) * $limit);
-        $user = $_SESSION['user'];
 
         $posts = $this->postRepository->findAllPosts($args, $page, $limit, $start);
-        $icon = $this->userRepository->findUserIcon($user['id']);
+        $icon = $this->userRepository->findUserIcon($_SESSION['user']['id']);
 
         $totalCount = $this->postRepository->getTotalCount();
         error_log('Session is ' . json_encode($_SESSION));
@@ -102,9 +99,7 @@ class PostsController
             return $response;
         }
 
-        $user = $_SESSION['user'];
-
-        $CommentAvatar = $this->userRepository->findUserIcon($user['id']);
+        $CommentAvatar = $this->userRepository->findUserIcon($_SESSION['user']['id']);
 
         $post_id = (int)$args['post_id'];
         error_log('Post ID is ' . json_encode($post_id));
@@ -149,10 +144,9 @@ class PostsController
         $title = $_POST['title'];
         $content = $_POST['content'];
         $id = $_SESSION['user']['id'];
-        $user = $_SESSION['user'];
         $icon = $this->userRepository->findUserIcon($_SESSION['user']['id']);
         if ($icon == null) {
-            error_log("User#" . $user['id'] . " has no icon");
+            error_log("User#" . $_SESSION['user']['id'] . " has no icon");
         }
 
         $this->postRepository->addNewPost($title, $content, $id);
@@ -166,8 +160,7 @@ class PostsController
 
     function createNewPostComment(Request $request, Response $response, array $args): Response
     {
-        $user = $_SESSION['user'];
-        if (!isset($user) || !$user['id']) {
+        if (!isset($_SESSION['user']) || !$_SESSION['user']['id']) {
             return $response->withStatus(301)->withHeader('Location', '/user/login');
         }
 
@@ -175,7 +168,7 @@ class PostsController
         $comment = [
             'content' => $_POST['content'],
             'post_id' => $args['post_id'],
-            'author_id' => $user['id']
+            'author_id' => $_SESSION['user']['id']
         ];
 
 //        error_log('include comment repository');

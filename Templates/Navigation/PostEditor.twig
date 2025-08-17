@@ -4,7 +4,8 @@
 {% endblock %}
 {% block body %}
     <form method="post" action="{# {{ url('user/posts') }} #}">
-        <div class="form-group">
+        <div class="form_body_EditorBuilder">
+            <div class="form-color">
             <label>
                 {# Editable Post title #}
                 <input required type="text" class="form-control" name="title" placeholder="You Post Name"
@@ -13,6 +14,7 @@
                 <textarea required class="form-control" name="content" rows="3"
                           placeholder="You Post content">{{ post.content }}</textarea>
             </label>
+        </div>
         </div>
         <button type="submit" class="nav-button user-color mx-1"> Push Public post</button>
     </form>
