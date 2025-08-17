@@ -24,11 +24,12 @@ services:
       MYSQL_DATABASE: ${DATABASE_NAME}
       MYSQL_USER: ${DATABASE_USERNAME}
       MYSQL_PASSWORD: ${DATABASE_PASSWORD}
-    volumes:
-      - mysql-data:/var/lib/mysql
+    # volumes:
+    #   - mysql-data:/var/lib/mysql
     networks:
       - quasi-forum-net
 networks:
   quasi-forum-net:
-volumes:
-  mysql-data:
+# volumes are disable to perform init scripts for db
+# volumes:
+#   mysql-data:
