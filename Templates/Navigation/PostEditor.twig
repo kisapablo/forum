@@ -1,19 +1,30 @@
 {% extends 'base.twig' %}
 {% block title %}
-Post Editor
+    Post Editor
 {% endblock %}
 {% block body %}
-    <form method="post" action="{# {{ url('user/posts') }} #}">
-        <div class="form-group">
-            <label>
-{#                Editable Post title#}
-                <input required type="text" class="form-control" name="title" placeholder="You Post Name" value="{{ post.title|escape }}">
-{#                Editable Post Content#}
-                <textarea required class="form-control" name="content" rows="3"
-                          placeholder="You Post content" >{{ post.content }}</textarea>
-            </label>
+    <form method="post" action="">
+        <div class="BuilderEditor_body-form">
+            <div class="BuilderEditor_header-form">
+                <label>
+                    {# Editable Post title #}
+                    <input required type="text" class="EditorBuilder-form" name="title" placeholder="You Post Name"
+                           value="{{ post.title|escape }}">
+                    {#  Editable Post Content #}
+                    <textarea required class="EditorBuilder-form" name="content" rows="3"
+                              placeholder="You Post content">{{ post.content }}</textarea>
+                </label>
+                <div class="attachment-BuilderEditor__body">
+                    <div class="attachment-BuilderEditor-content">
+                        <label for="avatar">Custom <br>Uploading<br> your Icon</label>
+                        <input type="file" id="avatar" name="avatar" accept="image/**" style="display:none;"/>
+                    </div>
+                </div>
+            </div>
+            <div class="form__body-button">
+                <button type="submit" class="form-button user-color">Save editing</button>
+            </div>
         </div>
-        <button type="submit" class="nav-button user-color mx-1"> Push Public post</button>
     </form>
 
 

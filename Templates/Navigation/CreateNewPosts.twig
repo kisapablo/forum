@@ -4,21 +4,24 @@
 {% endblock %}
 {% block body %}
     <form method="POST" action="{{ url('posts') }}">
-        <div class="form-group">
-            <label>
-                Post Title
-                <input required type="text" class="form-control" name="title" placeholder="You Post Name">
-            </label>
+        <div class="BuilderEditor_body-form">
+            <div class="BuilderEditor_header-form">
+                <label>
+                    <input required type="text" class="EditorBuilder-form" name="title" placeholder="You Post Name">
+                    <textarea required class="EditorBuilder-form" name="content" rows="3"
+                              placeholder="You Post content"></textarea>
+                </label>
+                <div class="attachment-BuilderEditor__body">
+                    <div class="attachment-BuilderEditor-content">
+                        <label for="avatar">Custom <br>Uploading<br> your Icon</label>
+                        <input type="file" id="avatar" name="avatar" accept="image/**" style="display:none;"/>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form__body-button">
+                <button type="submit" class="form-button user-color"> Push Public post</button>
+            </div>
         </div>
-        <div class="form-group">
-            <label>
-                Post Content
-                <textarea required class="form-control" name="content" rows="3"
-                          placeholder="You Post content"></textarea>
-            </label>
-        </div>
-        <button type="submit" class="nav-button user-color mx-1"> Push Public post</button>
     </form>
-
-
 {% endblock %}

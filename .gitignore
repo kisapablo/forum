@@ -1,0 +1,6 @@
+vendor/**
+.idea/**
+users.json
+public/images/**
+footer-link/**
+fonts/**

@@ -3,48 +3,13 @@
 {% block body %}
     <div class="container">
         <h3 class="mt-3 latestPosts">Latest Posts</h3>
-
-
         <div class="container">
-            {% if user is not null %}
-                <!-- Collapse Toggle Button -->
-                <button class="nav-button mb-3 collapse-color mr-2" type="button" data-toggle="collapse"
-                        data-target="#toolbarCollapse" aria-expanded="false" aria-controls="toolbarCollapse">
-                    {#                                <img class="collapse-ico" src="/public/images/favicon.png" alt="Hello"> #}
-                    <i class="bi bi-list"></i>
-                    <span {# class="Toolbar-text" #}>Toolbar</span>
-                </button>
-
-                <!-- Collapsible Toolbar Content (Hidden by Default) -->
-                <div class="collapse" id="toolbarCollapse">
-                    <div class="d-flex align-items-center flex-align-center">
-
-                        <div class="post-toolbar post-header">
-                            {% include 'Navigation/pagination.twig' with pagination %}
-
-                            <label class="toolbar-search-body">
-                                Поиск
-                                <input type="text" class="form-control" name="title" placeholder="Search">
-                                <input type="text" class="form-control" name="title"
-                                       placeholder="Search with author_id">
-                            </label>
-                            <a type="button" class="button-nearby-post builder-color"
-                               href="{{ url('posts/builders') }}">
-                                Publish new post
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            {% else %}
-                <div class="post-toolbar-not-authorized">
-                    {% include 'Navigation/pagination.twig' with pagination %}
-                </div>
-            {% endif %}
-        </div>
-        {% include 'Navigation/posts.twig' with posts %}
-        <a href="{{ url('posts') }}">View all</a>
-        <div class="post-toolbar-down">
+            {% include 'Navigation/Toolbar.twig' %}
+            {% include 'Navigation/posts.twig' with posts %}
+{#            <a href="{{ url('posts') }}">View all</a>#}
+            <div class="mt-3">
             {% include 'Navigation/pagination.twig' with pagination %}
+            </div>
         </div>
     </div>
 {% endblock %}

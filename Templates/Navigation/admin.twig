@@ -1,0 +1,21 @@
+{% extends 'base.twig' %}
+
+{% block title %}
+    Personal Cabinet
+{% endblock %}
+{% block body %}
+    <div class="profile__body profile__body-color">
+        {% if icons.icon_name is not null %}
+            <img src="{{ icons.icon_name }}"
+                 class="avatar-full" alt="UserIcon" STYLE="height: 9rem">
+        {% endif %}
+        {#                Необходимо для наилучшей работы что то из двух одно без стиля другое контейнер #}
+        {#                 <div class="container">#}
+        <div class="profile-text">
+            <div>
+            <h5 class="profile-title">{# Kisapablo Restress #}{{ user.name }}</h5>
+            <a class="nav-button profile__role-color"> {{ user.role_id |default('User') }}</a>
+            </div>
+        </div>
+    </div>
+{% endblock %}

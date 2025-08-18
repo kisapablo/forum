@@ -1,0 +1,39 @@
+<button class="collapse-button collapse-color" type="button" data-toggle="collapse"
+        data-target="#toolbarCollapse" aria-expanded="false" aria-controls="toolbarCollapse">
+    <img class="collapse-ico" src="/public/images/default_ico/favicon.png" alt="Hello">
+    <span {# class="Toolbar-text" #}>Toolbar</span>
+</button>
+<div class="collapse" id="toolbarCollapse">
+    <div class="collapse_settings">
+
+        <div class="post-toolbar post-header">
+            {% include 'Navigation/pagination.twig' with pagination %}
+
+            <form method="POST" action="{{ url('debug') }}" class="mb-5">
+                <label class="toolbar-search-body">
+                    Поиск
+                    <input type="search" class="form-control" name="title" placeholder="Search">
+                    <input type="search" class="form-control" name="title" placeholder="Search with author_id">
+                    <button type="submit" class="nav-button builder-color">Search</button>
+                    {#                    <a type="" class="nav-button builder-color">Search</a>#}
+                </label>
+            </form>
+            {# Мб будет так-же в форм поиска#}
+            <div class="post-filter__body">
+                <label for="filter">
+                    <select name="filter" id="filter" class="form-control">
+                        <option selected value="joriik">Latest Update</option>
+                        <option value="jor">New Posts!</option>
+                    </select>
+                </label>
+            </div>
+            {% if user is not null %}
+            <a type="button" class="button-nearby-post builder-color"
+               href="{{ url('posts/builders') }}">
+                Publish new post
+                {% else %}
+                {% endif %}
+            </a>
+        </div>
+    </div>
+</div>

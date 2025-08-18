@@ -2,7 +2,6 @@
 
 namespace Blog;
 
-use Exception;
 use PDO;
 
 class PostRepository
@@ -25,93 +24,139 @@ class PostRepository
 
         $statement->execute();
 
-        return (int) ($statement->fetchColumn() ?? 0);
+        return (int)($statement->fetchColumn() ?? 0);
     }
 
-public function addNewPost ($title, $content, $id)
-{
-    $connection = $this->dataBase->getConnection();
+    public function getTotalCountUsers($userId): int
+    {
+        $connection = $this->dataBase->getConnection();
+
+        $statement = $connection->prepare( // Если не робит то добавь перед getConnection, dataBase-> неактуально делай через $connection
+            'SELECT count(id) as total FROM post where author_id = :author_id'
+        );
 
 
-    // Вбивание данных из шаблонов
-    $statement = $connection->prepare(
-        "INSERT INTO post (title, content, author_id, publication_date) 
+        $statement->execute([
+            'author_id' => $userId
+        ]);
+
+        return (int)($statement->fetchColumn() ?? 0);
+    }
+
+    public function addNewPost($title, $content, $id)
+    {
+        $connection = $this->dataBase->getConnection();
+
+
+        // Вбивание данных из шаблонов
+        $statement = $connection->prepare(
+            "INSERT INTO post (title, content, author_id, publication_date) 
                 VALUES ('$title', '$content', '$id', CURRENT_DATE)"
-    );
+        );
 
 
-    $statement->execute();
+        $statement->execute();
 
-    return $statement->fetchAll();
+        return $statement->fetchAll();
+    }
+
+    public function findAllPosts(array $args, $page, $limit, $start)
+    {
+        // Проверяем переменная обьявлена ли и разницу с null
+
+        $connection = $this->dataBase->getConnection();
+
+        $statement = $connection->prepare(
+            'SELECT * FROM user_post_view ORDER BY publication_date DESC LIMIT :limit OFFSET :start     ' //:start
+        );
+
+        $statement->bindValue(':limit', $limit, PDO::PARAM_INT);
+        $statement->bindValue('start', $start, PDO::PARAM_INT);
+        $statement->execute();
+
+        return $statement->fetchAll();
+    }
+
+    public function findPostById($post_id)
+    {
+        $connection = $this->dataBase->getConnection();
+
+        $statement = $connection->prepare(
+            'SELECT * FROM post where id = :id'
+        );
+
+        $statement->execute([
+            'id' => $post_id
+        ]);
+
+        $posts =  $statement->fetchAll();
+
+        if (empty($posts)) {
+            return null;
+        }
+
+        return $posts[0];
+    }
+
+    public function updatePosts($title, $content, $post_id)
+    {
+        $connection = $this->dataBase->getConnection();
+
+
+        // Изменение данных из шаблонов
+        $statement = $connection->prepare(
+            "UPDATE post SET
+                content = :content,
+                title = :title
+                WHERE id = :post_id" );
+
+
+        $statement->execute([
+        'post_id' => $post_id,
+        'title' => $title,
+        'content' => $content
+        ]);
+
+
+        return $statement->fetchAll();
+    }
+
+    public function findAllPostsByAuthorId($authorId): array
+    {
+        // Проверяем переменная обьявлена ли и разницу с null
+
+        $connection = $this->dataBase->getConnection();
+
+        $statement = $connection->prepare(
+            'SELECT * FROM post where author_id = :id' //
+        );
+
+        $statement->bindValue(':id', $authorId, PDO::PARAM_INT);
+        $statement->execute();
+
+        return $statement->fetchAll();
+    }
+
+    public function getPostAttachmentView($post_id) //
+    {
+        $connection = $this->dataBase->getConnection();
+
+        $statement = $connection->prepare(
+            'select * from post_attachment_view where post_id = :post_id' //
+        );
+
+        $statement->execute([
+            'post_id' => $post_id
+        ]);
+
+        return $statement->fetchAll();
+
+    }
 }
 
-public function findAllPosts(array $args, $page, $limit, $start)
-{
-    // Проверяем переменная обьявлена ли и разницу с null
-
-    $connection = $this->dataBase->getConnection();
-
-    $statement = $connection->prepare(
-        'SELECT * FROM post ORDER BY publication_date DESC LIMIT :limit OFFSET :start     ' //:start
-    );
-
-    $statement->bindValue(':limit', $limit, PDO::PARAM_INT);
-    $statement->bindValue('start', $start, PDO::PARAM_INT);
-    $statement->execute();
-
-    return $statement->fetchAll();
-}
-
-public function prepareInfoPost($post_id, array $args)
-{
-
-    $connection = $this->dataBase->getConnection();
-
-    $statement = $connection->prepare(
-        'SELECT * FROM post where id = :id'
-    );
-
-    $statement->execute([
-        'id' => $post_id
-    ]);
-
-
-    return $statement->fetchAll();
-}
-
-public function updatePosts($title, $content,) // ,$post_id
-{
-    $connection = $this->dataBase->getConnection();
-
-
-    // Изменение данных из шаблонов
-    $statement = $connection->prepare(
-        "UPDATE post SET
-                content = '$content',
-                title = '$title'
-                WHERE id = 3"
-    //                content = :content,
-//                title = :title
-//                WHERE id = :id"
-    );
-
-
-    $statement->execute();
-//        [
-//        'id' => $post_id,
-//        'title' => $title,
-//        'content' => $content
-//    ]
-
-
-    return $statement->fetchAll();
-}
 
 
 
-
-
-}
 
 
 //    public function getRole(Request $request, Response $response, array $args): Response

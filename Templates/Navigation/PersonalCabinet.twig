@@ -4,14 +4,27 @@
     Personal Cabinet
 {% endblock %}
 {% block body %}
-    <div class="cabinet" style="">
-        <img src="{{ user_image_path|default('/public/images/kisapablo_classic.png') }}" class="img-fluid card-img-top rounded" alt="..." STYLE="width: 18rem">
-        <div class="card-body">
-            <h5 class="card-title personal ">{#Kisapablo Restress#}{{ user.name }}</h5>
-            <a  class="nav-button cabinet-button{#danger#}">{{ user.role |default('User')}}{#Administrator#}</a>
-            <h3 class="card-text personals">Account Info</h3>
-                <p class="card-text personals">Register 2025year<br>100000 LVL 1M posts<br>Last Activity: 1hour ago</p>
+    <div class="profile__body profile__body-color">
+        {% if icons.icon_name is not null %}
+            <img src="{{ icons.icon_name }}"
+                 class="avatar-full" alt="UserIcon">
+        {% endif %}
+        {#                Необходимо для наилучшей работы что то из двух одно без стиля другое контейнер #}
+{#                 <div class="container">#}
+        <div class="profile-text">
+            <h5 class="profile-title">{# Kisapablo Restress #}{{ user.name }}</h5>
+            <a class="nav-button profile__role-color"> {{ user.role_id |default('User') }}</a>
+            <div class="desc" style="margin-top: 0.85rem;">{{ user.moto |default('Very Cool Description') }}</div>
+            <h3 class="profile_info-title">Account Info</h3>
+            <span class="registration-date">Register on: {{ user.registration_date|default('2025.08.13') }}</span>
+            <p class="profile_info-content">100000 LVL 1M posts<br>Last
+                Activity: {{ user.last_visit_date|default('1hour ago') }}</p>
+            <a href="{{ url('user/posts/select') }}" class="nav-button builder-color">Search Your Posts</a>
+            <a class="nav-button user-color" href="{{ url('user/icons/default') }}">Select default ico</a>
+            <div class="profile_info">
+                    <a class="nav-button info-color" href="{{ url('user/UserEditor') }}">Update user info</a>
+                    <a class="nav-button secret-color" href="{{ url('admin') }}">Admin panel</a>
+            </div>
         </div>
     </div>
-
 {% endblock %}

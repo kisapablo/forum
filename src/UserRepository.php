@@ -3,6 +3,7 @@
 namespace Blog;
 
 use Exception;
+use PDO;
 
 class UserRepository
 {
@@ -13,10 +14,10 @@ class UserRepository
         $this->dataBase = $dataBase;
     }
 
-    public function addUser($login, $password, $role = 0)
+    public function addUser($login, $password, $role = 1)
     {
-        $salt = generateSalt();
-        $hash = generateHash($salt, $password);
+        $salt = $this->generateSalt();
+        $hash = $this->generateHash($salt, $password);
 
         $connection = $this->dataBase->getConnection();
 
@@ -31,7 +32,7 @@ class UserRepository
             'hash' => $hash,
             'salt' => $salt,
             'role_id' => $role,
-            'icon_id' => 1
+            'icon_id' => null
         ]);
 
         if (!$result) {
@@ -69,7 +70,7 @@ class UserRepository
         $user = $users[0];
         //todo: add logic to compute hash
 
-        $hash = generateHash($user['password_salt'], $password);
+        $hash = $this->generateHash($user['password_salt'], $password);
 
         if ($user['password_hash'] != $hash) {
             error_log('Invalid user password');
@@ -79,41 +80,138 @@ class UserRepository
         return $user;
     }
 
-//    private function getUsers()
-//    {
-//        $content = file_get_contents($this->filePath);
-//        return json_decode($content, true) ?: [];
-//    }
-//
-//    private function saveUsers($users): bool|int
-//    {
-//        return file_put_contents($this->filePath, json_encode($users, JSON_PRETTY_PRINT));
-//    }
-//
-//    public function getAllUsers()
-//    {
-//        return $this->getUsers();
-//    }
-}
+    //    private function getUsers()
+    //    {
+    //        $content = file_get_contents($this->filePath);
+    //        return json_decode($content, true) ?: [];
+    //    }
+    //
+    //    private function saveUsers($users): bool|int
+    //    {
+    //        return file_put_contents($this->filePath, json_encode($users, JSON_PRETTY_PRINT));
+    //    }
+    //
+    //    public function getAllUsers()
+    //    {
+    //        return $this->getUsers();
+    //    }
 
-//fixme
-function generateSalt()
-{
-    return '64';
-}
 
-//fixme
-function generateHash($salt, $password)
-{
+    public function findUserIcon($userId)
+    {
+        $connection = $this->dataBase->getConnection();
 
-// check for have unhashing password
+        $statement = $connection->prepare(
+            'select u.id as user_id, uiv.icon_name as icon_name from user as u
+                    join user_icon_view uiv on u.icon_id = uiv.id
+                    where u.id = :user_id'
+        );
 
-//    $checkhash = // PDO fetch pass in findUserByLoginAndPassword and form authentication
-//    if (!empty($login) && !empty($password)) { view on all pass for unhashing else unhashing pass found drop and return for not found pass
-// generate hash
-//    }
+        $statement->execute([
+            'user_id' => $userId
+        ]);
 
-// return result all
+        $icons = $statement->fetchAll();
 
-    return $password;
+        if (empty($icons)) {
+            return null;
+        }
+
+        return $icons[0];
+    }
+
+    public function saveUserIcon($fileName, $userId)
+    {
+        $connection = $this->dataBase->getConnection();
+
+        $statement = $connection->prepare(
+            'call ADDUserIcon(:fileName, :userId, TRUE, @id); select $id'
+        );
+        $statement->bindParam('fileName', $fileName);
+        $statement->bindParam('userId', $userId);
+
+        $statement->execute();
+        $iconId = $statement->fetchAll()[0];
+        error_log('Icon Id = ' . $iconId);
+        return $statement->fetchAll();
+    }
+
+    public function setUserIcon($iconId, $userId)
+    {
+        $connection = $this->dataBase->getConnection();
+
+        $statement = $connection->prepare(
+            "UPDATE user SET icon_id = :defaultIcon WHERE id = :userId"
+        );
+        $statement->bindParam('defaultIcon', $iconId);
+        $statement->bindParam('userId', $userId);
+
+        $statement->execute();
+        return $statement->fetchAll();
+    }
+
+    public function findAuthorIcon(int $postid) /* post twig*/
+    {
+        $connection = $this->dataBase->getConnection();
+
+        $statement = $connection->prepare(
+            'select u.id as user_id, uiv.icon_name as icon_name from user as u
+                    join user_icon_view uiv on u.icon_id = uiv.id
+                    where user_id = :user_id'
+        );
+
+        $statement->execute([
+            'user_id' => $postid
+        ]);
+
+        return $statement->fetchAll();
+    }
+
+    public function getdefaultIcon()
+    {
+        $connection = $this->dataBase->getConnection();
+
+        $statement = $connection->prepare(
+            'SELECT * from user_icon_view where is_default = 0'
+        );
+        $statement->execute();
+        return $statement->fetchAll();
+    }
+    //    public function FindCommentAuthorIcon ( int $authorID)
+    //    {
+    //        $connection = $this->dataBase->getConnection();
+    //
+    //        $statement = $connection->prepare(
+    //            'SELECT * from user_icon_view where user_id = :author_id;'
+    //        );
+    //
+    //        $statement->execute([
+    //            'author_id' => $authorID
+    //        ]);
+    //
+    //        return $statement->fetchAll();
+    //
+    //    }
+
+    //fixme
+    function generateSalt()
+    {
+        return '64';
+    }
+
+    //fixme
+    function generateHash($salt, $password)
+    {
+
+        // check for have unhashing password
+
+        //    $checkhash = // PDO fetch pass in findUserByLoginAndPassword and form authentication
+        //    if (!empty($login) && !empty($password)) { view on all pass for unhashing else unhashing pass found drop and return for not found pass
+        // generate hash
+        //    }
+
+        // return result all
+
+        return $password;
+    }
 }
