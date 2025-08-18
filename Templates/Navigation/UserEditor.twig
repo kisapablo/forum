@@ -4,28 +4,27 @@
 {% endblock %}
 {% block body %}
     <form method="POST" action="{{ url('user/UserEditor/debug') }}" enctype="multipart/form-data">
-        <div class="form_body_EditorBuilder">
-            <div class="form-color">
+        <div class="BuilderEditor_body-form">
+            <div class="BuilderEditor_header-form">
                 <label>
-                    <input required type="text" class="form_EditorBuilder" name="Username" placeholder="Username"
+                    <input required type="text" class="EditorBuilder-form" name="Username" placeholder="Username"
                            value="{{ user.name }}">
-                </label>
-                <label>
-                    <input required type="text" class="form_EditorBuilder" name="Userpass"
+                    <input required type="text" class="EditorBuilder-form" name="Userpass"
                            placeholder="Update your Password"
                            value="{{ generatedhash }}">
-                </label>
-                <label>
-                    <textarea required class="form_EditorBuilder" name="content" rows="3"
+                    <textarea required class="EditorBuilder-form" name="content" rows="3"
                               placeholder="Bio">Jorikk</textarea>
                 </label>
-
-
-                <div class="form__body-button">
-                    <button type="submit" class="form-button user-color">Submit Comment</button>
-                    <input type="file" id="avatar" name="avatar" class="" accept="image/**"/>
+            <div class="attachment-BuilderEditor__body">
+                <div class="attachment-BuilderEditor-content">
+                    <label for="avatar">Custom <br>Uploading<br> your Icon</label>
+                    <input type="file" id="avatar" name="avatar" accept="image/**" style="display:none;"/>
                 </div>
             </div>
         </div>
+                <div class="form__body-button">
+                    <button type="submit" class="form-button user-color">Submit Comment</button>
+                </div>
+            </div>
     </form>
 {% endblock %}

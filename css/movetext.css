@@ -23,7 +23,8 @@ html {
 }
 
 .container-visible {
-    padding-top: 10rem; /* 70 default*/
+    padding-top: 10rem;
+    /* 70 default*/
 }
 
 .container {
@@ -47,48 +48,44 @@ html {
     margin-left: auto;
 }
 
-.form_body_EditorBuilder {
-    display: inline-flex;
-    justify-content: center;
-    align-content: center;
-    align-items: center;
-    text-align: center;
-
-}
-
-.form-color {
+.BuilderEditor_body-form {
     display: flex;
+    justify-content: center;
     flex-direction: column;
     background-color: #24242d;
     border-radius: 3.5%;
-
+    position: relative;
+    flex-wrap: wrap;
 }
 
-.body_form_builderFlex {
+.BuilderEditor_header-form {
+    margin-top: 1rem;
     display: flex;
     justify-content: center;
-    align-content: center;
 }
 
-.little-form {
-}
-
-.form_EditorBuilder {
+.EditorBuilder-form {
+    display: flex;
     padding: .8rem .4rem;
     font-size: 1rem;
-    line-height: 1.5;
     color: #ffffff;
     background-color: #3d3d3f;
     background-clip: padding-box;
     border: 1px solid #ced4da;
     border-radius: .25rem;
-    width: 80%;
-    height: 80%;
+    /*width: 45rem;*/
+    margin-bottom: 4.25%;
+
+
 }
 
+input.EditorBuilder-form {
+    width: fit-content;
+}
 
 .form-group {
     margin-bottom: 1rem;
+
 }
 
 .form-control {
@@ -102,7 +99,8 @@ html {
     background-color: #3d3d3f;
     background-clip: padding-box;
     border: 1px solid #ced4da;
-    border-radius: .25rem;
+    /* border-radius: .25rem; */
+    border-radius: 1rem;
     transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
     margin-bottom: 10px;
     /*border: 1px #767676 solid;*/
@@ -196,9 +194,11 @@ html {
     line-height: 1.5;
     border-radius: .25rem;
     transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+    margin-bottom: 1rem;
 }
 
-.post__body { /* container? */
+.post__body {
+    /* container? */
     color: #084c9a;
     border-radius: 5px;
     background-color: transparent;
@@ -243,6 +243,22 @@ html {
     top: -0.7rem;
 }
 
+.attachment-BuilderEditor__body {
+    display: flex;
+    margin-left: 0.5%;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+.attachment-BuilderEditor-content {
+    padding: 1.7rem;
+    border: 2px solid #9a8b8b;
+    background-color: #6a6a6a;
+    border-radius: 0.5rem;
+    margin-bottom: 0.7rem;
+}
+
 .post_read-more {
     font-size: smaller;
 }
@@ -271,11 +287,12 @@ html {
 }
 
 .toolbar-search-body {
-    margin-right: .5rem;
+    /* margin-right: .5rem; */
 }
 
 .post-filter__body {
     color: #d1c5c5;
+    margin-left: .25rem;
     margin-right: .25rem;
 }
 
@@ -450,15 +467,7 @@ html {
      */
 }
 
-.card-alt {
-    /*position: relative;*/
-    /*display: flex;*/
-    /*flex-direction: column;*/
-    background-clip: border-box;
-    border-radius: .25rem;
-}
-
-.card {
+.authentication {
     position: relative;
     display: flex;
     flex-direction: column;
@@ -468,16 +477,24 @@ html {
     background-clip: border-box;
     border: 1px solid rgba(0, 0, 0, .125);
     border-radius: .25rem;
+    box-shadow: 0.4rem 0 0.25rem rgba(74, 65, 65, 0.3), -0.25rem 0 .75rem rgba(76, 67, 67, 0.3);
+    transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
 }
 
-.card-body {
-    /*flex: 1 1 auto;*/
-    /*min-height: 1px;*/
-    /*padding: 1.25rem;*/
+.authentication:hover{
+    box-shadow: .75rem 0 1.5rem rgba(179, 163, 163, 0.3), -.75rem 0 .75rem rgba(179, 163, 163, 0.3);
+}
+
+.authentication__body {
+    flex: 1 1 auto;
+    min-height: 1px;
+    padding: 1.25rem;
+    margin-bottom: 1rem;
+
 }
 
 
-.card-header {
+.Authentication__header {
     padding: .75rem 1.25rem;
     margin-bottom: 0;
     background-color: rgba(0, 0, 0, .03);
@@ -682,7 +699,7 @@ textarea.form-control {
     height: auto;
 }
 
-textarea.form_EditorBuilder {
+textarea.EditorBuilder-form {
     height: auto;
 }
 
@@ -691,11 +708,10 @@ textarea {
     resize: both;
 }
 
-label {
-    display: inline-block;
-    margin-bottom: .5rem;
-}
-
+/*label {*/
+/*    display: inline-block;*/
+/*    margin-bottom: .5rem;*/
+/*}*/
 .alert {
     position: relative;
     padding: .75rem 1.25rem;
