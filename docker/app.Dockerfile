@@ -1,4 +1,4 @@
-FROM php:8.2-cli
+FROM php:8.1-cli
 
 # Install system dependencies
 RUN apt-get update && apt-get install -y \
@@ -16,4 +16,4 @@ RUN php composer.phar install --optimize-autoloader
 
 EXPOSE 8081
 
-CMD ["php", "index.php"]
+CMD ["php", "-S", "0.0.0.0:8081"]

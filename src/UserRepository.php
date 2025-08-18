@@ -14,7 +14,7 @@ class UserRepository
         $this->dataBase = $dataBase;
     }
 
-    public function addUser($login, $password, $role = 0)
+    public function addUser($login, $password, $role = 1)
     {
         $salt = $this->generateSalt();
         $hash = $this->generateHash($salt, $password);
@@ -80,21 +80,21 @@ class UserRepository
         return $user;
     }
 
-//    private function getUsers()
-//    {
-//        $content = file_get_contents($this->filePath);
-//        return json_decode($content, true) ?: [];
-//    }
-//
-//    private function saveUsers($users): bool|int
-//    {
-//        return file_put_contents($this->filePath, json_encode($users, JSON_PRETTY_PRINT));
-//    }
-//
-//    public function getAllUsers()
-//    {
-//        return $this->getUsers();
-//    }
+    //    private function getUsers()
+    //    {
+    //        $content = file_get_contents($this->filePath);
+    //        return json_decode($content, true) ?: [];
+    //    }
+    //
+    //    private function saveUsers($users): bool|int
+    //    {
+    //        return file_put_contents($this->filePath, json_encode($users, JSON_PRETTY_PRINT));
+    //    }
+    //
+    //    public function getAllUsers()
+    //    {
+    //        return $this->getUsers();
+    //    }
 
 
     public function findUserIcon($userId)
@@ -134,7 +134,6 @@ class UserRepository
         $iconId = $statement->fetchAll()[0];
         error_log('Icon Id = ' . $iconId);
         return $statement->fetchAll();
-
     }
 
     public function setUserIcon($iconId, $userId)
@@ -149,7 +148,6 @@ class UserRepository
 
         $statement->execute();
         return $statement->fetchAll();
-
     }
 
     public function findAuthorIcon(int $postid) /* post twig*/
@@ -167,7 +165,6 @@ class UserRepository
         ]);
 
         return $statement->fetchAll();
-
     }
 
     public function getdefaultIcon()
@@ -180,42 +177,41 @@ class UserRepository
         $statement->execute();
         return $statement->fetchAll();
     }
-//    public function FindCommentAuthorIcon ( int $authorID)
-//    {
-//        $connection = $this->dataBase->getConnection();
-//
-//        $statement = $connection->prepare(
-//            'SELECT * from user_icon_view where user_id = :author_id;'
-//        );
-//
-//        $statement->execute([
-//            'author_id' => $authorID
-//        ]);
-//
-//        return $statement->fetchAll();
-//
-//    }
+    //    public function FindCommentAuthorIcon ( int $authorID)
+    //    {
+    //        $connection = $this->dataBase->getConnection();
+    //
+    //        $statement = $connection->prepare(
+    //            'SELECT * from user_icon_view where user_id = :author_id;'
+    //        );
+    //
+    //        $statement->execute([
+    //            'author_id' => $authorID
+    //        ]);
+    //
+    //        return $statement->fetchAll();
+    //
+    //    }
 
-//fixme
+    //fixme
     function generateSalt()
     {
         return '64';
     }
 
-//fixme
+    //fixme
     function generateHash($salt, $password)
     {
 
-// check for have unhashing password
+        // check for have unhashing password
 
-//    $checkhash = // PDO fetch pass in findUserByLoginAndPassword and form authentication
-//    if (!empty($login) && !empty($password)) { view on all pass for unhashing else unhashing pass found drop and return for not found pass
-// generate hash
-//    }
+        //    $checkhash = // PDO fetch pass in findUserByLoginAndPassword and form authentication
+        //    if (!empty($login) && !empty($password)) { view on all pass for unhashing else unhashing pass found drop and return for not found pass
+        // generate hash
+        //    }
 
-// return result all
+        // return result all
 
         return $password;
     }
-
 }

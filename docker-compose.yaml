@@ -1,13 +1,35 @@
-# write docker compose file to run php application exposing 8081 
-version: '3.8'
 services:
   php-app:
-    image: petos-forum-app
+    build:
+      context: .
+      dockerfile: docker/app.Dockerfile
+    restart: unless-stopped
+    environment:
+      DATABASE_HOST: mysql-db
     ports:
       - "8081:8081"
+    networks:
+      - quasi-forum-net
+    depends_on:
+      - mysql-db
+  mysql-db:
+    build:
+      context: .
+      dockerfile: docker/db.Dockerfile
+    restart: unless-stopped
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DATABASE_PASSWORD}
+      MYSQL_DATABASE: ${DATABASE_NAME}
+      MYSQL_USER: ${DATABASE_USERNAME}
+      MYSQL_PASSWORD: ${DATABASE_PASSWORD}
     # volumes:
-    #   - ./src:/var/www/html
-    # environment:
-    #   - APACHE_DOCUMENT_ROOT=/var/www/html/public
-    # networks:
-    #   - app-network
+    #   - mysql-data:/var/lib/mysql
+    networks:
+      - quasi-forum-net
+networks:
+  quasi-forum-net:
+# volumes are disable to perform init scripts for db
+# volumes:
+#   mysql-data:
