@@ -19,7 +19,7 @@ class CommentRepository
         $connection = $this->dataBase->getConnection();
         error_log('fetch comments');
         $statement = $connection->prepare(
-                "SELECT * from comment where post_id = :post_id"
+            "SELECT * from comment where post_id = :post_id"
         );
 
         $statement->execute([
@@ -32,11 +32,10 @@ class CommentRepository
     /**
      * @throws Exception
      */
-    public function createComment(array $comment)
+    public function createComment(array $comment, $fileName, $userId)
     {
         error_log('Start to connect on the DataBase(Create Comments)');
         $connection = $this->dataBase->getConnection();
-
         error_log('INSERT comments');
         // Вбивание данных из шаблона
         $statement = $connection->prepare(
@@ -46,7 +45,7 @@ class CommentRepository
         $result = $statement->execute([
             'content' => $comment['content'],
             'post_id' => $comment['post_id'],
-            'author_id' => $comment['author_id']
+            'author_id' => $comment['author_id'],
         ]);
 
         if (!$result) {
@@ -54,6 +53,21 @@ class CommentRepository
             throw new Exception('Incorrect comment');
         }
     }
+
+    public function saveCommentAttachment($userId, $fileName)
+    {
+        $connection = $this->dataBase->getConnection();
+
+        $statement = $connection->prepare(
+            "call ADDCommentAttachment(:fileName, :userId, @post_attachment_id); select @post_attachment_id;"
+        );
+
+        $statement->bindParam('userId', $userId);
+        $statement->bindParam('fileName', $fileName);
+        $result = $statement->execute();
+        return $statement->fetchAll();
+    }
+
     public function getCommentAttachmentView(int $commentID) //
     {
         $connection = $this->dataBase->getConnection();
@@ -63,11 +77,10 @@ class CommentRepository
         );
 
         $statement->execute([
-//            'comment_id' => 2
-            'comment_id' => (int) $commentID
+            //            'comment_id' => 2
+            'comment_id' => (int)$commentID
         ]);
 
         return $statement->fetchAll();
-
     }
 }

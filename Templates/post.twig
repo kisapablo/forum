@@ -33,17 +33,18 @@
                     <p class="comment-text">   {{ comment.content | e }}</p>
                     <div class="position">
                         {% for comments_attachment in comment.attachments %}
-                            <img src="{{ comments_attachment.attachment_name }}" alt="Never" class="comment-img" style="margin-left: 0.3rem;">
+                            <img src="{{ comments_attachment.attachment_name }}" alt="Never" class="comment-img"
+                                 style="margin-left: 0.3rem;">
                         {% endfor %}
                     </div>
-{#                    {% for author in comment.attachments %}#}
+                    {#                    {% for author in comment.attachments %} #}
                     <p class="comment-text text-muted">
                         <small>{{ comment.attachments.author_name }}</small>
                     </p>
-{#                    {% endfor %}#}
+                    {#                    {% endfor %} #}
                     <img src="{{ comment.author_ico.icon_name }}" alt="avatars" class="avatar">
-{#                    {% for author in comment.attachments %}#}
-{#                    {% endfor %}#}
+                    {#                    {% for author in comment.attachments %} #}
+                    {#                    {% endfor %} #}
                 </div>
             {% endfor %}
         {% else %}
@@ -54,7 +55,7 @@
         {% if user is not null %}
 
 
-            <form method="POST" action="/posts/{{ post.id }}/comments" class="mb-5">
+            <form method="POST" action="/posts/{{ post.id }}/comments" class="mb-5" enctype="multipart/form-data">
                 <div class="form-group">
                     <label class="Comment__Desc-main" for="exampleFormControlTextarea1">Add new Comment, write your
                         think of this

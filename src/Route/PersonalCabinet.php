@@ -185,16 +185,4 @@ class PersonalCabinet
         echo '<br> Cookie Value is ';
         print_r($_COOKIE);
     }
-    /*
-    public function updateUserInfo(Request $request, Response $response)
-    {
-        $UserName = $_POST['Username'];
-        $User_Content = $_POST['user_content'];
-        $Newavatar = $_POST['avatar'];
-        error_log('$_POST Value is' . json_encode($_POST));
-        error_log('$User_Content Value is' . json_encode($User_Content));
-        error_log('$Username Value is' . json_encode($UserName));
-        error_log('$NewAvatar Value is' . json_encode($Newavatar));
-    }
-    */
 }

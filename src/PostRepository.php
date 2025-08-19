@@ -53,10 +53,23 @@ class PostRepository
             "INSERT INTO post (title, content, author_id, publication_date) 
                 VALUES ('$title', '$content', '$id', CURRENT_DATE)"
         );
-
-
         $statement->execute();
 
+        return $statement->fetchAll();
+    }
+
+
+    public function savePostAttachment($userId, $fileName)
+    {
+        $connection = $this->dataBase->getConnection();
+
+        $statement = $connection->prepare(
+            "call ADDPostAttachment(:fileName, :userId, @post_attachment_id); select @post_attachment_id;"
+        );
+
+        $statement->bindParam('userId', $userId);
+        $statement->bindParam('fileName', $fileName);
+        $result = $statement->execute();
         return $statement->fetchAll();
     }
 
@@ -89,7 +102,7 @@ class PostRepository
             'id' => $post_id
         ]);
 
-        $posts =  $statement->fetchAll();
+        $posts = $statement->fetchAll();
 
         if (empty($posts)) {
             return null;
@@ -108,13 +121,13 @@ class PostRepository
             "UPDATE post SET
                 content = :content,
                 title = :title
-                WHERE id = :post_id" );
+                WHERE id = :post_id");
 
 
         $statement->execute([
-        'post_id' => $post_id,
-        'title' => $title,
-        'content' => $content
+            'post_id' => $post_id,
+            'title' => $title,
+            'content' => $content
         ]);
 
 
