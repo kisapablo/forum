@@ -3,7 +3,7 @@
     Post Editor
 {% endblock %}
 {% block body %}
-    <form method="post" action="" enctype="multipart/form-data">
+    <form method="POST" action="" enctype="multipart/form-data">
         <div class="BuilderEditor_body-form">
             <div class="BuilderEditor_header-form">
                 <label>
@@ -16,8 +16,8 @@
                 </label>
                 <div class="attachment-BuilderEditor__body">
                     <div class="attachment-BuilderEditor-content">
-                        <label for="avatar">Custom <br>Uploading<br> your Icon</label>
-                        <input type="file" id="avatar" name="avatar" accept="image/**" {#style="display:none;"#}/>
+                        <label for="attachment">Custom <br>Uploading<br> your Icon</label>
+                        <input type="file" id="avatar" name="attachment" accept="image/**" {#style="display:none;"#}/>
                     </div>
                 </div>
             </div>

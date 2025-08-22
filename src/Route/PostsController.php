@@ -60,31 +60,52 @@ class PostsController
 
 
     // rendering index.twig
-    function showAllPosts(Request $request, Response $response, array $args = []): Response
+    function showAllPosts(Request $request, Response $response): Response
     {
+        $params = $request->getQueryParams();
         // Проверяем переменная обьявлена ли и разницу с null
-        $page = isset($args['page']) ? (int)$args['page'] : 1;
+        $page = isset($params['page']) ? (int)$params['page'] : 1;
         // Лимит отрисовки страниц(если будет 5 постов то отрисуется только 3 из них если лимит равен 3)
-        $limit = 3;
+           $limit = 3;
         $start = (int)(($page - 1) * $limit);
 
-        $posts = $this->postRepository->findAllPosts($args, $page, $limit, $start);
+        if (isset($params['author'])) {
+            $authorId = (int)$params['author'];
+            $posts = $this->postRepository->findAllPostsByAuthorId($authorId, $limit, $start);
+            $baseUrl = '/posts?author=' . $authorId . '&';
+        } else {
+            $posts = $this->postRepository->findAllPosts($limit, $start);
+            $baseUrl = '/posts?';
+        }
+
+        if (isset($params['search'])) {
+            $searchName = $params['search'];
+            $outposts = [];
+            foreach ($posts as $post) {
+                if (str_contains($post['title'], $searchName)) {
+                    $outposts[] = $post;
+                }
+            }
+            $posts = $outposts;
+        }
+
         $icon = $this->userRepository->findUserIcon($_SESSION['user']['id']);
 
         $totalCount = $this->postRepository->getTotalCount();
         error_log('Session is ' . json_encode($_SESSION));
         error_log('Session id is ' . json_encode($_SESSION['id']));
         error_log('Session id i ' . json_encode($posts['author_name']));
+        error_log('Post Value ' . json_encode($posts));
         $body = $this->view->render('index.twig', [
             'posts' => $posts,
             'showAuthButton' => true,
             'showUserInfo' => false,
             'user' => $_SESSION['user'],
-            'id' => $_SESSION['id'],
             'icons' => $icon,
+            'baseUrl' => $baseUrl,
             'pagination' => [
                 'current' => $page,  // current page number(текущ. номер страницы)
-                'paging' => ceil($totalCount / $limit) // вычисление всего кол-ва страниц через $totalCount деля на $limit и округления ceilом
+                'pagesCount' => ceil($totalCount / $limit), // вычисление всего кол-ва страниц через $totalCount деля на $limit и округления ceilом
             ]
         ]);
 
@@ -154,7 +175,6 @@ class PostsController
         }
 
         $iconName = $_FILES['avatar']['name'];
-        $userId = $_SESSION['user']['id'];
 
         $fileDir = "/public/images/";
         $fileName = $fileDir . $iconName;
@@ -162,15 +182,13 @@ class PostsController
             $dir = "./public/images/" . $_FILES['avatar']['name'];
             error_log('File name ' . $dir);
             move_uploaded_file($_FILES['avatar']['tmp_name'], $dir);
-        } else {
-            exit("error!");
         }
         error_log('FileName Value is ' . json_encode($fileName));
         error_log('FILES is ' . json_encode($_FILES));
-        $PAttachment = $this->postRepository->savePostAttachment($userId, $fileName);
-        error_log('PAttachment value is ' . json_encode($PAttachment));
 
-        $this->postRepository->addNewPost($title, $content, $id);
+        $post = $this->postRepository->addNewPost($title, $content, $id);
+        $PAttachment = $this->postRepository->savePostAttachment($post, $fileName);
+        error_log('PAttachment value is ' . json_encode($PAttachment));
 
         $body = $this->view->render('Navigation/CreateNewPosts.twig', [
             'icons' => $icon
@@ -185,7 +203,6 @@ class PostsController
             return $response->withStatus(301)->withHeader('Location', '/user/login');
         }
 
-        //        error_log('Initial to create for post');
         $comment = [
             'content' => $_POST['content'],
             'post_id' => $args['post_id'],
@@ -201,14 +218,13 @@ class PostsController
             $dir = "./public/images/" . $_FILES['avatar']['name'];
             error_log('File name ' . $dir);
             move_uploaded_file($_FILES['avatar']['tmp_name'], $dir);
-        } else {
-            exit("error!");
         }
         error_log('filename is ' . json_encode($fileName));
         error_log('Files is ' . json_encode($_FILES));
         $comments = $this->commentRepository->createComment($comment, $fileName, $userId);
+        error_log('Comments Value is ' . json_encode($comments));
         error_log('Userid[author_id] value is ' . json_encode($userId));
-        $CAttachment = $this->commentRepository->saveCommentAttachment($userId, $fileName);
+        $CAttachment = $this->commentRepository->saveCommentAttachment($comments, $fileName);
         error_log("CAttachment" . json_encode($CAttachment));
         return $response->withStatus(301)->withHeader('Location', '/posts/' . $args['post_id']);
     }
@@ -231,23 +247,6 @@ class PostsController
             $response->getBody()->write($body);
             return $response;
         }
-        $iconName = $_FILES['avatar']['name'];
-        $userId = $_SESSION['user']['id'];
-
-        $fileDir = "/public/images/";
-        $fileName = $fileDir . $iconName;
-        if (isset($_FILES) && $_FILES['avatar']['error'] == 0) {
-            $dir = "./public/images/" . $_FILES['avatar']['name'];
-            error_log('File name ' . $dir);
-            move_uploaded_file($_FILES['avatar']['tmp_name'], $dir);
-        } else {
-            exit("error!");
-        }
-        error_log('FileName Value is ' . json_encode($fileName));
-        error_log('FILES is ' . json_encode($_FILES));
-        $PAttachment = $this->postRepository->savePostAttachment($userId, $fileName);
-        error_log('PAttachment value is ' . json_encode($PAttachment));
-
         $icon = $this->userRepository->findUserIcon($_SESSION['user']['id']);
         if ($icon == null) {
             error_log("User#" . $_SESSION['user']['id'] . " has no icon");
@@ -276,6 +275,21 @@ class PostsController
         $post_id = (int)$args['post_id'];
         error_log('ID Value is' . json_encode($post_id));
         $update = $this->postRepository->updatePosts($title, $content, $post_id);
+        $iconName = $_FILES['attachment']['name'];
+
+        $fileDir = "/public/images/";
+        $fileName = $fileDir . $iconName;
+        if (isset($_FILES) && $_FILES['avatar']['error'] == 0) {
+            $dir = "./public/images/" . $_FILES['avatar']['name'];
+            error_log('File name ' . $dir);
+            move_uploaded_file($_FILES['avatar']['tmp_name'], $dir);
+        } else {
+            exit("error!");
+        }
+        error_log('FileName Value is ' . json_encode($fileName));
+        error_log('FILES is ' . json_encode($_FILES));
+        $PAttachment = $this->postRepository->savePostAttachment($post_id, $fileName);
+        error_log('PAttachment value is ' . json_encode($PAttachment));
         return $response->withStatus(301)->withHeader('Location', '/posts/' . (int)$args['post_id']);
     }
 }
