@@ -51,15 +51,24 @@ class PostRepository
         // Вбивание данных из шаблонов
         $statement = $connection->prepare(
             "INSERT INTO post (title, content, author_id, publication_date) 
-                VALUES ('$title', '$content', '$id', CURRENT_DATE)"
+                VALUES (:title, :content, :id, CURRENT_DATE)"
         );
-        $statement->execute();
+        $statement->execute([
+            'title' => $title,
+            'content' => $content,
+            'id' => $id
+        ]);
 
-        return $statement->fetchAll();
+        return $connection->lastInsertId();
     }
 
 
-    public function savePostAttachment($userId, $fileName)
+    public function getNewPostID()
+    {
+
+    }
+
+    public function savePostAttachment($id, $fileName)
     {
         $connection = $this->dataBase->getConnection();
 
@@ -67,20 +76,20 @@ class PostRepository
             "call ADDPostAttachment(:fileName, :userId, @post_attachment_id); select @post_attachment_id;"
         );
 
-        $statement->bindParam('userId', $userId);
+        $statement->bindParam('userId', $id);
         $statement->bindParam('fileName', $fileName);
         $result = $statement->execute();
         return $statement->fetchAll();
     }
 
-    public function findAllPosts(array $args, $page, $limit, $start)
+    public function findAllPosts($limit, $start)
     {
         // Проверяем переменная обьявлена ли и разницу с null
 
         $connection = $this->dataBase->getConnection();
 
         $statement = $connection->prepare(
-            'SELECT * FROM user_post_view ORDER BY publication_date DESC LIMIT :limit OFFSET :start     ' //:start
+            'SELECT * FROM user_post_view ORDER BY publication_date DESC LIMIT :limit OFFSET :start' //:start
         );
 
         $statement->bindValue(':limit', $limit, PDO::PARAM_INT);
@@ -134,17 +143,20 @@ class PostRepository
         return $statement->fetchAll();
     }
 
-    public function findAllPostsByAuthorId($authorId): array
+    public function findAllPostsByAuthorId($authorId, $limit, $start): array
     {
         // Проверяем переменная обьявлена ли и разницу с null
 
         $connection = $this->dataBase->getConnection();
 
         $statement = $connection->prepare(
-            'SELECT * FROM post where author_id = :id' //
+//            'SELECT * FROM post where author_id = :id' //
+            'SELECT * FROM user_post_view WHERE author_id = :author_id ORDER BY publication_date LIMIT :limit OFFSET :start'
         );
 
-        $statement->bindValue(':id', $authorId, PDO::PARAM_INT);
+        $statement->bindValue(':author_id', $authorId, PDO::PARAM_INT);
+        $statement->bindValue(':limit', $limit, PDO::PARAM_INT);
+        $statement->bindValue('start', $start, PDO::PARAM_INT);
         $statement->execute();
 
         return $statement->fetchAll();

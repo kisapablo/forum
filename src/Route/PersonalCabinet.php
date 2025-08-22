@@ -47,10 +47,10 @@ class PersonalCabinet
 
     public function showAdminPanel(Request $request, Response $response, array $args): Response
     {
-            $icon = $this->userRepository->findUserIcon($_SESSION['user']['id']);
-            if ($icon == null) {
-                error_log("User#" . $_SESSION['user']['id'] . " has no icon");
-            }
+        $icon = $this->userRepository->findUserIcon($_SESSION['user']['id']);
+        if ($icon == null) {
+            error_log("User#" . $_SESSION['user']['id'] . " has no icon");
+        }
         error_log('Session is ' . json_encode($_SESSION));
 //        if (!isset($user) || !$user['id']) {
 //            return $response->withStatus(301)->withHeader('Location', '/user/login');
@@ -62,49 +62,6 @@ class PersonalCabinet
         ]);
         $response->getBody()->write($body);
         return $response;
-    }
-
-    // Selecting Posts... Personal Cabinet SelectPosts
-    public function showPublishedPosts(Request $request, Response $response, array $args = []): Response
-    {
-        $userId = $_SESSION['user']['id'];
-        $page = isset($args['page']) ? (int)$args['page'] : 1;
-        $totalCount = $this->postRepository->getTotalCountUsers($userId);
-        $limit = 3;
-        $start = (int)(($page - 1) * $limit);
-
-
-        error_log('ID Value is' . json_encode($userId));
-
-        $post_id = (int)$args['post_id'];
-        error_log('Post_ID Value is' . json_encode($post_id));
-
-        $posts = $this->postRepository->findAllPostsByAuthorId($userId);
-
-        error_log('Posts Value is' . json_encode($posts));
-
-        error_log('Session is ' . json_encode($_SESSION));
-//        if (!isset($user) || !    $user['userId']) {
-//            return $response->withStatus(301)->withHeader('Location', '/user/login');
-//        }
-//
-        $icon = $this->userRepository->findUserIcon($_SESSION['user']['id']);
-        if ($icon == null) {
-            error_log("User#" . $_SESSION['user']['id'] . " has no icon");
-        }
-
-        $body = $this->view->render('Navigation/PersonalCabinet-SelectPosts.twig', [
-            'posts' => $posts,
-            'user' => $_SESSION['user'],
-            'icons' => $icon,
-             'pagination' => [
-        'current' => $page,  // current page number(текущ. номер страницы)
-        'paging' => ceil($totalCount / $limit) // вычисление всего кол-ва страниц через $totalCount деля на $limit и округления ceilом
-    ]
-        ]);
-        $response->getBody()->write($body);
-        return $response;
-        // Конец отрисовки
     }
 
     public function showUserEditor(Request $request, Response $response)
@@ -174,7 +131,7 @@ class PersonalCabinet
         return $response->withStatus(301)->withHeader('Location', '/user');
     }
 
-    public function getglobalvariable()
+    public function getGlobalVariable()
     {
         echo 'Post Value is ';
         print_r($_POST);

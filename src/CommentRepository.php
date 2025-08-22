@@ -42,6 +42,7 @@ class CommentRepository
             "INSERT INTO comment (content, author_id, post_id) 
                 VALUES ( :content, :author_id, :post_id )"
         );
+
         $result = $statement->execute([
             'content' => $comment['content'],
             'post_id' => $comment['post_id'],
@@ -52,6 +53,9 @@ class CommentRepository
             error_log('Incorrect comment');
             throw new Exception('Incorrect comment');
         }
+
+        return $connection->lastInsertId();
+//        return $statement->fetchAll()[0];
     }
 
     public function saveCommentAttachment($userId, $fileName)

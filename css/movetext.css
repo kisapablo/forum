@@ -10,6 +10,10 @@ color через hover плохая идея
     font-family: roboto sans-serif;
     margin: 0;
     padding: 0;
+    /*
+    /*Поиск выпирающих элементов
+    outline: 4px solid green !important;*/
+
 }
 
 body {
@@ -157,8 +161,11 @@ input.EditorBuilder-form {
 
 .nav__body-buttons {
     display: flex;
-    height: 87%;
-    /*height: 2.5rem;*/
+    align-items: center;
+}
+
+.nav_button-body__lastbutton{
+    margin-right: .75rem;
 }
 
 .button-nearby-post {
