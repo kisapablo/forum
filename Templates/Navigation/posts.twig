@@ -2,9 +2,11 @@
     <div class="post__body post__body-colors post__body-hover">
         <div class="post-title">
             <a href="{{ url('posts/' ~ post.id) }}">
-                <h5 class="post-title">{{ post.title|escape }}</h5></a>
+                <h5 style="font-size: large;">{{ post.title|escape }}</h5></a>
+            <span class="post-publication-date">{{ post.publication_data|date("F d, Y, H:m ") }}</span>
         </div>
-        <div style="margin-bottom: 1.56rem">
+        <div class="post-author">
+            <img src="{{ post.icon_name }}" alt="icon">
             {{ post.author_name }}
         </div>
         <div class="post-tags">
@@ -17,6 +19,5 @@
         <div class="post_read-more">
             <a href="{{ url('posts/' ~ post.id) }}">Read more</a>
         </div>
-        <span class="post-publication-date">{{ post.publication_data|date("F d, Y, H:m ") }}</span>
     </div>
 {% endfor %}

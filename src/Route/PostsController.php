@@ -77,7 +77,6 @@ class PostsController
             $posts = $this->postRepository->findAllPosts($limit, $start);
             $baseUrl = '/posts?';
         }
-
         if (isset($params['search'])) {
             $searchName = $params['search'];
             $outposts = [];
@@ -90,18 +89,22 @@ class PostsController
         }
 
         $icon = $this->userRepository->findUserIcon($_SESSION['user']['id']);
-
+//        $userIcon = $this->userRepository->findUserIcon($posts['author_id']);
         $totalCount = $this->postRepository->getTotalCount();
         error_log('Session is ' . json_encode($_SESSION));
         error_log('Session id is ' . json_encode($_SESSION['id']));
         error_log('Session id i ' . json_encode($posts['author_name']));
         error_log('Post Value ' . json_encode($posts));
+        error_log('Author id from post value' . json_encode($posts['author_id']));
+//        error_log('Icon Posts value is ' . json_encode($userIcon));
+
         $body = $this->view->render('index.twig', [
             'posts' => $posts,
             'showAuthButton' => true,
             'showUserInfo' => false,
             'user' => $_SESSION['user'],
             'icons' => $icon,
+//            'icon' => $userIcon,
             'baseUrl' => $baseUrl,
             'pagination' => [
                 'current' => $page,  // current page number(текущ. номер страницы)
@@ -123,15 +126,16 @@ class PostsController
             return $response;
         }
 
-        $CommentAvatar = $this->userRepository->findUserIcon($_SESSION['user']['id']);
-
         $post_id = (int)$args['post_id'];
         error_log('Post ID is ' . json_encode($post_id));
         $post = $this->postRepository->findPostById($post_id);
         error_log('post value ' . json_encode($post));
         $postAttachment = $this->postRepository->getPostAttachmentView($post_id);
-        $icons = $this->userRepository->findUserIcon($post['author_id']);
+        $icons = $this->userRepository->findUserIcon($_SESSION['user']['id']);
         error_log('icons value is' . json_encode($icons));
+//        $userIcon = $this->userRepository->findAuthorIcon($post['author_id']);
+        $userIcon = $this->userRepository->findUserIcon($post['author_id']);
+        error_log('Picons value is' . json_encode($userIcon));
 
         if ($post == null) {
             $body = $this->view->render('not-found.twig');
@@ -155,8 +159,8 @@ class PostsController
             'comments' => $comments,
             'user' => $_SESSION['user'],
             'post_attachments' => $postAttachment,
-            'icons' => $CommentAvatar,
-            'icon' => $icons,
+            'icon' => $userIcon,
+            'icons' => $icons
         ]);
 
         $response->getBody()->write($body);

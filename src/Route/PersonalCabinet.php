@@ -31,6 +31,7 @@ class PersonalCabinet
         if ($icon == null) {
             error_log("User#" . $_SESSION['user']['id'] . " has no icon");
         }
+//        $role = $this->userRepository
         error_log('Session is ' . json_encode($_SESSION));
 //        if (!isset($user) || !$user['id']) {
 //            return $response->withStatus(301)->withHeader('Location', '/user/login');

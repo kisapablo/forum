@@ -14,19 +14,17 @@
                     Поиск
                     <input type="search" class="form-control" name="search" placeholder="Search">
                     <input type="search" class="form-control" name="author" placeholder="Search with author_id">
+                    <label for="filter" class="post-filter__body">
+                        <select {# name="filter" id="filter" #} class="form-control">
+                            <option selected value="">Latest Update</option>
+                            <option value="">New Posts!</option>
+                        </select>
+                    </label>
                     <button type="submit" class="nav-button builder-color">Search</button>
                     {#                    <a type="" class="nav-button builder-color">Search</a>#}
                 </label>
             </form>
             {# Мб будет так-же в форм поиска#}
-            <div class="post-filter__body">
-                <label for="filter">
-                    <select name="filter" id="filter" class="form-control">
-                        <option selected value="jorik">Latest Update</option>
-                        <option value="jor">New Posts!</option>
-                    </select>
-                </label>
-            </div>
             {% if user is not null %}
             <a type="button" class="button-nearby-post builder-color"
                href="{{ url('posts/builders') }}">
