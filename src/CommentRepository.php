@@ -3,6 +3,7 @@
 namespace Blog;
 
 use Exception;
+use PDO;
 
 class CommentRepository
 {
@@ -13,13 +14,11 @@ class CommentRepository
         $this->dataBase = $dataBase;
     }
 
-    function getAllComments(int $postId)
+    function findUserComments(int $postId)
     {
-        error_log('Start to connection for DataBase(Check Comments)');
         $connection = $this->dataBase->getConnection();
-        error_log('fetch comments');
         $statement = $connection->prepare(
-            "SELECT * from comment where post_id = :post_id"
+            "SELECT * from user_comment_view where post_id = :post_id"
         );
 
         $statement->execute([
@@ -72,19 +71,22 @@ class CommentRepository
         return $statement->fetchAll();
     }
 
-    public function getCommentAttachmentView(int $commentID) //
+    public function findCommentAttachmentsByIds(array $ids) //
     {
+        if (empty($ids)) {
+            return [];
+        }
+
         $connection = $this->dataBase->getConnection();
 
+        $in  = str_repeat('?,', count($ids) - 1) . '?';
+
         $statement = $connection->prepare(
-            'select * from comment_attachment_view where comment_id = :comment_id'
+            "select * from comment_attachment_view where comment_id in ($in)"
         );
 
-        $statement->execute([
-            //            'comment_id' => 2
-            'comment_id' => (int)$commentID
-        ]);
+        $statement->execute($ids);
 
-        return $statement->fetchAll();
+        return $statement->fetchAll(PDO::FETCH_ASSOC);
     }
 }

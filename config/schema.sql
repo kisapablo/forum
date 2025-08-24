@@ -20,6 +20,8 @@ DROP VIEW IF EXISTS `user_icon_view` CASCADE
 DROP VIEW IF EXISTS `user_post_view` CASCADE
 ;
 
+DROP VIEW IF EXISTS `user_comment_view` CASCADE
+;
 /* Drop Tables */
 
 DROP TABLE IF EXISTS `attachment` CASCADE
@@ -69,6 +71,7 @@ CREATE TABLE `comment`
 	`content` VARCHAR(1024) NOT NULL,
 	`author_id` BIGINT NOT NULL,
 	`post_id` BIGINT NOT NULL,
+    `publication_date` TIMESTAMP NOT NULL  DEFAULT CURRENT_TIMESTAMP(),
 	CONSTRAINT `PK_comment` PRIMARY KEY (`id` ASC)
 )
 
@@ -96,7 +99,7 @@ CREATE TABLE `post`
 	`id` BIGINT NOT NULL AUTO_INCREMENT,
 	`title` VARCHAR(64) NOT NULL,
 	`content` VARCHAR(1024) NOT NULL,
-	`publication_date` DATETIME NOT NULL,
+	`publication_date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP(),
 	`author_id` BIGINT NOT NULL,
 	CONSTRAINT `PK_post` PRIMARY KEY (`id` ASC)
 )
@@ -331,14 +334,29 @@ JOIN `attachment` a ON ui.id = a.id
 JOIN `user` u ON ui.user_id = u.id;
 ;
 
-
 create view user_post_view as
 select p.id,
-p.title,
-p.content,
-p.publication_date,
-u.name as author_name, 
-u.id as author_id
+       p.title,
+       p.content,
+       p.publication_date,
+       u.id   as author_id,
+       u.name as author_name,
+       a.name as author_icon_name
 from `post` as p
-join `user` as u on p.author_id = u.id;
+         join `user` as u on p.author_id = u.id
+         join user_icon as ui on u.icon_id = ui.id
+         join attachment as a on ui.id = a.id
+;
+create view user_comment_view as
+select c.id,
+       c.content,
+       c.publication_date,
+       c.post_id,
+       c.author_id,
+       u.name as 'author_name',
+       a.name as 'author_icon_name'
+from comment as c
+         join user as u on c.author_id = u.id
+         join user_icon_view as uiv on u.icon_id = uiv.id
+         join attachment as a on uiv.id = a.id;
 ;

@@ -16,7 +16,7 @@
             </span>
         </div>
         <div class="PostPreview-author">
-            <img src="{{ icon.icon_name }}" alt="Avatar" class="avatar-post">
+            <img src="{{ icon.icon_name }}" alt="Avatar" class="avatar-post avatar">
             <div class="PostPreview-auth-text">Jorik!</div>
         </div>
         <div class="post__body">
@@ -40,6 +40,7 @@
         {% if comments %}
             {% for comment in comments %}
                 <div class="post__body comment-color">
+                    <span class="post-publication-date">{{ comment.publication_data|date("F d, Y, H:m ") }}</span>
                     <p class="comment-text">   {{ comment.content | e }}</p>
                     <div class="position">
                         {% for comments_attachment in comment.attachments %}
@@ -51,7 +52,7 @@
                         <small>{{ comment.attachments.author_name }}</small>
                     </p>
                     {#                    {% endfor %} #}
-                    <img src="{{ comment.author_ico.icon_name }}" alt="avatars" class="avatar">
+                    <img src="{{ comment.author_icon_name }}" alt="avatars" class="avatar">
                     {#                    {% for author in comment.attachments %} #}
                     {#                    {% endfor %} #}
                 </div>

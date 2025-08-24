@@ -93,8 +93,6 @@ class PostsController
 //        $userIcon = $this->userRepository->findUserIcon($posts['author_id']);
         $totalCount = $this->postRepository->getTotalCount();
         error_log('Session is ' . json_encode($_SESSION));
-        error_log('Session id is ' . json_encode($_SESSION['id']));
-        error_log('Session id i ' . json_encode($posts['author_name']));
         error_log('Post Value ' . json_encode($posts));
         $body = $this->view->render('index.twig', [
             'posts' => $posts,
@@ -142,12 +140,21 @@ class PostsController
             return $response;
         }
 
-        $comments = $this->commentRepository->getAllComments($post['id']);
-        for ($i = 0; $i < count($comments); $i++) {
-            $comment = $comments[$i];
-            $comments[$i]['attachments'] = $this->commentRepository->getCommentAttachmentView($comment['id']);
-            $comments[$i]['author_ico'] = $this->userRepository->findUserIcon($comments[$i]['author_id']);
+        $comments = $this->commentRepository->findUserComments($post['id']);
+
+        $ids = array_map(fn($c): int => $c['id'], $comments);
+
+        $attachments = $this->commentRepository->findCommentAttachmentsByIds($ids);
+
+        foreach ($attachments as $a) {
+            for ($i = 0; $i < count($comments); $i++) {
+                if ($comments[$i]['id'] == $a['comment_id']) {
+                    $comments[$i]['attachments'][] = $a;
+                    break;
+                }
+            }
         }
+
 
         error_log('New Comments ' . json_encode($comments));
         error_log('Session is ' . json_encode($_SESSION));
