@@ -1,7 +1,6 @@
 # Forum on PHP and MySQL 
 
-Рабочее актуальное:
-установка дефолтных иконок в личном кабинете
+PHP Warning: Не забудь подправить варнинги в консоле 
 
 Todo List:
 1. fix all //todo and //fixme in code

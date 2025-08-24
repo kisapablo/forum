@@ -66,7 +66,7 @@ class PostsController
         // Проверяем переменная обьявлена ли и разницу с null
         $page = isset($params['page']) ? (int)$params['page'] : 1;
         // Лимит отрисовки страниц(если будет 5 постов то отрисуется только 3 из них если лимит равен 3)
-           $limit = 3;
+        $limit = 3;
         $start = (int)(($page - 1) * $limit);
 
         if (isset($params['author'])) {
@@ -90,7 +90,7 @@ class PostsController
         }
 
         $icon = $this->userRepository->findUserIcon($_SESSION['user']['id']);
-
+//        $userIcon = $this->userRepository->findUserIcon($posts['author_id']);
         $totalCount = $this->postRepository->getTotalCount();
         error_log('Session is ' . json_encode($_SESSION));
         error_log('Session id is ' . json_encode($_SESSION['id']));
@@ -132,6 +132,9 @@ class PostsController
         $postAttachment = $this->postRepository->getPostAttachmentView($post_id);
         $icons = $this->userRepository->findUserIcon($post['author_id']);
         error_log('icons value is' . json_encode($icons));
+//        $userIcon = $this->userRepository->findAuthorIcon($post['author_id']);
+        $userIcon = $this->userRepository->findUserIcon($post['author_id']);
+        error_log('Picons value is' . json_encode($userIcon));
 
         if ($post == null) {
             $body = $this->view->render('not-found.twig');
@@ -155,8 +158,8 @@ class PostsController
             'comments' => $comments,
             'user' => $_SESSION['user'],
             'post_attachments' => $postAttachment,
-            'icons' => $CommentAvatar,
-            'icon' => $icons,
+            'icon' => $userIcon,
+            'icons' => $icons
         ]);
 
         $response->getBody()->write($body);
@@ -175,6 +178,7 @@ class PostsController
         }
 
         $iconName = $_FILES['avatar']['name'];
+        $userId = $_SESSION['user']['id'];
 
         $fileDir = "/public/images/";
         $fileName = $fileDir . $iconName;
@@ -247,6 +251,23 @@ class PostsController
             $response->getBody()->write($body);
             return $response;
         }
+        $iconName = $_FILES['avatar']['name'];
+        $userId = $_SESSION['user']['id'];
+
+        $fileDir = "/public/images/";
+        $fileName = $fileDir . $iconName;
+        if (isset($_FILES) && $_FILES['avatar']['error'] == 0) {
+            $dir = "./public/images/" . $_FILES['avatar']['name'];
+            error_log('File name ' . $dir);
+            move_uploaded_file($_FILES['avatar']['tmp_name'], $dir);
+        } else {
+            exit("error!");
+        }
+        error_log('FileName Value is ' . json_encode($fileName));
+        error_log('FILES is ' . json_encode($_FILES));
+        $PAttachment = $this->postRepository->savePostAttachment($userId, $fileName);
+        error_log('PAttachment value is ' . json_encode($PAttachment));
+
         $icon = $this->userRepository->findUserIcon($_SESSION['user']['id']);
         if ($icon == null) {
             error_log("User#" . $_SESSION['user']['id'] . " has no icon");

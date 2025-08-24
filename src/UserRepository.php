@@ -120,6 +120,24 @@ class UserRepository
         return $icons[0];
     }
 
+    public function findPostIcon($userId)
+    {
+        $connection = $this->dataBase->getConnection();
+
+        $statement = $connection->prepare(
+            'select u.id as user_id, uiv.icon_name as icon_name from user as u
+                    join user_icon_view uiv on u.icon_id = uiv.id
+                    where u.id = :user_id'
+        );
+
+        $statement->execute([
+            'user_id' => $userId
+        ]);
+
+        return $statement->fetchAll();
+
+    }
+
     public function saveUserIcon($fileName, $userId)
     {
         $connection = $this->dataBase->getConnection();
@@ -147,23 +165,6 @@ class UserRepository
         $statement->bindParam('userId', $userId);
 
         $statement->execute();
-        return $statement->fetchAll();
-    }
-
-    public function findAuthorIcon(int $postid) /* post twig*/
-    {
-        $connection = $this->dataBase->getConnection();
-
-        $statement = $connection->prepare(
-            'select u.id as user_id, uiv.icon_name as icon_name from user as u
-                    join user_icon_view uiv on u.icon_id = uiv.id
-                    where user_id = :user_id'
-        );
-
-        $statement->execute([
-            'user_id' => $postid
-        ]);
-
         return $statement->fetchAll();
     }
 
