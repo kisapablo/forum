@@ -1,30 +1,22 @@
 {% extends 'base.twig' %}
 {% block title %}
-    User Editor
+User Editor
 {% endblock %}
 {% block body %}
-    <form method="POST" action="{{ url('user/UserEditor/debug') }}" enctype="multipart/form-data">
-        <div class="BuilderEditor_body-form">
-            <div class="BuilderEditor_header-form">
-                <label>
-                    <input required type="text" class="EditorBuilder-form" name="Username" placeholder="Username"
-                           value="{{ user.name }}">
-                    <input required type="text" class="EditorBuilder-form" name="Userpass"
-                           placeholder="Update your Password"
-                           value="{{ generatedhash }}">
-                    <textarea required class="EditorBuilder-form" name="content" rows="3"
-                              placeholder="Bio">Jorikk</textarea>
-                </label>
-                <div class="attachment-BuilderEditor__body">
-                    <div class="attachment-BuilderEditor-content">
-                        <label for="avatar">Custom <br>Uploading<br> your Icon</label>
-                        <input type="file" id="avatar" name="avatar" accept="image/**" style="display:none;"/>
-                    </div>
-                </div>
-            </div>
-            <div class="form__body-button">
-                <button type="submit" class="form-button user-color">Submit Comment</button>
-            </div>
+        <form method="POST" action="{{ url('user/UserEditor/debug') }}" enctype="multipart/form-data" class="mb-5">
+        <div class="form-group">
+            {#
+            <label>
+                <input required type="text" class="form-control" name="Username" placeholder="Username"
+                       value="{{ user.name }}">
+                <input required type="text" class="form-control" name="Userpass" placeholder="Update your Password"
+                       value="{{ generatedhash }}">
+                <textarea required class="form-control" name="content" rows="3"
+                          placeholder="Bio">Jorikk</textarea>
+            </label>
+            #}
+            <input type="file" id="avatar" name="avatar" class="" accept="image/png"/>
         </div>
+        <button type="submit" class="nav-button user-color mx-1">Submit Comment</button>
     </form>
 {% endblock %}

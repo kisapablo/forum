@@ -247,20 +247,13 @@ input.EditorBuilder-form {
     top: -0.7rem;
 }
 
-.attachment-BuilderEditor__body {
-    display: flex;
-    margin-left: 0.5%;
-    justify-content: center;
-    align-items: center;
-    position: relative;
+.post-tags {
+    margin-top: 0.5rem;
 }
 
-.attachment-BuilderEditor-content {
-    padding: 1.7rem;
-    border: 2px solid #9a8b8b;
-    background-color: #6a6a6a;
-    border-radius: 0.5rem;
-    margin-bottom: 0.7rem;
+.post-tags-color {
+    border: #3ead28;
+    color: #3ead28;
 }
 
 .post_read-more {
@@ -290,9 +283,6 @@ input.EditorBuilder-form {
     margin-bottom: 5px;
 }
 
-.toolbar-search-body {
-    /* margin-right: .5rem; */
-}
 
 .post-filter__body {
     color: #d1c5c5;
@@ -495,8 +485,8 @@ input.EditorBuilder-form {
     flex: 1 1 auto;
     min-height: 1px;
     padding: 1.25rem;
+    background-color: #23252b;
     margin-bottom: 1rem;
-
 }
 
 

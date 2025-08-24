@@ -5,12 +5,12 @@
 {% endblock %}
 {% block body %}
     <div class="profile__body profile__body-color">
-        {% if icons.icon_name is not null %}
-            <img src="{{ icons.icon_name }}"
-                 class="avatar-full" alt="UserIcon">
-        {% endif %}
+        {% for icon in icons %}
+            <img src="{{ icon.icon_name|default('/public/images/kisapablo_classic.png') }}"
+                 class="avatar-full" alt="..." STYLE="width: 9rem; height: 9rem">
+        {% endfor %}
         {#                Необходимо для наилучшей работы что то из двух одно без стиля другое контейнер #}
-{#                 <div class="container">#}
+        {# <div class="container"> #}
         <div class="profile-text">
             <h5 class="profile-title">{# Kisapablo Restress #}{{ user.name }}</h5>
             <a class="nav-button profile__role-color"> {{ user.role_id |default('User') }}</a>

@@ -3,25 +3,35 @@
 {% block body %}
     {# Rendering content #}
     <div class="PostPreview">
-        <div class="post_edit-body">
-            <a class="nav-button auth-color" href="{{ url('user/posts/PostEditor/' ~ post.id) }}">Edit
-                post</a>
-            <a class="nav-button logout-color" href="{{ url('user') }}">Delete Post</a>
-        </div>
-        <h1 class="PostPreview-title">{{ post.title|escape }}</h1>
-        <div class="post__body">
-            <img src="{{ icons.icon_name }}" alt="Avatar" class="avatar">
-            <span class="text-muted">{#  Kisapablo Restless #} {{ post.author_id }} | {{ post.published_date|date("F d, Y") }}</span>
-            <span>
-                {{ post.content|raw }}
+        {% if post.author_id == user.id %}
+            <div class="post_edit-body">
+                <a class="nav-button auth-color" href="{{ url('user/posts/PostEditor/' ~ post.id) }}">Edit
+                    post</a>
+                <a class="nav-button logout-color" href="{{ url('user') }}">Delete Post</a>
+            </div>
+        {% endif %}
+        <div class="PostPreview-title">
+            <h1>{{ post.title|escape }}</h1> <span class="text-muted" style="text-align: left">
+                {{ post.author_id }} | {{ post.published_date|date("F d, Y") }}
             </span>
         </div>
-        <div class="post_img_body">
-            {% for post_attachment in post_attachments %}
-                <div class="post_img_body-shadow">
-                    <img src="{{ post_attachment.attachment_name }}" alt="PostPhoto" class="post-img">
-                </div>
-            {% endfor %}
+        <div class="PostPreview-author">
+            <img src="{{ icon.icon_name }}" alt="Avatar" class="avatar-post">
+            <div class="PostPreview-auth-text">Jorik!</div>
+        </div>
+        <div class="post__body">
+            {{ post.content|raw }}
+
+            <div class="post_img_body">
+                {% for post_attachment in post_attachments %}
+                    <div class="container">
+                    <div class="post_img_body-shadow">
+                        <img src="{{ post_attachment.attachment_name }}" alt="PostPhoto" class="post-img">
+                    </div>
+            </div>
+                {% endfor %}
+
+            </div>
         </div>
     </div>
     {#  Start Comment's #}
@@ -33,8 +43,7 @@
                     <p class="comment-text">   {{ comment.content | e }}</p>
                     <div class="position">
                         {% for comments_attachment in comment.attachments %}
-                            <img src="{{ comments_attachment.attachment_name }}" alt="Never" class="comment-img"
-                                 style="margin-left: 0.3rem;">
+                            <img src="{{ comments_attachment.attachment_name }}" alt="Never" class="comment-img">
                         {% endfor %}
                     </div>
                     {#                    {% for author in comment.attachments %} #}

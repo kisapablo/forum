@@ -32,6 +32,8 @@ class PersonalCabinet
             error_log("User#" . $_SESSION['user']['id'] . " has no icon");
         }
         error_log('Session is ' . json_encode($_SESSION));
+        error_log('ico' . json_encode($icon));
+        error_log('icon = ' . json_encode($icon['icon_name']));
 //        if (!isset($user) || !$user['id']) {
 //            return $response->withStatus(301)->withHeader('Location', '/user/login');
 //        }

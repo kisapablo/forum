@@ -8,7 +8,7 @@
                     </a>
                 </li>
             {% endif %}
-            {% for page in 1..pagination.pagesCount %}
+            {% for page in pagination.current.. min(pagination.pagesCount, pagination.current + 2) %}
                 <li class="page-item {% if pagination.current == page %} active {% endif %}">
                     <a class="page-link"
                        href="{{ url( baseUrl ~ 'page=' ~ page) }}">{{ page }}</a> {# Переход кнопке там где цифры #}
