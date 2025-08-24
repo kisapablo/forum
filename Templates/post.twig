@@ -4,19 +4,21 @@
     {# Rendering content #}
     <div class="PostPreview">
         {% if post.author_id == user.id %}
+
+        {% endif %}
+        <div class="PostPreview-title">
+            <h1>{{ post.title|escape }}</h1>
             <div class="post_edit-body">
                 <a class="nav-button auth-color" href="{{ url('user/posts/PostEditor/' ~ post.id) }}">Edit
                     post</a>
                 <a class="nav-button logout-color" href="{{ url('user') }}">Delete Post</a>
             </div>
-        {% endif %}
-        <div class="PostPreview-title">
-            <h1>{{ post.title|escape }}</h1> <span class="text-muted" style="text-align: left">
+        </div>
+        <span class="text-muted" style="text-align: left">
                 {{ post.author_id }} | {{ post.published_date|date("F d, Y") }}
             </span>
-        </div>
         <div class="PostPreview-author">
-            <img src="{{ icon.icon_name }}" alt="Avatar" class="avatar-post avatar">
+            <img src="{{ icon.icon_name }}" alt="Avatar" class="avatar-post">
             <div class="PostPreview-auth-text">Jorik!</div>
         </div>
         <div class="post__body">
@@ -40,19 +42,22 @@
         {% if comments %}
             {% for comment in comments %}
                 <div class="post__body comment-color">
+                    <div class="comment-title">
+                        <p class="comment-text">   {{ comment.content | e }}</p>
                     <span class="post-publication-date">{{ comment.publication_data|date("F d, Y, H:m ") }}</span>
-                    <p class="comment-text">   {{ comment.content | e }}</p>
+                    </div>
                     <div class="position">
                         {% for comments_attachment in comment.attachments %}
-                            <img src="{{ comments_attachment.attachment_name }}" alt="Never" class="comment-img">
+                            <img src="{{ comments_attachment.attachment_name }}" alt="Never" class="comment-img post_img_body-shadow">
                         {% endfor %}
                     </div>
                     {#                    {% for author in comment.attachments %} #}
                     <p class="comment-text text-muted">
-                        <small>{{ comment.attachments.author_name }}</small>
-                    </p>
+                        <img src="{{ comment.author_icon_name }}" alt="avatars" class="avatar">
+                        <small style="">{{ comment.attachments.author_name }}</small>
+
                     {#                    {% endfor %} #}
-                    <img src="{{ comment.author_icon_name }}" alt="avatars" class="avatar">
+                    </p>
                     {#                    {% for author in comment.attachments %} #}
                     {#                    {% endfor %} #}
                 </div>

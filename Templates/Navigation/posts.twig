@@ -2,11 +2,11 @@
     <div class="post__body post__body-colors post__body-hover">
         <div class="post-title">
             <a href="{{ url('posts/' ~ post.id) }}">
-                <h5 style="font-size: large;">{{ post.title|escape }}</h5></a>
+                <h4 class="post-title">{{ post.title|escape }}</h4></a>
             <span class="post-publication-date">{{ post.publication_data|date("F d, Y, H:m ") }}</span>
         </div>
         <div class="post-author">
-            <img src="{{ post.author_icon_name }}" alt="icon" class="avatar">
+            <img src="{{ post.author_icon_name }}" alt="icon" class="post-icon">
             {{ post.author_name }}
         </div>
         <div class="post-tags">
