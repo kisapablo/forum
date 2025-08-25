@@ -11,12 +11,12 @@
         {# <div class="container"> #}
         <div class="profile-text">
             <h5 class="profile-title">{# Kisapablo Restress #}{{ user.name }}</h5>
-            <a class="nav-button profile__role-color"> {{ user.role_id |default('User') }}</a>
-            <div class="desc" style="margin-top: 0.85rem;">{{ user.moto |default('Very Cool Description') }}</div>
+            <a class="nav-button profile__role-color"> {{ cabinet.en_name }}</a>
+            <div class="desc" style="margin-top: 0.85rem;">{{ user.moto }}</div>
             <h3 class="profile_info-title">Account Info</h3>
-            <span class="registration-date">Register on: {{ user.registration_date|default('2025.08.13') }}</span>
+            <span class="registration-date">Register on: {{ cabinet.registration_date }}</span>
             <p class="profile_info-content">100000 LVL 1M posts<br>Last
-                Activity: {{ user.last_visit_date|default('1hour ago') }}</p>
+                Activity: {{ cabinet.last_visit_date|default('1hour ago') }}</p>
             <a href="{{ url('posts?author=') ~ (user.id) }}" class="nav-button builder-color">Search Your Posts</a>
             <a class="nav-button user-color" href="{{ url('user/icons/default') }}">Select default ico</a>
             <div class="profile_info">

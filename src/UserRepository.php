@@ -120,6 +120,29 @@ class UserRepository
         return $icons[0];
     }
 
+     public function cabinetInfo($userId)
+    {
+
+        $connection = $this->dataBase->getConnection();
+
+        $statement = $connection->prepare(
+        'select u.role_id,
+                      u.id as user_id,
+                      u.last_visit_date,
+                      u.registration_date,
+                      u.moto,
+                      r.en_name,
+                      r.ru_name
+              from `user` u
+              join role r on r.id = u.role_id
+              where u.id = :user_id;'
+        );
+        $statement->execute([
+            'user_id' => $userId
+        ]);
+        return $statement->fetch();
+    }
+    /*
     public function findPostIcon($userId)
     {
         $connection = $this->dataBase->getConnection();
@@ -137,7 +160,7 @@ class UserRepository
         return $statement->fetchAll();
 
     }
-
+*/
     public function saveUserIcon($fileName, $userId)
     {
         $connection = $this->dataBase->getConnection();

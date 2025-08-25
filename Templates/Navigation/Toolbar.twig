@@ -9,15 +9,6 @@
         <div class="post-toolbar post-header">
             {% include 'Navigation/pagination.twig' with pagination %}
 {#            search=') ~ (posts )#}
-            <form method="get" action="{{ url('posts?') }}" class="mb-5">
-                <label class="toolbar-search-body">
-                    Поиск
-                    <input type="search" class="form-control" name="search" placeholder="Search">
-                    <input type="search" class="form-control" name="author" placeholder="Search with author_id">
-                    <button type="submit" class="nav-button builder-color">Search</button>
-                    {#                    <a type="" class="nav-button builder-color">Search</a>#}
-                </label>
-            </form>
             {# Мб будет так-же в форм поиска#}
             <div class="post-filter__body">
                 <label for="filter">
@@ -27,13 +18,19 @@
                     </select>
                 </label>
             </div>
-            {% if user is not null %}
-            <a type="button" class="button-nearby-post builder-color"
-               href="{{ url('posts/builders') }}">
-                Publish new post
-                {% else %}
-                {% endif %}
-            </a>
+            <form method="get" action="{{ url('posts?') }}" class="search-header">
+                <label class="toolbar-search-body">
+                    Поиск
+                    <input type="search" class="form-control" name="search" placeholder="Search">
+                    <input type="search" class="form-control" name="author" placeholder="Search with author_id">
+                    <button type="submit" class="nav-button builder-color">Search</button>
+                    {#                    <a type="" class="nav-button builder-color">Search</a>#}
+                </label>
+            </form>
+{#            {% if user is not null %}#}
+{#                <span class="search-header">Тут может что то появится со временем</span>#}
+{#                {% else %}#}
+{#                {% endif %}#}
         </div>
     </div>
 </div>

@@ -307,7 +307,15 @@ margin-right: .5rem;
 .post-filter__body {
     color: #d1c5c5;
     margin-left: .25rem;
+    margin-right: .50rem;
+}
+
+.toolbar-search-body{
     margin-right: .25rem;
+}
+
+.search-header{
+    margin-right: 1.75rem;
 }
 
 .post_img_body {
@@ -361,10 +369,6 @@ margin-right: .5rem;
 
 .profile__body-color {
     border: rgba(68, 73, 85, 0.6) 1px solid;
-}
-
-.profile__body-color:hover {
-    box-shadow: 0.375rem 0 0.75rem rgba(68, 73, 85, 0.6), -0.375rem 0 0.75rem rgba(68, 73, 85, 0.6);
 }
 
 .profile_info {
@@ -553,10 +557,6 @@ margin-right: .5rem;
     transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
     /* align-items: center; */
     /* width: 50%; */
-}
-
-.authentication:hover{
-    box-shadow: .75rem 0 1.5rem rgba(179, 163, 163, 0.3), -.75rem 0 .75rem rgba(179, 163, 163, 0.3);
 }
 
 .authentication__body {

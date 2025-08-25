@@ -28,6 +28,8 @@ class PersonalCabinet
     public function showPersonalCabinet(Request $request, Response $response, array $args): Response
     {
         $icon = $this->userRepository->findUserIcon($_SESSION['user']['id']);
+        $cabinet = $this->userRepository->cabinetInfo($_SESSION['user']['id']);
+        error_log('cabinet info is' . json_encode($cabinet));
         if ($icon == null) {
             error_log("User#" . $_SESSION['user']['id'] . " has no icon");
         }
@@ -40,7 +42,8 @@ class PersonalCabinet
 
         $body = $this->view->render('Navigation/PersonalCabinet.twig', [
             'user' => $_SESSION['user'],
-            'icons' => $icon
+            'icons' => $icon,
+            'cabinet' => $cabinet
         ]);
         $response->getBody()->write($body);
         return $response;
