@@ -10,8 +10,9 @@
             {{ post.author_name }}
         </div>
         <div class="post-tags">
-            <a class="nav-button post-tags-color"> This Tags </a>
-            <a class="nav-button post-tags-color"> Very Tags </a>
+            {% for tag in post.tags %}
+                <a class="nav-button post-tags-color"> {{ tag }}</a>
+            {% endfor %}
         </div>
         <div class="post-content post-content-color">
             <br>{{ post.content }}

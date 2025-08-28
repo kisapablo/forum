@@ -88,6 +88,21 @@ class PostsController
             }
             $posts = $outposts;
         }
+        $ids = array_map(fn($p): int => $p['id'], $posts);
+        $tags = $this->postRepository->getAllPostTag($ids);
+
+        for ($i = 0; $i < count($posts); $i++) {
+            $postTags = [];
+            $post = $posts[$i];
+
+            foreach ($tags as $tag) {
+                if ($tag['post_id'] == $post['id']) {
+                    $postTags[] = $tag['tag_name'];
+                }
+            }
+
+            $posts[$i]['tags'] = $postTags;
+        }
 
         $icon = $this->userRepository->findUserIcon($_SESSION['user']['id']);
 //        $userIcon = $this->userRepository->findUserIcon($posts['author_id']);
@@ -110,6 +125,74 @@ class PostsController
         $response->getBody()->write($body);
         return $response;
     }
+
+// rendering index.twig
+    function showDeletePosts(Request $request, Response $response): Response
+    {
+        $params = $request->getQueryParams();
+        // Проверяем переменная обьявлена ли и разницу с null
+        $page = isset($params['page']) ? (int)$params['page'] : 1;
+        // Лимит отрисовки страниц(если будет 5 постов то отрисуется только 3 из них если лимит равен 3)
+        $limit = 3;
+        $start = (int)(($page - 1) * $limit);
+
+        if (isset($params['author'])) {
+            $authorId = (int)$params['author'];
+            $posts = $this->postRepository->findAllPostsByAuthorId($authorId, $limit, $start);
+            $baseUrl = '/posts?author=' . $authorId . '&';
+        } else {
+            $posts = $this->postRepository->findAllPosts($limit, $start);
+            $baseUrl = '/posts?';
+        }
+
+        if (isset($params['search'])) {
+            $searchName = $params['search'];
+            $outposts = [];
+            foreach ($posts as $post) {
+                if (str_contains($post['title'], $searchName)) {
+                    $outposts[] = $post;
+                }
+            }
+            $posts = $outposts;
+        }
+        $ids = array_map(fn($p): int => $p['id'], $posts);
+        $tags = $this->postRepository->getAllPostTag($ids);
+
+        for ($i = 0; $i < count($posts); $i++) {
+            $postTags = [];
+            $post = $posts[$i];
+
+            foreach ($tags as $tag) {
+                if ($tag['post_id'] == $post['id']) {
+                    $postTags[] = $tag['tag_name'];
+                }
+            }
+
+            $posts[$i]['tags'] = $postTags;
+        }
+
+        $icon = $this->userRepository->findUserIcon($_SESSION['user']['id']);
+//        $userIcon = $this->userRepository->findUserIcon($posts['author_id']);
+        $totalCount = $this->postRepository->getTotalCount();
+        error_log('Session is ' . json_encode($_SESSION));
+        error_log('Post Value ' . json_encode($posts));
+        $body = $this->view->render('Navigation/DeletePost.twig', [
+            'posts' => $posts,
+            'showAuthButton' => true,
+            'showUserInfo' => false,
+            'user' => $_SESSION['user'],
+            'icons' => $icon,
+            'baseUrl' => $baseUrl,
+            'pagination' => [
+                'current' => $page,  // current page number(текущ. номер страницы)
+                'pagesCount' => ceil($totalCount / $limit), // вычисление всего кол-ва страниц через $totalCount деля на $limit и округления ceilом
+            ]
+        ]);
+
+        $response->getBody()->write($body);
+        return $response;
+    }
+
 
 
     // Rendering Post.twig

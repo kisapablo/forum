@@ -28,6 +28,7 @@ $view = $container->get(Environment::class); // Временной контей�
 $app->add(new TwigMiddleware($view));
 
 // Routing
+$app->get('/admin', [PersonalCabinet::class, 'showPersonalCabinet']);
 $app->get('/user', [PersonalCabinet::class, 'showPersonalCabinet']);
 $app->get('/user/login', [UserController::class, 'showUserLoginPage']);
 $app->get('/user/registration', [UserController::class, 'showUserRegistrationPage']);
@@ -35,8 +36,10 @@ $app->get('/user/logout', [UserController::class, 'DeleteSession']);
 $app->post('/user/login', [UserController::class, 'authorizeUser']);
 $app->post('/user/registration', [UserController::class, 'registerUser']);
 
+
 $app->get('/about', AboutPage::class);
 $app->get('/', [PostsController::class, 'showAllPosts']);
+$app->get('/posts/delete/{post_id}', [PostsController::class, 'showDeletePosts']);
 $app->get('/posts', [PostsController::class, 'showAllPosts']);
 //$app->get('/posts/all[/{page}]', [PostsController::class, 'showAllPosts']);
 $app->get('/posts/builders', [PostsController::class, 'showPostBuilderPage']);

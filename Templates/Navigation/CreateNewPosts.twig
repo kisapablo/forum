@@ -4,25 +4,33 @@
 {% endblock %}
 {% block body %}
     <form method="POST" action="{{ url('posts') }}" enctype="multipart/form-data">
-        <div class="BuilderEditor_body-form">
-            <div class="BuilderEditor_header-form">
-                <label>
-                    <input required type="text" class="EditorBuilder-form" name="title" placeholder="You Post Name">
-                    <input required type="text" class="EditorBuilder-form" name="{# tags #}" placeholder="You Tags Name">
-                    <textarea required class="EditorBuilder-form" name="content" rows="3"
-                              placeholder="You Post content"></textarea>
-                </label>
-                <div class="attachment-BuilderEditor__body">
-                    <div class="attachment-BuilderEditor-content">
-                        <label for="avatar">Custom <br>Uploading<br> your Icon</label>
-                        <input type="file" id="avatar" name="avatar" accept="image/**" style="display:none;"/>
+        <div class="BuilderEditor_body">
+            <div class="BuilderEditor__body-colors">
+            <div class="EditorBuilder-forms">
+                    <label for="filter" class="BuilderEditor_tags">
+                        <select name="filter" id="filter" class="EditorBuilder-form ">
+                            <option selected value="jorik">Latest Update</option>
+                            <option value="jor">New Posts!</option>
+                        </select>
+                    </label>
+                        <label class="label-form">
+                        <input required type="text" class="EditorBuilder-form" name="title" placeholder="You Post Name">
+                        <input required type="text" class="EditorBuilder-form" name="{# tags #}"
+                               placeholder="You Tags Name">
+                        <textarea required class="EditorBuilder-form" name="content" rows="3"
+                                  placeholder="You Post content"></textarea>
+                    </label>
+                        <div class="attachment-BuilderEditor__body">
+                        <span class="attachment-BuilderEditor-content">
+                            <label for="avatar">Custom <br>Uploading<br> your Icon</label>
+                            <input type="file" id="avatar" name="avatar" accept="image/**" style="display:none;"/>
+                        </span>
+                        </div>
+                    </div>
+                    <div class="form__body-button">
+                        <button type="submit" class="form-button user-color"> Push Public post</button>
                     </div>
                 </div>
-            </div>
-
-            <div class="form__body-button">
-                <button type="submit" class="form-button user-color"> Push Public post</button>
-            </div>
         </div>
     </form>
 {% endblock %}

@@ -175,7 +175,26 @@ class PostRepository
         ]);
 
         return $statement->fetchAll();
+    }
 
+    public function getAllPostTag($ids)
+    {
+        if (empty($ids)) {
+            return [];
+        }
+
+        $in  = str_repeat('?,', count($ids) - 1) . '?';
+
+
+        $connection = $this->dataBase->getConnection();
+
+        $statement = $connection->prepare(
+            "select * from post_tag_view where post_id IN ($in);"
+        );
+
+        $statement->execute($ids);
+
+        return $statement->fetchAll(PDO::FETCH_ASSOC);
     }
 }
 
