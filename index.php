@@ -52,6 +52,7 @@ $app->get('/posts/{post_id}', [PostsController::class, 'showPostPage']);
 
 $app->post('/posts', [PostsController::class, 'createNewPost']);
 $app->post('/user/posts/PostEditor/{post_id}', [PostsController::class, 'updatePost']);
+$app->post('/posts/delete/Deleting', [PostsController::class, 'DeletePost']);
 $app->get('/user/UserEditor', [PersonalCabinet::class, 'showUserEditor']);
 $app->post('/user/UserEditor/debug', [PersonalCabinet::class, 'addUserIco']);
 $app->post('/debug', [PersonalCabinet::class, 'getGlobalVariable']);

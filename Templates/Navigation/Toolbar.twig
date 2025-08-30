@@ -10,19 +10,15 @@
             {% include 'Navigation/pagination.twig' with pagination %}
 {#            search=') ~ (posts )#}
             {# Мб будет так-же в форм поиска#}
-            <div class="post-filter__body">
-                <label for="filter">
-                    <select name="filter" id="filter" class="form-control">
-                        <option selected value="jorik">Latest Update</option>
-                        <option value="jor">New Posts!</option>
-                    </select>
-                </label>
-            </div>
             <form method="get" action="{{ url('posts?') }}" class="search-header">
                 <label class="toolbar-search-body">
                     Поиск
                     <input type="search" class="form-control" name="search" placeholder="Search">
                     <input type="search" class="form-control" name="author" placeholder="Search with author_id">
+                    <select name="tags" id="tags" class="form-control">
+                        <option selected>Very tag</option>
+                        <option>This Tag</option>
+                    </select>
                     <button type="submit" class="nav-button builder-color">Search</button>
                     {#                    <a type="" class="nav-button builder-color">Search</a>#}
                 </label>

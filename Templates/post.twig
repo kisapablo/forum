@@ -25,8 +25,8 @@
             {{ post.content|raw }}
 
             <div class="post_img_body">
+                <div class="container">
                 {% for post_attachment in post_attachments %}
-                    <div class="container">
                     <div class="post_img_body-shadow">
                         <img src="{{ post_attachment.attachment_name }}" alt="PostPhoto" class="post-img">
                     </div>

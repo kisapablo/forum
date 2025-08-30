@@ -681,15 +681,13 @@ html {
 
 .delete-button-color {
     /*border-color: #ea5621;*/
-    /*background-color: rgba(195, 26, 26, 0.85);*/
-    /*background-color: #ff0000;*/
+    background-color: #dc3545;
     color: #ffffff;
 }
 
 .delete-button-color:hover{
     border-color: transparent;
-    /*background-color: #a11e2d;*/
-    /*background-color: #5e1313;*/
+    background-color: #631f25;
 }
 
 .auth-color {
@@ -706,6 +704,17 @@ html {
 .builder-color {
     color: #28a745;
     border-color: #28a745;
+}
+
+.leader-color{
+        color: #AC8B1FFF;
+        border-color: #AC8B1FFF;
+}
+
+.leader-color:hover{
+    color: #e3d0d0;
+    background-color: #AC8B1FFF;
+    border-color: #AC8B1FFF;
 }
 
 .builder-color:hover {
