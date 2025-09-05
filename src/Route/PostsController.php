@@ -69,15 +69,17 @@ class PostsController
         $limit = 3;
         $start = (int)(($page - 1) * $limit);
 
+        // Ищем посты которые опубликовал пользователь
         if (isset($params['author'])) {
             $authorId = (int)$params['author'];
             $posts = $this->postRepository->findAllPostsByAuthorId($authorId, $limit, $start);
-            $baseUrl = '/posts?author=' . $authorId . '&';
+            $baseUrl = 'posts?author=' . $authorId . '&';
         } else {
             $posts = $this->postRepository->findAllPosts($limit, $start);
-            $baseUrl = '/posts?';
+            $baseUrl = 'posts?';
         }
 
+        // Ищем посты в которых есть имя которое отправил пользователь
         if (isset($params['search'])) {
             $searchName = $params['search'];
             $outposts = [];
@@ -88,18 +90,38 @@ class PostsController
             }
             $posts = $outposts;
         }
-        $ids = array_map(fn($p): int => $p['id'], $posts);
-        $tags = $this->postRepository->getAllPostTag($ids);
 
+        // Форматируем посты для поиска тэгов
+        $ids = array_map(fn($p): int => $p['id'], $posts);
+        // Получаем тэги из бдшки
+        $tags = $this->postRepository->getAllPostTag($ids);
+        error_log('TagsV' . json_encode($tags));
+// Если пользователь хочет найти пост то возвращаем ему инной массив
         if (isset($params['tags'])) {
             $Querytags = (int)$params['tags'];
             error_log("Query Value" . json_encode($Querytags));
-            $PostTags = $this->postRepository->getAllPostfromTag($ids);
-            error_log("PostTags Value" . json_encode($PostTags));
-            error_log("Ids Value" . json_encode($ids) );
+            $posts = $this->postRepository->getAllPostWhereTag($posts);
+            error_log("Ids Value" . json_encode($ids));
             error_log("BaseUrl Value" . json_encode($baseUrl));
-            $baseUrl = '/posts?tags=' . $Querytags . '&';
+            $baseUrl = 'posts?tags=' . $Querytags . '&';
         }
+
+        // Добавляем теги к массиву постов
+        for ($i = 0; $i < count($posts); $i++) {
+            $postTags = [];
+            $post = $posts[$i];
+
+            foreach ($tags as $tag) {
+                if ($tag['post_id'] == $post['id']) {
+                    $postTags[] = $tag['tag_name'];
+                }
+            }
+
+            $posts[$i]['tags'] = $postTags;
+        }
+
+
+        error_log("Ids Value" . json_encode($ids));
         $icon = $this->userRepository->findUserIcon($_SESSION['user']['id']);
 //        $userIcon = $this->userRepository->findUserIcon($posts['author_id']);
         $totalCount = $this->postRepository->getTotalCount();
@@ -144,28 +166,33 @@ class PostsController
         return $response;
     }
 
-public function DeletePost(Request $request, Response $response)
-{
-    $statuscomment = $this->postRepository->deleteAllPostComment();
-    $statuspost = $this->postRepository->deletePost();
-    error_log('Status Delete Comment is ' . json_encode($statuscomment));
-    error_log('Status Delete Comment is ' . json_encode($statuspost));
+    // Шаблон
+    public function DeletePost(Request $request, Response $response)
+    {
+        // Удаляем комментарии с поста
+        $statuscomment = $this->postRepository->deleteAllPostComment();
+        // Удаляем пост
+        $statuspost = $this->postRepository->deletePost();
+        error_log('Status Delete Comment is ' . json_encode($statuscomment));
+        error_log('Status Delete Comment is ' . json_encode($statuspost));
 //    if (!empty($statuspost)){
 //        $message = 'Удаление запроса произошло успешно';
 //    } else{
 //        $message = 'Что-то пошло не так во время удаления поста';
 //    }
-                return $response->withStatus(301)->withHeader('Location', '/user/login');
-    /*
 
-    $icon = $this->userRepository->findUserIcon($_SESSION['user']['id']);
-    $body = $this->view->render('Navigation/DeletePost.twig', [
-        'user' => $_SESSION['user'],
-        'icons' => $icon,
-//        'message' => $message
-    ]);
-    */
-}
+        // Возвращаем пользоателя на страницу с постами
+        return $response->withStatus(301)->withHeader('Location', '/');
+        /*
+
+        $icon = $this->userRepository->findUserIcon($_SESSION['user']['id']);
+        $body = $this->view->render('Navigation/DeletePost.twig', [
+            'user' => $_SESSION['user'],
+            'icons' => $icon,
+    //        'message' => $message
+        ]);
+        */
+    }
 
     // Rendering Post.twig
     public function showPostPage(Request $request, Response $response, array $args = [])
@@ -231,14 +258,16 @@ public function DeletePost(Request $request, Response $response)
 
     public function createNewPost(Request $request, Response $response): Response
     {
+        // Извлекаем необходимые данные для создания поста
         $title = $_POST['title'];
         $content = $_POST['content'];
         $id = $_SESSION['user']['id'];
+        // Показываем Пользовательскую иконку
         $icon = $this->userRepository->findUserIcon($_SESSION['user']['id']);
         if ($icon == null) {
             error_log("User#" . $_SESSION['user']['id'] . " has no icon");
         }
-
+        // Загружаем прикрепленные файлы если таковые имеются
         $iconName = $_FILES['avatar']['name'];
         $userId = $_SESSION['user']['id'];
 
@@ -252,10 +281,12 @@ public function DeletePost(Request $request, Response $response)
         error_log('FileName Value is ' . json_encode($fileName));
         error_log('FILES is ' . json_encode($_FILES));
 
+        // Создаем Пост и создаем прикрепленные файлы для поста
         $post = $this->postRepository->addNewPost($title, $content, $id);
         $PAttachment = $this->postRepository->savePostAttachment($post, $fileName);
         error_log('PAttachment value is ' . json_encode($PAttachment));
 
+        // Отрисовываем шаблон для создания постов
         $body = $this->view->render('Navigation/CreateNewPosts.twig', [
             'icons' => $icon
         ]);
@@ -265,16 +296,20 @@ public function DeletePost(Request $request, Response $response)
 
     function createNewPostComment(Request $request, Response $response, array $args): Response
     {
+        // Проверяем на авторизован пользователь или нет
         if (!isset($_SESSION['user']) || !$_SESSION['user']['id']) {
             return $response->withStatus(301)->withHeader('Location', '/user/login');
         }
 
+        // Создаем массив в который ложим необходимые аргументы для создания комментария
         $comment = [
             'content' => $_POST['content'],
             'post_id' => $args['post_id'],
             'author_id' => $_SESSION['user']['id']
         ];
 
+
+        // Загружаем прикрепленные файлы к комментарию если таковые имеются
         $iconName = $_FILES['avatar']['name'];
         $userId = $_SESSION['user']['id'];
 
@@ -287,11 +322,14 @@ public function DeletePost(Request $request, Response $response)
         }
         error_log('filename is ' . json_encode($fileName));
         error_log('Files is ' . json_encode($_FILES));
+        // Создание комментария
         $comments = $this->commentRepository->createComment($comment, $fileName, $userId);
         error_log('Comments Value is ' . json_encode($comments));
         error_log('Userid[author_id] value is ' . json_encode($userId));
+        // Делаем прикрепление к комментарию
         $CAttachment = $this->commentRepository->saveCommentAttachment($comments, $fileName);
         error_log("CAttachment" . json_encode($CAttachment));
+        // Возвращаем пользователя к посту к которому он сделал комментарий
         return $response->withStatus(301)->withHeader('Location', '/posts/' . $args['post_id']);
     }
 
@@ -313,6 +351,8 @@ public function DeletePost(Request $request, Response $response)
             $response->getBody()->write($body);
             return $response;
         }
+
+        // Не понятно почему тут загружаем файлы которых нет но ладно :)
         $iconName = $_FILES['avatar']['name'];
         $userId = $_SESSION['user']['id'];
 
@@ -329,7 +369,7 @@ public function DeletePost(Request $request, Response $response)
         error_log('FILES is ' . json_encode($_FILES));
         $PAttachment = $this->postRepository->savePostAttachment($userId, $fileName);
         error_log('PAttachment value is ' . json_encode($PAttachment));
-
+        // Показываем пользовательскую иконку и отрисовываем Редактор постов
         $icon = $this->userRepository->findUserIcon($_SESSION['user']['id']);
         if ($icon == null) {
             error_log("User#" . $_SESSION['user']['id'] . " has no icon");
@@ -348,7 +388,6 @@ public function DeletePost(Request $request, Response $response)
         return $response;
     }
 
-
     public function updatePost(Request $request, Response $response, array $args)
     {
         $title = $_POST['title'];
@@ -360,6 +399,7 @@ public function DeletePost(Request $request, Response $response)
         $update = $this->postRepository->updatePosts($title, $content, $post_id);
         $iconName = $_FILES['attachment']['name'];
 
+        // Обновляем загруженные файлы и удаляем(Но на самом деле создаем еще один файлик)
         $fileDir = "/public/images/";
         $fileName = $fileDir . $iconName;
         if (isset($_FILES) && $_FILES['avatar']['error'] == 0) {
@@ -371,6 +411,7 @@ public function DeletePost(Request $request, Response $response)
         }
         error_log('FileName Value is ' . json_encode($fileName));
         error_log('FILES is ' . json_encode($_FILES));
+        // Обновляем стобец в БД(но на самом деле добавляем)
         $PAttachment = $this->postRepository->savePostAttachment($post_id, $fileName);
         error_log('PAttachment value is ' . json_encode($PAttachment));
         return $response->withStatus(301)->withHeader('Location', '/posts/' . (int)$args['post_id']);

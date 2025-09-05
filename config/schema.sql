@@ -359,3 +359,15 @@ select p.id   as post_id,
 from post as p
          join m2m_tag_post as m2m on p.id = m2m.post_id
          join tag as t on t.id = m2m.tag_id;
+create view `search_tag_view` as
+select p.id,
+       p.title,
+       p.content,
+       p.publication_date,
+       p.author_id,
+       p.author_name,
+       p.author_icon_name,
+       ptv.tag_name,
+       ptv.tag_id
+from post_tag_view as ptv
+         join user_post_view as p on p.id = ptv.post_id

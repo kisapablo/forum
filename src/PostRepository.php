@@ -196,33 +196,24 @@ class PostRepository
 
         return $statement->fetchAll(    PDO::FETCH_ASSOC);
     }
-    public function getAllPostfromTag($ids)
+    public function getAllPostWhereTag($ids)
     {
+  /*
         if (empty($ids)) {
             return [];
         }
 
         $in  = str_repeat('?,', count($ids) - 1) . '?';
-
+*/
 
         $connection = $this->dataBase->getConnection();
 
         $statement = $connection->prepare(
-            "select p.id,
-                            p.title,
-                            p.content,
-                            p.publication_date,
-                            p.author_id,
-                            p.author_name,
-                            p.author_icon_name,
-                            ptv.tag_name,
-                            ptv.tag_id
-                            from post_tag_view as ptv
-                            join user_post_view as p on p.id = ptv.post_id
-                                                                where ptv.tag_name IN ($in);"
+                "select * from search_tag_view;"
         );
 
-        $statement->execute($ids);
+        //$statement->execute($ids);
+        $statement->execute();
 
         return $statement->fetchAll(PDO::FETCH_ASSOC);
     }
