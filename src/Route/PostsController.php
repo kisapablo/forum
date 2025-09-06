@@ -58,6 +58,25 @@ class PostsController
         return $response;
     }
 
+    public function showLeaderKarma(Request $request, Response $response)
+    {
+        error_log('Session is ' . json_encode($_SESSION));
+
+        $icon = $this->userRepository->findUserIcon($_SESSION['user']['id']);
+        if ($icon == null) {
+            error_log("User#" . $_SESSION['user']['id'] . " has no icon");
+        }
+
+        $body = $this->view->render('Navigation/LeaderKarma.twig', [
+            'leaderboard' => rand(1, 50491254195489),
+            'user' => $_SESSION['user'],
+            'icons' => $icon
+        ]);
+
+        $response->getBody()->write($body);
+
+        return $response;
+    }
 
     // rendering index.twig
     function showAllPosts(Request $request, Response $response): Response
@@ -351,24 +370,6 @@ class PostsController
             $response->getBody()->write($body);
             return $response;
         }
-
-        // Не понятно почему тут загружаем файлы которых нет но ладно :)
-        $iconName = $_FILES['avatar']['name'];
-        $userId = $_SESSION['user']['id'];
-
-        $fileDir = "/public/images/";
-        $fileName = $fileDir . $iconName;
-        if (isset($_FILES) && $_FILES['avatar']['error'] == 0) {
-            $dir = "./public/images/" . $_FILES['avatar']['name'];
-            error_log('File name ' . $dir);
-            move_uploaded_file($_FILES['avatar']['tmp_name'], $dir);
-        } else {
-            exit("error!");
-        }
-        error_log('FileName Value is ' . json_encode($fileName));
-        error_log('FILES is ' . json_encode($_FILES));
-        $PAttachment = $this->postRepository->savePostAttachment($userId, $fileName);
-        error_log('PAttachment value is ' . json_encode($PAttachment));
         // Показываем пользовательскую иконку и отрисовываем Редактор постов
         $icon = $this->userRepository->findUserIcon($_SESSION['user']['id']);
         if ($icon == null) {
@@ -414,6 +415,78 @@ class PostsController
         // Обновляем стобец в БД(но на самом деле добавляем)
         $PAttachment = $this->postRepository->savePostAttachment($post_id, $fileName);
         error_log('PAttachment value is ' . json_encode($PAttachment));
+        return $response->withStatus(301)->withHeader('Location', '/posts/' . (int)$args['post_id']);
+    }
+    // rendering Comment Editor
+    public function getCommentInfo(Request $request, Response $response, array $args)
+    {
+        if (!isset($args['post_id'])) {
+            $body = $this->view->render('not-found.twig');
+            $response->getBody()->write($body);
+            return $response;
+        }
+        if (!isset($args['comment_id'])) {
+            $body = $this->view->render('not-found.twig');
+            $response->getBody()->write($body);
+            return $response;
+        }
+
+        $post_id = (int)$args['post_id'];
+        $comment_id = (int)$args['comment_id'];
+
+        $comment = $this->postRepository->findCommentById($comment_id);
+
+        error_log('comment id value is ' . json_encode($comment_id));
+        if ($comment_id == null) {
+            $body = $this->view->render('not-found.twig');
+            $response->getBody()->write($body);
+            return $response;
+        }
+        if ($post_id == null) {
+            $body = $this->view->render('not-found.twig');
+            $response->getBody()->write($body);
+            return $response;
+        }
+        // Показываем пользовательскую иконку и отрисовываем Редактор постов
+        $icon = $this->userRepository->findUserIcon($_SESSION['user']['id']);
+        if ($icon == null) {
+            error_log("User#" . $_SESSION['user']['id'] . " has no icon");
+        }
+
+        error_log('Title Comment Value is' . json_encode($comment_id));
+        $body = $this->view->render('Navigation/CommentEditor.twig', [
+            'comment' => $comment,
+            'user' => $_SESSION['user'],
+            'icons' => $icon
+        ]);
+
+        $response->getBody()->write($body);
+
+        return $response;
+    }
+
+    public function updateComment(Request $request, Response $response, array $args)
+    {
+        $content = $_POST['content'];
+        error_log('Content Value is' . json_encode($content));
+        $comment_id = (int)$args['comment_id'];
+        error_log('ID Value is' . json_encode($comment_id));
+        $update = $this->postRepository->updateComments($content, $comment_id);
+        $iconName = $_FILES['attachment']['name'];
+
+        // Обновляем загруженные файлы и удаляем(Но на самом деле создаем еще один файлик)
+        $fileDir = "/public/images/";
+        $fileName = $fileDir . $iconName;
+        if (isset($_FILES) && $_FILES['avatar']['error'] == 0) {
+            $dir = "./public/images/" . $_FILES['avatar']['name'];
+            error_log('File name ' . $dir);
+            move_uploaded_file($_FILES['avatar']['tmp_name'], $dir);
+        }
+        error_log('FileName Value is ' . json_encode($fileName));
+        error_log('FILES is ' . json_encode($_FILES));
+        // Обновляем стобец в БД(но на самом деле добавляем)
+//        $PAttachment = $this->postRepository->savePostAttachment($comment_id, $fileName);
+//        error_log('PAttachment value is ' . json_encode($PAttachment));
         return $response->withStatus(301)->withHeader('Location', '/posts/' . (int)$args['post_id']);
     }
 }

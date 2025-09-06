@@ -120,6 +120,27 @@ class PostRepository
         return $posts[0];
     }
 
+    public function findCommentById($comment_id)
+    {
+        $connection = $this->dataBase->getConnection();
+
+        $statement = $connection->prepare(
+            'SELECT * from user_comment_view where id = :id'
+        );
+
+        $statement->execute([
+            'id' => $comment_id
+        ]);
+
+        $posts = $statement->fetchAll();
+
+        if (empty($posts)) {
+            return null;
+        }
+
+        return $posts[0];
+    }
+
     public function updatePosts($title, $content, $post_id)
     {
         $connection = $this->dataBase->getConnection();
@@ -136,6 +157,27 @@ class PostRepository
         $statement->execute([
             'post_id' => $post_id,
             'title' => $title,
+            'content' => $content
+        ]);
+
+
+        return $statement->fetchAll();
+    }
+
+    public function updateComments($content, $comment_id)
+    {
+        $connection = $this->dataBase->getConnection();
+
+
+        // Изменение данных из шаблонов
+        $statement = $connection->prepare(
+            "UPDATE comment SET
+                content = :content
+                WHERE id = :comment_id");
+
+
+        $statement->execute([
+            'comment_id' => $comment_id,
             'content' => $content
         ]);
 

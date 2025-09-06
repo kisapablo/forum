@@ -43,8 +43,10 @@ $app->get('/posts/delete/{post_id}', [PostsController::class, 'showDeletePosts']
 $app->get('/posts', [PostsController::class, 'showAllPosts']);
 //$app->get('/posts/all[/{page}]', [PostsController::class, 'showAllPosts']);
 $app->get('/posts/builders', [PostsController::class, 'showPostBuilderPage']);
+$app->get('/posts/leaders', [PostsController::class, 'showLeaderKarma']);
 $app->post('/posts/{post_id}/comments', [PostsController::class, 'createNewPostComment']);
 $app->get('/user/posts/PostEditor/{post_id}', [PostsController::class, 'getPostInfo']);
+$app->get('/user/posts/CommentEditor/{post_id}/{comment_id}', [PostsController::class, 'getCommentInfo']);
 //$app->get('/search/posts/test', [PostsController::class, 'getResultSearch']);
 //$app->get('/search/users/test', [PostsController::class, 'getResultSearch']);
 $app->get('/posts/{post_id}', [PostsController::class, 'showPostPage']);
@@ -52,6 +54,7 @@ $app->get('/posts/{post_id}', [PostsController::class, 'showPostPage']);
 
 $app->post('/posts', [PostsController::class, 'createNewPost']);
 $app->post('/user/posts/PostEditor/{post_id}', [PostsController::class, 'updatePost']);
+$app->post('/user/posts/CommentEditor/{post_id}/{comment_id}', [PostsController::class, 'updateComment']);
 $app->post('/posts/delete/Deleting', [PostsController::class, 'DeletePost']);
 $app->get('/user/UserEditor', [PersonalCabinet::class, 'showUserEditor']);
 $app->post('/user/UserEditor/debug', [PersonalCabinet::class, 'addUserIco']);

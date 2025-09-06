@@ -132,9 +132,11 @@ class UserRepository
                       u.registration_date,
                       u.moto,
                       r.en_name,
-                      r.ru_name
+                      r.ru_name,
+                      count(p.id) as total
               from `user` u
               join role r on r.id = u.role_id
+              join petos_forum_db.post p on u.id = p.author_id
               where u.id = :user_id;'
         );
         $statement->execute([

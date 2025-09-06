@@ -1,0 +1,28 @@
+{% extends 'base.twig' %}
+{% block title %}
+    Post Editor
+{% endblock %}
+{% block body %}
+    <form method="POST" action="" enctype="multipart/form-data">
+        <div class="BuilderEditor_body">
+            <div class="BuilderEditor__body-colors">
+                <div class="EditorBuilder-forms">
+                    <label class="label-form">
+                        {#  Editable Comment Content #}
+                        <textarea required class="EditorBuilder-form" name="content" rows="3"
+                                  placeholder="You Comment content">{{ comment.content }}</textarea>
+                    </label>
+                    <div class="attachment-BuilderEditor__body">
+                        <div class="attachment-BuilderEditor-content">
+                            <label for="attachment">Custom <br>Uploading<br> your Icon</label>
+                            <input type="file" id="avatar" name="attachment" accept="image/**" style="display:none;"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="form__body-button">
+                    <button type="submit" class="form-button user-color">Save editing</button>
+                </div>
+            </div>
+        </div>
+    </form>
+{% endblock %}

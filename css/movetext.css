@@ -384,12 +384,8 @@ html {
     width: fit-content;
     flex-wrap: wrap;
     transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
-    border: 8px solid transparent;
-    color: #ffffff
-}
-
-.profile__body-color {
     border: rgba(68, 73, 85, 0.6) 1px solid;
+    color: #ffffff
 }
 
 .profile_info {
@@ -504,6 +500,10 @@ html {
     font-size: x-large;
 }
 
+.desc {
+    margin-top: .85rem;
+}
+
 .delete_body {
     display: flex;
     position: relative;
@@ -562,7 +562,7 @@ html {
     padding: 3rem 1.5rem 1.5rem;
 }
 
-.footer__body-colors{
+.footer__body-colors {
     background-color: #23252b;
     border: 1px solid #5a5a63;
     padding: .5rem;
@@ -573,17 +573,18 @@ html {
     object-position: center;
     width: 2.5rem;
 }
-.footer-img:hover{
+
+.footer-img:hover {
     transform: scale(1.02);
 }
 
-.footer-img{
+.footer-img {
     object-fit: contain;
     object-position: center;
     width: 2.5rem;
 }
 
-.footer-github{
+.footer-github {
     /*background: linear-gradient(60deg, #1b1a1a, #777878);*/
     background: linear-gradient(60deg, #000000, #777878);
     background-clip: text;
@@ -591,7 +592,7 @@ html {
     text-shadow: none;
 }
 
-.footer-twitter{
+.footer-twitter {
     /*background: linear-gradient(60deg, #1b1a1a, #777878);*/
     background: linear-gradient(60deg, #000000, #777878);
     background-clip: text;
@@ -599,19 +600,20 @@ html {
     text-shadow: none;
 }
 
-.footer-facebook{
+.footer-facebook {
     background: linear-gradient(60deg, #1877F2, #b3b3b3);
     background-clip: text;
     color: transparent;
     text-shadow: none;
 }
 
-.footer-telegram{
+.footer-telegram {
     background: linear-gradient(60deg, #24a1de, #babcbc);
     background-clip: text;
     color: transparent;
     text-shadow: none;
 }
+
 .footer-title {
     display: flex;
     justify-content: center;
@@ -697,6 +699,29 @@ html {
     padding: .75rem 1.25rem;
     background-color: rgba(0, 0, 0, .03);
     border-bottom: 1px solid rgba(0, 0, 0, .125);
+}
+
+.Leader__body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 5px;
+    position: relative;
+    flex-wrap: wrap;
+    flex-direction: column;
+    transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+}
+
+.Leader__body-colors {
+    background-color: #2f3031;
+    border: #6c6c6c 2px solid;
+    color: #a7a7aa;
+}
+
+.leader-text {
+    /*display: flex;*/
+    justify-content: space-between;
+    align-items: center;
 }
 
 .logout-color {
@@ -910,6 +935,7 @@ textarea.form-control {
 textarea.EditorBuilder-form {
     height: auto;
 }
+
 
 textarea {
     overflow: auto;
