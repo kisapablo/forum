@@ -28,6 +28,20 @@ class CommentRepository
         return $statement->fetchAll();
     }
 
+    function findWhereComments(int $comment_id)
+    {
+        $connection = $this->dataBase->getConnection();
+        $statement = $connection->prepare(
+            "SELECT * from user_comment_view where id = :id"
+        );
+
+        $statement->execute([
+            "id" => $comment_id
+        ]);
+
+        return $statement->fetchAll();
+    }
+
     /**
      * @throws Exception
      */

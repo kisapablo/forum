@@ -172,13 +172,16 @@ class PostsController
             return $response;
         }
         $post_id = (int)$args['post_id'];
+        error_log('pid var' . json_encode($post_id));
 
+        $post = $this->postRepository->findPostById($post_id);
         $icon = $this->userRepository->findUserIcon($_SESSION['user']['id']);
         $totalCount = $this->postRepository->getTotalCount();
         error_log('Session is ' . json_encode($_SESSION));
         $body = $this->view->render('Navigation/DeletePost.twig', [
             'user' => $_SESSION['user'],
             'icons' => $icon,
+            'post' => $post
         ]);
 
         $response->getBody()->write($body);
@@ -186,12 +189,19 @@ class PostsController
     }
 
     // Шаблон
-    public function DeletePost(Request $request, Response $response)
+    public function DeletePost(Request $request, Response $response, array $args)
     {
+        if (!isset($args['post_id'])) {
+            $body = $this->view->render('not-found.twig');
+            $response->getBody()->write($body);
+            return $response;
+        }
+        $post_id = (int)$args['post_id'];
+
         // Удаляем комментарии с поста
-        $statuscomment = $this->postRepository->deleteAllPostComment();
+        $statuscomment = $this->postRepository->deleteAllPostComment($post_id);
         // Удаляем пост
-        $statuspost = $this->postRepository->deletePost();
+        $statuspost = $this->postRepository->deletePost($post_id);
         error_log('Status Delete Comment is ' . json_encode($statuscomment));
         error_log('Status Delete Comment is ' . json_encode($statuspost));
 //    if (!empty($statuspost)){
@@ -202,15 +212,48 @@ class PostsController
 
         // Возвращаем пользоателя на страницу с постами
         return $response->withStatus(301)->withHeader('Location', '/');
-        /*
+    }
 
+// rendering DeleteComments.twig
+    function showDeleteComments(Request $request, Response $response, array $args): Response
+    {
+        if (!isset($args['post_id'])) {
+            $body = $this->view->render('not-found.twig');
+            $response->getBody()->write($body);
+            return $response;
+        }
+        if (!isset($args['comment_id'])) {
+            $body = $this->view->render('not-found.twig');
+            $response->getBody()->write($body);
+            return $response;
+        }
+        //        $totalCount = $this->postRepository->getTotalCount();
+        $comment_id = (int)$args['comment_id'];
+        $comments = $this->commentRepository->findWhereComments($comment_id);
+        error_log('Delete Comments Value is ' . json_encode($comments));
         $icon = $this->userRepository->findUserIcon($_SESSION['user']['id']);
-        $body = $this->view->render('Navigation/DeletePost.twig', [
+        error_log('Session is ' . json_encode($_SESSION));
+        $body = $this->view->render('Navigation/DeleteComments.twig', [
             'user' => $_SESSION['user'],
             'icons' => $icon,
-    //        'message' => $message
         ]);
-        */
+
+        $response->getBody()->write($body);
+        return $response;
+    }
+
+    // Шаблон
+    public function DeleteComment(Request $request, Response $response, array $args)
+    {
+        $comment_id = (int)$args['comment_id'];
+        $post_id = (int)$args['post_id'];
+
+        // Удаляем комментарии с поста
+        $deletecomment = $this->postRepository->deleteComment($comment_id);
+        error_log('Status Delete Comment is ' . json_encode($deletecomment));
+
+        // Возвращаем пользоателя на страницу с постами
+        return $response->withStatus(301)->withHeader('Location', '/posts/' . $post_id);
     }
 
     // Rendering Post.twig

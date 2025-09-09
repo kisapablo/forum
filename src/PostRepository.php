@@ -260,44 +260,45 @@ class PostRepository
         return $statement->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function deletePost()
+    public function deletePost($post_id)
     {
         $connection = $this->dataBase->getConnection();
 
         $statement = $connection->prepare(
-            ""
+            "DELETE FROM `post` WHERE `id` = :id;"
         );
 
-        $statement->execute();
+        $statement->execute([
+            'id' => $post_id
+        ]);
         return $statement->fetchAll();
     }
-    public function deleteAllPostComment()
+    public function deleteAllPostComment($post_id)
     {
         $connection = $this->dataBase->getConnection();
 
         $statement = $connection->prepare(
-            ""
+            "DELETE FROM `comment` WHERE `post_id` = :id;"
         );
 
-        $statement->execute();
+        $statement->execute([
+//            'id' => $comment_id
+        'id' => $post_id
+        ]);
+        return $statement->fetchAll();
+    }
+
+    public function deleteComment($comment_id)
+    {
+        $connection = $this->dataBase->getConnection();
+
+        $statement = $connection->prepare(
+            "DELETE FROM `comment` WHERE `id` = :id;"
+        );
+
+        $statement->execute([
+            'id' => $comment_id
+        ]);
         return $statement->fetchAll();
     }
 }
-
-//    public function getRole(Request $request, Response $response, array $args): Response
-//    {
-//        error_log('Распределение ролей');
-//        $args = [];
-//        $args['User'] = [0];
-//        $args['admin'] = [1];
-//        $args['helper'] = [2];
-//        $connection = $this->dataBase->getConnection();
-//        $statement = $connection->prepare(
-//            ' SELECT * FROM user WHERE role = 0'
-//        );
-//        $statement->execute();
-//
-//        $role = $statement->fetchAll();
-//
-//        return $response;
-//    }
