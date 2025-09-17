@@ -11,21 +11,27 @@
                 {{ message }}
             </div>
         {% endif %}
-        <div class="authentication">
-            <div class="Authentication__header">
+        <div class="authentication__MainBody">
+            <div class="authentication_color">
+            <div class="Authentication__title">
                 <h3>Регистрация пользователя</h3>
             </div>
-            <div class="authentication__body">
-                <form method="POST" action="/user/registration">
+            <div class="authentication__MainBody">
+                <form method="POST" action="/user/registration" class="authentication__formBody">
+                    <div class="authentication__formUserName">
                         <label for="login" class="form-label">Логин</label>
                         <input type="text" class="form-control" name="login" id="login" placeholder="Введите логин"
                                required>
+                    </div>
+                    <div class="authentication__formPassword">
                         <label for="password" class="form-label">Пароль</label>
                         <input type="password" class="form-control" name="password" id="password"
                                placeholder="Введите пароль" required>
+                    </div>
                     <button type="submit" class="nav-button auth-button">Зарегистрировать</button>
                 </form>
             </div>
         </div>
+    </div>
     </div>
 {% endblock %}

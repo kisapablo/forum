@@ -87,7 +87,8 @@ BEGIN
     -- Insert into user_icon table
     INSERT INTO `user_icon` (`id`, `is_default`, `user_id`) 
     VALUES (p_attachment_id, p_is_default, p_user_id);
-    
+    -- Update icon id into user
+    UPDATE user SET icon_id = p_name WHERE id = p_attachment_id;
     COMMIT;
 END
 $

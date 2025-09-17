@@ -168,7 +168,7 @@ class UserRepository
         $connection = $this->dataBase->getConnection();
 
         $statement = $connection->prepare(
-            'call ADDUserIcon(:fileName, :userId, TRUE, @id); select $id'
+            "call ADDUserIcon(:fileName, :userId, FALSE, @attachment_id); select @attachment_id;"
         );
         $statement->bindParam('fileName', $fileName);
         $statement->bindParam('userId', $userId);
@@ -184,7 +184,7 @@ class UserRepository
         $connection = $this->dataBase->getConnection();
 
         $statement = $connection->prepare(
-            "UPDATE user SET icon_id = :defaultIcon WHERE id = :userId"
+            "UPDATE user SET icon_id = :defaultIcon WHERE id = :userId;"
         );
         $statement->bindParam('defaultIcon', $iconId);
         $statement->bindParam('userId', $userId);
@@ -198,7 +198,7 @@ class UserRepository
         $connection = $this->dataBase->getConnection();
 
         $statement = $connection->prepare(
-            'SELECT * from user_icon_view where is_default = 0'
+            'SELECT * from user_icon_view where is_default = 1'
         );
         $statement->execute();
         return $statement->fetchAll();

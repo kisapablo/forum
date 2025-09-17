@@ -5,28 +5,30 @@ Authorization
 {% endblock %}
 {% block body %}
     <div class="container mt-5">
-        {% if message %}
-            <div class="alert {% if message starts with 'Ошибка' %}alert-danger{% else %}alert-success{% endif %}" role="alert">
-                {{ message }}
-            </div>
-        {% endif %}
-        <div class="authentication">
-            <div class="Authentication__header">
+        <div class="authentication__MainBody">
+            <div class="authentication_color">
+            <div class="Authentication__title">
                 <h3>Авторизация пользователя</h3>
             </div>
-            <div class="authentication__body">
-                <form method="POST" action="/user/login">
-                    <div class="mb-3">
-                        <label for="login" class="form-label">Логин</label>
-                        <input type="text" class="form-control" name="login" id="login" placeholder="Введите логин" required>
+                {% if message %}
+                    <div class="alert {% if message starts with 'Ошибка' %}alert-danger{% else %}alert-success{% endif %}" role="alert">
+                        {{ message }}
                     </div>
-                    <div class="mb-3">
+                {% endif %}
+                <form method="POST" action="/user/login" class="authentication__formBody">
+                        <div class="authentication__formUserName">
+                        <label for="login" class="form-label">Логин</label>
+                        <input type="text" class="authentication__forms" name="login" id="login" placeholder="Введите логин" required>
+                        </div>
+                        <div class="authentication__formPassword">
                         <label for="password" class="form-label">Пароль</label>
                         <input type="password" class="form-control" name="password" id="password" placeholder="Введите пароль" required>
-                    </div>
+                        </div>
+                        <div class="authentication__formSubmit">
                     <button type="submit" class="nav-button auth-button">Войти</button>
+                        </div>
                 </form>
-            </div>
         </div>
+    </div>
     </div>
 {% endblock %}

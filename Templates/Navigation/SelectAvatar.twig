@@ -22,28 +22,4 @@
             </div>
         </form>
     </div>
-{% endblock %}{% extends 'base.twig' %}
-{% block title %}
-    Selection Default Avatar
-{% endblock %}
-{% block body %}
-    <div class="container-fluid">
-        <h1 class="latestPosts">Выберите иконку из ниже предоставленных.</h1>
-        <form method="POST" action="{{ url('user/icons/debug') }}" class="mb-5">
-            <div class="ico__view-body ico__view-visible-colors">
-                {% for icon in dicons %}
-                    <span class="ico__view-bodycolors">
-                <label>
-<input type="radio" name="selected_icon" value="{{ icon.id }}" style="display: none;">
-                     <span class="text-avatar">One Ico</span>
-        <img src="{{ icon.icon_name }}" alt="One Icon" class="select-avatar">
-                    </label>
-    </span>
-                {% endfor %}
-            </div>
-            <div class="mt-3">
-                <button type="submit" class="nav-button user-color mx-1">Готово</button>
-            </div>
-        </form>
-    </div>
 {% endblock %}

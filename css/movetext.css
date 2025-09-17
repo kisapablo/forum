@@ -124,7 +124,7 @@ html {
     background-color: #3d3d3f;
     background-clip: padding-box;
     border: 1px solid #ced4da;
-    border-radius: 0.25rem;
+    border-radius: 1.25rem;
     transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
     margin-bottom: 10px;
 }
@@ -273,6 +273,8 @@ html {
     padding: .25rem;
     width: 2.5rem;
     height: 2.5rem;
+    object-fit: contain;
+    object-position: center;
     margin-right: .5rem;
 }
 
@@ -669,36 +671,72 @@ html {
      */
 }
 
-.authentication {
+.authentication__MainBody {
     position: relative;
     display: flex;
     flex-direction: column;
     min-width: 0;
     word-wrap: break-word;
-    background-color: #24242d;
     background-clip: border-box;
-    border: 1px solid rgba(0, 0, 0, .125);
-    border-radius: 2rem;
-    box-shadow: 0.4rem 0 0.25rem rgba(74, 65, 65, 0.3), -0.25rem 0 .75rem rgba(76, 67, 67, 0.3);
-    transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
-    /*justify-content: center;*/
-    /*align-items: center;*/
-    /* width: 50%; */
+    justify-content: center;
+    align-items: center;
 }
 
-.authentication__body {
+.authentication__formBody {
+    margin-bottom: 1rem;
+}
+
+.authentication_color {
+    background-color: #24242d;
+    border: 1px solid rgba(0, 0, 0, .125);
+    border-radius: 1.75rem;
+    box-shadow: 0.4rem 0 0.25rem rgba(74, 65, 65, 0.3), -0.25rem 0 .75rem rgba(76, 67, 67, 0.3);
+    transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+}
+
+.Authentication__title {
+    padding: .75rem 1.25rem;
+    background-color: rgba(0, 0, 0, .03);
+    border-bottom: 1px solid rgba(0, 0, 0, .125);
+}
+
+.authentication__formUserName {
+
+}
+
+.authentication__formPassword {
+}
+
+.authentication__forms{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    padding: .375rem .75rem;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #ffffff;
+    background-color: #3d3d3f;
+    background-clip: padding-box;
+    border: 1px solid #ced4da;
+    border-radius: 1.25rem;
+    transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+    margin-bottom: 10px;
+}
+
+.authentication__formSubmit {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.authentication__header {
     flex: 1 1 auto;
     min-height: 1px;
     padding: 1.25rem;
     background-color: #23252b;
     margin-bottom: 1rem;
-}
-
-
-.Authentication__header {
-    padding: .75rem 1.25rem;
-    background-color: rgba(0, 0, 0, .03);
-    border-bottom: 1px solid rgba(0, 0, 0, .125);
 }
 
 .Leader__body {
@@ -881,9 +919,6 @@ html {
     margin-top: 1rem;
 }
 
-.mb-3 {
-    margin-bottom: 1rem;
-}
 
 .mt-3 {
     margin-top: 1rem;
