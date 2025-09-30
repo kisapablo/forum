@@ -7,10 +7,9 @@ color через hover плохая идея
 * {
 
     box-sizing: border-box;
-    font-family: roboto sans-serif;
+    font-family: "Roboto", sans-serif, "Roboto Mono", monospace;
     margin: 0;
     padding: 0;
-    /*
     /*Поиск выпирающих элементов
     outline: 4px solid green !important;*/
 
@@ -251,8 +250,7 @@ html {
     margin-top: 0.25rem;
     margin-bottom: 0.2rem;
     display: flex;
-    /*font-size: large;*/
-    position: relative;
+     position: relative;
     justify-content: space-between;
     align-items: center;
 }
@@ -287,6 +285,7 @@ html {
 
 .post-tags {
     margin-top: 0.5rem;
+    margin-bottom: 0.325rem;
 }
 
 .post-tags-color {
@@ -616,10 +615,20 @@ html {
     text-shadow: none;
 }
 
+.footer-submit{
+    background: linear-gradient(60deg, #B71010, #1AAA2F );
+    background-clip: text;
+    color: transparent;
+    text-shadow: none;
+}
+
 .footer-title {
     display: flex;
     justify-content: center;
     align-items: self-end;
+    /* justify-self: center; */
+    gap: 0.5rem;
+    margin-top: 0.5rem;
 }
 
 .text-avatar {
@@ -683,7 +692,12 @@ html {
 }
 
 .authentication__formBody {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
     margin-bottom: 1rem;
+    cursor: pointer;
 }
 
 .authentication_color {
@@ -700,6 +714,24 @@ html {
     border-bottom: 1px solid rgba(0, 0, 0, .125);
 }
 
+.authentication-button {
+    margin-left: .25rem;
+    margin-right: .25rem;
+    display: inline-block;
+    font-weight: 400;
+    text-align: center;
+    user-select: none;
+    background-color: transparent;
+    border: 1px solid transparent;
+    padding: .375rem .75rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    border-radius: .25rem;
+    transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+    cursor: pointer; /* Указатель при наведении */
+}
+
+
 .authentication__formUserName {
 
 }
@@ -714,13 +746,14 @@ html {
     width: 100%;
     padding: .375rem .75rem;
     font-size: 1rem;
-    font-weight: 400;
+    user-select: none;
+    font-weight: 500;
     line-height: 1.5;
     color: #ffffff;
     background-color: #3d3d3f;
     background-clip: padding-box;
     border: 1px solid #ced4da;
-    border-radius: 1.25rem;
+    border-radius: .375rem;
     transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
     margin-bottom: 10px;
 }
@@ -989,24 +1022,41 @@ textarea {
     border-radius: .25rem;
 }
 
-.alert-danger {
+.alert-danger-white {
     color: #721c24;
     background-color: #f8d7da;
     border-color: #f5c6cb;
 }
 
-.alert-info {
+.alert-danger-dark{
+    color: #bf3946;
+    background-color: #2c2c30;
+    border-color: #302b2b;
+}
+
+.alert-info-white {
     color: #0c5460;
     background-color: #d1ecf1;
     border-color: #bee5eb;
 }
 
-.alert-success {
+.alert-info-black {
+    color: #2398ac;
+    background-color: #2e373a;
+    border-color: #393e40;
+}
+
+.alert-success-white {
     color: #155724;
     background-color: #d4edda;
     border-color: #c3e6cb;
 }
 
+.alert-success-dark{
+    color: #35b552;
+    background-color: #2c302d;
+    border-color: #262b27;
+}
 
 .collapse-button {
     margin-bottom: 1rem;
@@ -1032,4 +1082,8 @@ textarea {
 .collapse_settings {
     display: flex;
     align-items: center;
+}
+
+h1 h2 h3 h4 h5 h6{
+font-weight: initial;
 }

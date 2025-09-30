@@ -7,8 +7,9 @@
             <h1>{{ post.title|escape }}</h1>
             {% if post.author_id == user.id %}
             <div class="post_edit-body">
-                <a class="nav-button auth-color" href="{{ url('user/posts/PostEditor/' ~ post.id) }}">Edit
-                    post</a>
+                <a class="nav-button auth-color" href="{{ url('user/posts/PostEditor/' ~ post.id) }}">
+                Edit post
+                </a>
                 <a class="nav-button logout-color" href="{{ url('posts/delete/' ) ~ post.id  }}">Delete Post</a>
             </div>
             {% endif %}
@@ -64,7 +65,7 @@
                 </div>
             {% endfor %}
         {% else %}
-            <div class="alert alert-info" role="alert">
+            <div class="alert alert-info-black" role="alert">
                 No comments yet.
             </div>
         {% endif %}

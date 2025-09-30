@@ -6,14 +6,18 @@
 {% block body %}
 
     <div class="profile__body profile__body-color">
+        {% if icons is not null %}
             <img src="{{ icons.icon_name }}"
                  class="avatar-full" alt="icon" STYLE="width: 9rem; height: 9rem">
+        {% endif %}
         {#                Необходимо для наилучшей работы что то из двух одно без стиля другое контейнер #}
         {# <div class="container"> #}
         <div class="profile-text">
             <h5 class="profile-title">{# Kisapablo Restress #}{{ user.name }}</h5>
             <a class="nav-button role-{{ cabinet.en_name }}-color"> {{ cabinet.en_name }}</a>
+            {% if cabinet.moto is not null %}
             <div class="desc">{{ cabinet.moto }}</div>
+            {% endif %}
             <h3 class="profile_info-title">Account Info</h3>
             <span class="registration-date">Register on: {{ cabinet.registration_date }}</span>
             <p class="profile_info-content">100000 LVL {{ cabinet.total }} posts<br>Last

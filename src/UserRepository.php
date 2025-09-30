@@ -14,7 +14,7 @@ class UserRepository
         $this->dataBase = $dataBase;
     }
 
-    public function addUser($login, $password, $role = 1)
+    public function addUser($login, $password, $role = 1, $icon = null)
     {
         $salt = $this->generateSalt();
         $hash = $this->generateHash($salt, $password);
@@ -32,7 +32,7 @@ class UserRepository
             'hash' => $hash,
             'salt' => $salt,
             'role_id' => $role,
-            'icon_id' => null
+            'icon_id' => $icon
         ]);
 
         if (!$result) {
@@ -126,18 +126,8 @@ class UserRepository
         $connection = $this->dataBase->getConnection();
 
         $statement = $connection->prepare(
-        'select u.role_id,
-                      u.id as user_id,
-                      u.last_visit_date,
-                      u.registration_date,
-                      u.moto,
-                      r.en_name,
-                      r.ru_name,
-                      count(p.id) as total
-              from `user` u
-              join role r on r.id = u.role_id
-              join petos_forum_db.post p on u.id = p.author_id
-              where u.id = :user_id;'
+        'select *
+    from user_info_view where user_id = :user_id;'
         );
         $statement->execute([
             'user_id' => $userId
