@@ -24,6 +24,9 @@ DROP VIEW IF EXISTS `user_post_view` CASCADE
 
 DROP VIEW IF EXISTS `user_comment_view` CASCADE
 ;
+
+DROP VIEW IF EXISTS `user_info_view` CASCADE
+;
 /* Drop Tables */
 
 DROP TABLE IF EXISTS `attachment` CASCADE
@@ -370,4 +373,18 @@ select p.id,
        ptv.tag_name,
        ptv.tag_id
 from post_tag_view as ptv
-         join user_post_view as p on p.id = ptv.post_id
+         join user_post_view as p on p.id = ptv.post_id;
+        create view `user_info_view` as
+SELECT
+u.role_id,
+u.id as user_id,
+u.last_visit_date,
+u.registration_date,
+u.moto,
+r.en_name,
+r.ru_name,
+count(p.id) as total
+from `user` u
+join role r on r.id = u.role_id
+join post p on u.id = p.author_id
+GROUP BY p.author_id;
