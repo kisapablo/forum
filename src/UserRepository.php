@@ -80,23 +80,6 @@ class UserRepository
         return $user;
     }
 
-    //    private function getUsers()
-    //    {
-    //        $content = file_get_contents($this->filePath);
-    //        return json_decode($content, true) ?: [];
-    //    }
-    //
-    //    private function saveUsers($users): bool|int
-    //    {
-    //        return file_put_contents($this->filePath, json_encode($users, JSON_PRETTY_PRINT));
-    //    }
-    //
-    //    public function getAllUsers()
-    //    {
-    //        return $this->getUsers();
-    //    }
-
-
     public function findUserIcon($userId)
     {
         $connection = $this->dataBase->getConnection();
@@ -126,8 +109,15 @@ class UserRepository
         $connection = $this->dataBase->getConnection();
 
         $statement = $connection->prepare(
-        'select *
-    from user_info_view where user_id = :user_id;'
+       // 'select * from user_info_view where user_id = :user_id;  '
+       'SELECT
+        u.role_id, u.id as user_id, u.last_visit_date, u.registration_date, u.moto,
+        r.en_name, r.ru_name, count(p.id) as total
+        from `user` u
+        join role r on r.id = u.role_id
+        left join post p on u.id = p.author_id
+        WHERE u.id = :user_id
+        GROUP BY p.author_id;' 
         );
         $statement->execute([
             'user_id' => $userId
