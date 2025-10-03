@@ -188,7 +188,6 @@ class PostsController
         return $response;
     }
 
-    // Шаблон
     public function DeletePost(Request $request, Response $response, array $args)
     {
         if (!isset($args['post_id'])) {
@@ -242,7 +241,6 @@ class PostsController
         return $response;
     }
 
-    // Шаблон
     public function DeleteComment(Request $request, Response $response, array $args)
     {
         $comment_id = (int)$args['comment_id'];

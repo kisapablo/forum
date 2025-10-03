@@ -199,6 +199,20 @@ class UserRepository
     //
     //    }
 
+    public function updateUserInfo($moto,$user_Id)
+    {
+        $connection = $this->dataBase->getConnection();
+
+        $statement = $connection->prepare(
+                            'UPDATE user SET moto = :moto WHERE user.id = :user_id;'
+        );
+        $statement->execute([
+                'moto' => $moto,
+                'user_id' => $user_Id
+]);
+        return $statement->fetchAll();
+}
+
     //fixme
     function generateSalt()
     {

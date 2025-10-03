@@ -28,7 +28,7 @@ $view = $container->get(Environment::class); // Временной контей�
 $app->add(new TwigMiddleware($view));
 
 // Routing
-$app->get('/admin', [PersonalCabinet::class, 'showPersonalCabinet']);
+$app->get('/admin', [PersonalCabinet::class, 'showAdminPanel']);
 $app->get('/user', [PersonalCabinet::class, 'showPersonalCabinet']);
 $app->get('/user/login', [UserController::class, 'showUserLoginPage']);
 $app->get('/user/registration', [UserController::class, 'showUserRegistrationPage']);

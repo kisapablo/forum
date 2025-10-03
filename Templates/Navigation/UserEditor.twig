@@ -5,16 +5,15 @@
 {% block body %}
     <form method="POST" action="{{ url('user/UserEditor/debug') }}" enctype="multipart/form-data">
         <div class="">
-{#            <label>#}
+            <label>
 {#                <input required type="text" class="form-control" name="Username" placeholder="Username"#}
 {#                       value="{{ user.name }}">#}
 {#                <input required type="text" class="form-control" name="Userpass" placeholder="Update your Password">#}
-{#                <textarea required class="form-control" name="moto" rows="3"#}
-{#                          placeholder="Bio">Jorikk</textarea>#}
-{#            </label>#}
-
-            <input type="file" id="avatar" name="avatar" class="" accept="image/png"/>
+               <textarea required class="form-control" name="moto" rows="3"
+                   placeholder="Bio">{{ cabinet.moto }}</textarea>
+</label>
+            <!-- <input type="file" id="avatar" name="avatar" class="" accept="image/png"/> -->
         </div>
-        <button type="submit" class="nav-button user-color mx-1">Submit Comment</button>
+        <button type="submit" class="nav-button user-color">Finish Editing Profile</button>
     </form>
 {% endblock %}

@@ -61,9 +61,12 @@ class PersonalCabinet
 //            return $response->withStatus(301)->withHeader('Location', '/user/login');
 //        }
 
+        $cabinet = $this->userRepository->cabinetInfo($_SESSION['user']['id']);
+
         $body = $this->view->render('Navigation/admin.twig', [
             'user' => $_SESSION['user'],
-            'icons' => $icon
+            'icons' => $icon,
+            'cabinet' => $cabinet
         ]);
         $response->getBody()->write($body);
         return $response;
@@ -101,8 +104,11 @@ class PersonalCabinet
         error_log('filename is ' . json_encode($fileName));
         error_log('Files is ' . json_encode($_FILES));
 //        print_r($_FILES);
-        $icon = $this->userRepository->saveUserIcon($fileName, $userId);
-        print_r($icon);
+
+        // $icon = $this->userRepository->saveUserIcon($fileName, $userId);
+        error_log('Moto value is ' . json_encode($_POST['moto']));
+        $desc = $this->userRepository->updateUserInfo($_POST['moto'], $userId);
+        // print_r($icon);
 //                return $response;
         return $response->withStatus(301)->withHeader('Location', '/user');
     }
