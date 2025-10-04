@@ -148,14 +148,23 @@ html {
 
 
 .navbar-brand {
-    color: #fff;
-    display: inline-block;
-    padding-top: .3125rem;
-    padding-bottom: .3125rem;
+    color: goldenrod;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    /* padding-top: .3125rem; */
+    /* padding-bottom: .3125rem; */
     margin-right: 1rem;
     font-size: 1.25rem;
     line-height: inherit;
     white-space: nowrap;
+}
+
+.nav-logo{
+    object-fit: contain;
+    object-position: center;
+    margin-right: 1rem;
+    height: 2.8rem;
 }
 
 .nav-button {
@@ -332,6 +341,19 @@ html {
     margin-right: .50rem;
 }
 
+.post-form {
+     padding: .6rem;
+    border-radius: .50rem;
+    font-size: 1rem;
+    color: #ffffff;
+    background-color: #3d3d3f;
+    border: 1px solid #ced4da;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 5px;
+}
+
 .toolbar-search-body {
     margin-right: .25rem;
 }
@@ -339,6 +361,27 @@ html {
 .search-header {
     margin-right: 1.75rem;
 }
+
+.search-form{
+    display: flex;
+    width: 100%;
+    padding: .375rem .75rem;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #ffffff;
+    background-color: #3d3d3f;
+    background-clip: padding-box;
+    border: 1px solid #ced4da;
+    border-radius: .7rem;
+    transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+    margin-bottom: 10px;
+}
+
+/*
+select.search-form{
+padding: 0.5rem .4rem;
+}*/
 
 .post_img_body {
     /*background-color: #9a8b8b;*/
@@ -726,7 +769,7 @@ html {
     padding: .375rem .75rem;
     font-size: 1rem;
     line-height: 1.5;
-    border-radius: .25rem;
+    border-radius: .375rem;
     transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
     cursor: pointer; /* Указатель при наведении */
 }

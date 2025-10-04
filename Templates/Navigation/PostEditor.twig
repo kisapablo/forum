@@ -9,11 +9,11 @@
                 <div class="EditorBuilder-forms">
                     <label class="label-form">
                         {# Editable Post title #}
-                        <input required type="text" class="EditorBuilder-form" name="title" placeholder="You Post Name"
+                        <input required type="text" class="post-form" name="title" placeholder="You Post Name"
                                value="{{ post.title|escape }}">
                         {#  Editable Post Content #}
-                        <input required type="text" class="EditorBuilder-form" name="{#tags#}" placeholder="You Tags Name" value="{{ tags.tags|default('tags') }}">
-                        <textarea required class="EditorBuilder-form" name="content" rows="3"
+                        <input required type="text" class="post-form" name="{#tags#}" placeholder="You Tags Name" value="{{ tags.tags|default('tags') }}">
+                        <textarea required class="post-form" name="content" rows="3"
                                   placeholder="You Post content">{{ post.content }}</textarea>
                     </label>
                     <div class="attachment-BuilderEditor__body">

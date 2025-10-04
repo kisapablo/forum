@@ -106,15 +106,18 @@ class PersonalCabinet
         // $icon = $this->userRepository->saveUserIcon($fileName, $userId);
         error_log('Moto value is ' . json_encode($_POST['moto']));
         $desc = $this->userRepository->updateUserInfo($_POST['moto'], $userId);
+        error_log('New Moto Value is ' . json_encode($desc));
+
         $newNickName = $this->userRepository->updateUserName($_SESSION['user']['id'], $_POST['Username']);
+//         if ($newNickName) {
+// $_SESSION['user'] = ['name' => $newNickName['name']];
+        error_log('New Password Hash Value is ' . json_encode($newNickName));
         $generateNewPasswordHash = $_POST['Userpass'];
         $newPasswordHash = $this->userRepository->UpdatePasswordHash($generateNewPasswordHash, $_SESSION['user']['id']);
-        error_log('New Moto Value is ' . json_encode($desc));
-        error_log('New NickName Value is ' . json_encode($newNickName));
         error_log('New Password Hash Value is ' . json_encode($newPasswordHash));
         // print_r($icon);
 //                return $response;
-        return $response->withStatus(301)->withHeader('Location', '/user/logout');
+        return $response->withStatus(301)->withHeader('Location', '/user/logout' );
     }
 
     public function showDefaultIconsSelect(Request $request, Response $response)
