@@ -213,6 +213,34 @@ class UserRepository
         return $statement->fetchAll();
 }
 
+public function updateUserName($UserID, $NewNickName)
+{
+    $connection = $this->dataBase->getConnection();
+
+$statement = $connection->prepare(
+'UPDATE `user` SET `name` = :NickName WHERE id = :UserID'
+);
+
+$statement->execute([
+'UserID' => $UserID,
+'NickName' => $NewNickName
+]);
+
+return $statement->fetchAll();
+
+}
+
+public function UpdatePasswordHash($password, $UserID)
+{
+$connection = $this->dataBase->getConnection();
+
+$statement = $connection->prepare('UPDATE `user` SET `password_hash` = :password WHERE id = :UserID;');
+
+$statement->execute([
+'password' => $password,
+'UserID' => $UserID
+]);
+}
     //fixme
     function generateSalt()
     {

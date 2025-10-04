@@ -6,13 +6,14 @@
     <form method="POST" action="{{ url('user/UserEditor/debug') }}" enctype="multipart/form-data">
         <div class="">
             <label>
-{#                <input required type="text" class="form-control" name="Username" placeholder="Username"#}
-{#                       value="{{ user.name }}">#}
-{#                <input required type="text" class="form-control" name="Userpass" placeholder="Update your Password">#}
-               <textarea required class="form-control" name="moto" rows="3"
+                <div class="alert alert-danger-dark">Warning! if you finish editing(Click for Special button) for you profile then you need to reauthenticate</div> 
+               <input required type="text" class="form-control" name="Username" placeholder="Username"
+                      value="{{ user.name }}">
+                <input required type="text" class="form-control" name="Userpass" placeholder="Update your Password">
+               <textarea {#required#} class="form-control" name="moto" rows="3"
                    placeholder="Bio">{{ cabinet.moto }}</textarea>
 </label>
-            <!-- <input type="file" id="avatar" name="avatar" class="" accept="image/png"/> -->
+            <input type="file" id="avatar" name="avatar" class="" accept="image/png"/>
         </div>
         <button type="submit" class="nav-button user-color">Finish Editing Profile</button>
     </form>

@@ -86,7 +86,7 @@ class PersonalCabinet
         return $response;
     }
 
-    public function addUserIco(Request $request, Response $response)
+    public function UpdateUserInfo(Request $request, Response $response)
     {
         $iconName = $_FILES['avatar']['name'];
         $userId = $_SESSION['user']['id'];
@@ -98,9 +98,7 @@ class PersonalCabinet
             error_log('File name ' . $dir);
             move_uploaded_file($_FILES['avatar']['tmp_name'], $dir);
 
-        } else {
-            exit("error!");
-        }
+        } 
         error_log('filename is ' . json_encode($fileName));
         error_log('Files is ' . json_encode($_FILES));
 //        print_r($_FILES);
@@ -108,9 +106,15 @@ class PersonalCabinet
         // $icon = $this->userRepository->saveUserIcon($fileName, $userId);
         error_log('Moto value is ' . json_encode($_POST['moto']));
         $desc = $this->userRepository->updateUserInfo($_POST['moto'], $userId);
+        $newNickName = $this->userRepository->updateUserName($_SESSION['user']['id'], $_POST['Username']);
+        $generateNewPasswordHash = $_POST['Userpass'];
+        $newPasswordHash = $this->userRepository->UpdatePasswordHash($generateNewPasswordHash, $_SESSION['user']['id']);
+        error_log('New Moto Value is ' . json_encode($desc));
+        error_log('New NickName Value is ' . json_encode($newNickName));
+        error_log('New Password Hash Value is ' . json_encode($newPasswordHash));
         // print_r($icon);
 //                return $response;
-        return $response->withStatus(301)->withHeader('Location', '/user');
+        return $response->withStatus(301)->withHeader('Location', '/user/logout');
     }
 
     public function showDefaultIconsSelect(Request $request, Response $response)
