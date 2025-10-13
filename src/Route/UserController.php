@@ -87,10 +87,17 @@ class UserController
 
         try {
             $user = $this->userRepository->findUserByLoginAndPassword($login, $password);
+            error_log('Founding result of user ' . json_encode($user));
+            // Не доходит до проверки валидации
+            if (password_verify($password, $user['password_hash'])) {
+                error_log('Пароль валидный');
+            } else {
+            }
             $_SESSION['user'] = ['id' => $user['id'], 'name' => $user['name']];
             return $response->withStatus(301)->withHeader('Location', '/user');
         } catch (Exception $e) {
-            $message = 'Ошибка: '. $e->getMessage();
+            error_log('Пароль невалиден');
+            $message = 'Ошибка: ' . $e->getMessage();
             $body = $this->view->render('user-login.twig', ['message' => $message]); // $e->getMessage();
             $response->getBody()->write($body);
             return $response;

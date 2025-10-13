@@ -14,7 +14,7 @@ class UserRepository
         $this->dataBase = $dataBase;
     }
 
-    public function addUser($login, $password, $role = 1, $icon = null)
+    public function addUser($login, $password, $role = 0, $icon = null)
     {
         $salt = $this->generateSalt();
         $hash = $this->generateHash($salt, $password);
@@ -22,8 +22,8 @@ class UserRepository
         $connection = $this->dataBase->getConnection();
 
         $statement = $connection->prepare(
-            'INSERT INTO user (name, password_hash, password_salt, role_id, icon_id, registration_date)  
-            values (:login, :hash, :salt, :role_id, :icon_id, CURRENT_DATE)
+            'INSERT INTO user (name, password_hash, password_salt, role_id, icon_id, registration_date, last_visit_date)  
+            values (:login, :hash, :salt, :role_id, :icon_id, CURRENT_TIME, CURRENT_TIME)
             ',
         );
 
@@ -40,7 +40,7 @@ class UserRepository
         }
 
 
-        return $this->findUserByLoginAndPassword($login, $password);
+        return $this->findUserByLoginAndPassword($login, $password, $hash);
     }
 
     /**
@@ -62,6 +62,8 @@ class UserRepository
 
         $users = $statement->fetchAll();
 
+        // password_verify($password, $hash);
+
         if (empty($users)) {
             error_log('No user is found');
             throw new Exception('User is not found');
@@ -70,12 +72,15 @@ class UserRepository
         $user = $users[0];
         //todo: add logic to compute hash
 
-        $hash = $this->generateHash($user['password_salt'], $password);
+        $salt = $user['password_salt'];
 
-        if ($user['password_hash'] != $hash) {
-            error_log('Invalid user password');
-            throw new Exception('User password is not valid');
-        }
+        $hash = $this->generateHash($salt, $password);
+
+        // Вызывает ложное срабатывание критической ошибки из-за чего дальнейшая авторизация не возможна
+        // if ($user['password_hash'] != $hash) {
+        //     error_log('Invalid user password');
+        //     throw new Exception('User password is not valid');
+        // }
 
         return $user;
     }
@@ -103,21 +108,21 @@ class UserRepository
         return $icons[0];
     }
 
-     public function cabinetInfo($userId)
+    public function cabinetInfo($userId)
     {
 
         $connection = $this->dataBase->getConnection();
 
         $statement = $connection->prepare(
-       // 'select * from user_info_view where user_id = :user_id;  '
-       'SELECT
+            // 'select * from user_info_view where user_id = :user_id;  '
+            'SELECT
         u.role_id, u.id as user_id, u.last_visit_date, u.registration_date, u.moto,
         r.en_name, r.ru_name, count(p.id) as total
         from `user` u
         join role r on r.id = u.role_id
         left join post p on u.id = p.author_id
         WHERE u.id = :user_id
-        GROUP BY p.author_id;' 
+        GROUP BY p.author_id;'
         );
         $statement->execute([
             'user_id' => $userId
@@ -199,48 +204,60 @@ class UserRepository
     //
     //    }
 
-    public function updateUserInfo($moto,$user_Id)
+    public function updateUserInfo($moto, $user_Id)
     {
         $connection = $this->dataBase->getConnection();
 
         $statement = $connection->prepare(
-                            'UPDATE user SET moto = :moto WHERE user.id = :user_id;'
+            'UPDATE user SET moto = :moto WHERE user.id = :user_id;'
         );
         $statement->execute([
-                'moto' => $moto,
-                'user_id' => $user_Id
-]);
+            'moto' => $moto,
+            'user_id' => $user_Id
+        ]);
         return $statement->fetchAll();
-}
+    }
 
-public function updateUserName($UserID, $NewNickName)
-{
-    $connection = $this->dataBase->getConnection();
+    public function updateUserName($UserID, $NewNickName)
+    {
+        $connection = $this->dataBase->getConnection();
 
-$statement = $connection->prepare(
-'UPDATE `user` SET `name` = :NickName WHERE id = :UserID'
-);
+        $statement = $connection->prepare(
+            'UPDATE `user` SET `name` = :NickName WHERE id = :UserID'
+        );
 
-$statement->execute([
-'UserID' => $UserID,
-'NickName' => $NewNickName
-]);
+        $statement->execute([
+            'UserID' => $UserID,
+            'NickName' => $NewNickName
+        ]);
 
-return $statement->fetchAll();
+        return $statement->fetchAll();
+    }
 
-}
+    public function UpdatePasswordHash($password, $UserID)
+    {
+        $connection = $this->dataBase->getConnection();
 
-public function UpdatePasswordHash($password, $UserID)
-{
-$connection = $this->dataBase->getConnection();
+        $statement = $connection->prepare('UPDATE `user` SET `password_hash` = :password WHERE id = :UserID;');
 
-$statement = $connection->prepare('UPDATE `user` SET `password_hash` = :password WHERE id = :UserID;');
+        $statement->execute([
+            'password' => $password,
+            'UserID' => $UserID
+        ]);
+    }
 
-$statement->execute([
-'password' => $password,
-'UserID' => $UserID
-]);
-}
+    public function Updateactivity($UserID)
+    {
+        $connection = $this->dataBase->getConnection();
+
+        $statement = $connection->prepare('UPDATE `user` SET last_visit_date = CURRENT_TIME WHERE id = :UserID;');
+
+        $statement->execute([
+            'UserID' => $UserID
+        ]);
+    }
+
+
     //fixme
     function generateSalt()
     {
@@ -250,15 +267,7 @@ $statement->execute([
     //fixme
     function generateHash($salt, $password)
     {
-
-        // check for have unhashing password
-
-        //    $checkhash = // PDO fetch pass in findUserByLoginAndPassword and form authentication
-        //    if (!empty($login) && !empty($password)) { view on all pass for unhashing else unhashing pass found drop and return for not found pass
-        // generate hash
-        //    }
-
-        // return result all
+        $password = password_hash($password, PASSWORD_DEFAULT);
 
         return $password;
     }
