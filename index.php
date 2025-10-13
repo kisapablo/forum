@@ -64,6 +64,7 @@ $app->post('/debug', [PersonalCabinet::class, 'getGlobalVariable']);
 $app->post('/user/icons/debug', [PersonalCabinet::class, 'getSelectedDefaultIco']);
 //$app->get('/user/posts/select', [PersonalCabinet::class, 'showPublishedPosts']);
 $app->get('/user/icons/default', [PersonalCabinet::class, 'showDefaultIconsSelect']);
+$app->get('/{url_id}', [PostsController::class, 'NotFoundURL']);
 // end routing
 
 $app->run();

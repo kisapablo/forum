@@ -76,12 +76,6 @@ class UserRepository
 
         $hash = $this->generateHash($salt, $password);
 
-        // Вызывает ложное срабатывание критической ошибки из-за чего дальнейшая авторизация не возможна
-        // if ($user['password_hash'] != $hash) {
-        //     error_log('Invalid user password');
-        //     throw new Exception('User password is not valid');
-        // }
-
         return $user;
     }
 

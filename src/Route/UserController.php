@@ -94,10 +94,8 @@ class UserController
             return $response->withStatus(301)->withHeader('Location', '/user');
                 error_log('Пароль валидный');
             } else {
-            $message = ' Ошибка: User password is not valid';
-            $body = $this->view->render('user-login.twig', ['message' => $message]); // $e->getMessage();
-            $response->getBody()->write($body);
-            return $response;
+            error_log('Invalid user password');
+            throw new Exception('User password is not valid');
             }
         } catch (Exception $e) {
             error_log('Пароль невалиден');

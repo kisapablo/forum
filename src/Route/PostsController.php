@@ -29,8 +29,7 @@ class PostsController
         CommentRepository $commentRepository,
         PostRepository    $postRepository,
         UserRepository    $userRepository
-    )
-    {
+    ) {
         $this->view = $view;
         $this->commentRepository = $commentRepository;
         $this->postRepository = $postRepository;
@@ -67,16 +66,16 @@ class PostsController
             error_log("User#" . $_SESSION['user']['id'] . " has no icon");
         }
 
-// $password = 'qwerty';
-$password = 'qwertys';
-$salt = $this->userRepository->generateSalt();
-$hash = $this->userRepository->generateHash($salt, $password);
+        // $password = 'qwerty';
+        $password = 'qwertys';
+        $salt = $this->userRepository->generateSalt();
+        $hash = $this->userRepository->generateHash($salt, $password);
 
-if (password_verify('qwerty', $hash)) {
-    $text = 'Пароль правильный!';
-} else {
-    $text = 'Пароль неправильный.';
-}
+        if (password_verify('qwerty', $hash)) {
+            $text = 'Пароль правильный!';
+        } else {
+            $text = 'Пароль неправильный.';
+        }
 
         $body = $this->view->render('Navigation/LeaderKarma.twig', [
             'leaderboard' => rand(1, 50491254195489),
@@ -129,7 +128,7 @@ if (password_verify('qwerty', $hash)) {
         // Получаем тэги из бдшки
         $tags = $this->postRepository->getAllPostTag($ids);
         error_log('TagsV' . json_encode($tags));
-// Если пользователь хочет найти пост то возвращаем ему инной массив
+        // Если пользователь хочет найти пост то возвращаем ему инной массив
         if (isset($params['tags'])) {
             $Querytags = (int)$params['tags'];
             error_log("Query Value" . json_encode($Querytags));
@@ -156,7 +155,7 @@ if (password_verify('qwerty', $hash)) {
 
         error_log("Ids Value" . json_encode($ids));
         $icon = $this->userRepository->findUserIcon($_SESSION['user']['id']);
-//        $userIcon = $this->userRepository->findUserIcon($posts['author_id']);
+        //        $userIcon = $this->userRepository->findUserIcon($posts['author_id']);
         $totalCount = $this->postRepository->getTotalCount();
         error_log('Session is ' . json_encode($_SESSION));
         error_log('Post Value ' . json_encode($posts));
@@ -177,7 +176,7 @@ if (password_verify('qwerty', $hash)) {
         return $response;
     }
 
-// rendering DeletePosts.twig
+    // rendering DeletePosts.twig
     function showDeletePosts(Request $request, Response $response, array $args): Response
     {
         if (!isset($args['post_id'])) {
@@ -217,17 +216,17 @@ if (password_verify('qwerty', $hash)) {
         $statuspost = $this->postRepository->deletePost($post_id);
         error_log('Status Delete Comment is ' . json_encode($statuscomment));
         error_log('Status Delete Comment is ' . json_encode($statuspost));
-//    if (!empty($statuspost)){
-//        $message = 'Удаление запроса произошло успешно';
-//    } else{
-//        $message = 'Что-то пошло не так во время удаления поста';
-//    }
+        //    if (!empty($statuspost)){
+        //        $message = 'Удаление запроса произошло успешно';
+        //    } else{
+        //        $message = 'Что-то пошло не так во время удаления поста';
+        //    }
 
         // Возвращаем пользоателя на страницу с постами
         return $response->withStatus(301)->withHeader('Location', '/');
     }
 
-// rendering DeleteComments.twig
+    // rendering DeleteComments.twig
     function showDeleteComments(Request $request, Response $response, array $args): Response
     {
         if (!isset($args['post_id'])) {
@@ -286,7 +285,7 @@ if (password_verify('qwerty', $hash)) {
         $postAttachment = $this->postRepository->getPostAttachmentView($post_id);
         $icons = $this->userRepository->findUserIcon($post['author_id']);
         error_log('icons value is' . json_encode($icons));
-//        $userIcon = $this->userRepository->findAuthorIcon($post['author_id']);
+        //        $userIcon = $this->userRepository->findAuthorIcon($post['author_id']);
         $userIcon = $this->userRepository->findUserIcon($post['author_id']);
         error_log('Picons value is' . json_encode($userIcon));
 
@@ -519,6 +518,25 @@ if (password_verify('qwerty', $hash)) {
 
         return $response;
     }
+    public function NotFoundURL(Request $request, Response $response, array $args) {
+
+        $url_id = (int)$args['url_id'];
+
+        // Показываем пользовательскую иконку и отрисовываем шаблон не найденного обработчика
+        $icon = $this->userRepository->findUserIcon($_SESSION['user']['id']);
+        if ($icon == null) {
+            error_log("User#" . $_SESSION['user']['id'] . " has no icon");
+        }
+ $body = $this->view->render('not-found.twig', [
+            'user' => $_SESSION['user'],
+            'icons' => $icon,
+        ]);
+
+        $response->getBody()->write($body);
+
+        return $response;
+
+}
 
     public function updateComment(Request $request, Response $response, array $args)
     {
@@ -540,8 +558,8 @@ if (password_verify('qwerty', $hash)) {
         error_log('FileName Value is ' . json_encode($fileName));
         error_log('FILES is ' . json_encode($_FILES));
         // Обновляем стобец в БД(но на самом деле добавляем)
-//        $PAttachment = $this->postRepository->savePostAttachment($comment_id, $fileName);
-//        error_log('PAttachment value is ' . json_encode($PAttachment));
+        //        $PAttachment = $this->postRepository->savePostAttachment($comment_id, $fileName);
+        //        error_log('PAttachment value is ' . json_encode($PAttachment));
         return $response->withStatus(301)->withHeader('Location', '/posts/' . (int)$args['post_id']);
     }
 }
