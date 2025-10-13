@@ -90,11 +90,15 @@ class UserController
             error_log('Founding result of user ' . json_encode($user));
             // Не доходит до проверки валидации
             if (password_verify($password, $user['password_hash'])) {
-                error_log('Пароль валидный');
-            } else {
-            }
             $_SESSION['user'] = ['id' => $user['id'], 'name' => $user['name']];
             return $response->withStatus(301)->withHeader('Location', '/user');
+                error_log('Пароль валидный');
+            } else {
+            $message = ' Ошибка: User password is not valid';
+            $body = $this->view->render('user-login.twig', ['message' => $message]); // $e->getMessage();
+            $response->getBody()->write($body);
+            return $response;
+            }
         } catch (Exception $e) {
             error_log('Пароль невалиден');
             $message = 'Ошибка: ' . $e->getMessage();
