@@ -10,8 +10,8 @@ color через hover плохая идея
     font-family: "Roboto", sans-serif, "Roboto Mono", monospace;
     margin: 0;
     padding: 0;
-    /*Поиск выпирающих элементов
-    outline: 4px solid green !important;*/
+    /*Поиск выпирающих элементов*/
+    /* outline: 4px solid green !important; */
 
 }
 
@@ -601,9 +601,8 @@ padding: 0.5rem .4rem;
     align-items: center;
     justify-content: space-around;
     position: marker;
-    /*padding: 1rem;*/
     margin-top: 6rem;
-    padding: 3rem 1.5rem 1.5rem;
+    margin-bottom: 6rem;
 }
 
 .footer__body-colors {
@@ -633,7 +632,6 @@ padding: 0.5rem .4rem;
     background: linear-gradient(60deg, #000000, #777878);
     background-clip: text;
     color: transparent;
-    text-shadow: none;
 }
 
 .footer-twitter {
@@ -641,37 +639,35 @@ padding: 0.5rem .4rem;
     background: linear-gradient(60deg, #000000, #777878);
     background-clip: text;
     color: transparent;
-    text-shadow: none;
 }
 
 .footer-facebook {
     background: linear-gradient(60deg, #1877F2, #b3b3b3);
     background-clip: text;
     color: transparent;
-    text-shadow: none;
 }
 
 .footer-telegram {
     background: linear-gradient(60deg, #24a1de, #babcbc);
     background-clip: text;
     color: transparent;
-    text-shadow: none;
 }
 
 .footer-submit{
     background: linear-gradient(60deg, #B71010, #1AAA2F );
     background-clip: text;
     color: transparent;
-    text-shadow: none;
 }
 
 .footer-title {
     display: flex;
     justify-content: center;
     align-items: self-end;
-    /* justify-self: center; */
+    flex-direction: row;
+    justify-self: center;
     gap: 0.5rem;
     margin-top: 0.5rem;
+    text-shadow: none;
 }
 
 .text-avatar {

@@ -232,6 +232,7 @@ class UserRepository
     {
         $connection = $this->dataBase->getConnection();
 
+// unhashing pass
         $statement = $connection->prepare('UPDATE `user` SET `password_hash` = :password WHERE id = :UserID;');
 
         $statement->execute([
