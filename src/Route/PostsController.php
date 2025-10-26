@@ -66,11 +66,6 @@ class PostsController
             error_log("User#" . $_SESSION['user']['id'] . " has no icon");
         }
 
-        // $password = 'qwerty';
-        $password = 'qwertys';
-        $salt = $this->userRepository->generateSalt();
-        $hash = $this->userRepository->generateHash($salt, $password);
-
         if (password_verify('qwerty', $hash)) {
             $text = 'Пароль правильный!';
         } else {
@@ -81,9 +76,6 @@ class PostsController
             'leaderboard' => rand(1, 50491254195489),
             'user' => $_SESSION['user'],
             'icons' => $icon,
-            'hashingout' => $hash,
-            'hashingput' => $password,
-            'result' => $text
         ]);
 
         $response->getBody()->write($body);
