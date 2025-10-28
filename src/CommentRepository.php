@@ -3,6 +3,7 @@
 namespace Blog;
 
 use Exception;
+use PDO;
 
 class CommentRepository
 {
@@ -13,13 +14,11 @@ class CommentRepository
         $this->dataBase = $dataBase;
     }
 
-    function getAllComments(int $postId)
+    function findUserComments(int $postId)
     {
-        error_log('Start to connection for DataBase(Check Comments)');
         $connection = $this->dataBase->getConnection();
-        error_log('fetch comments');
         $statement = $connection->prepare(
-                "SELECT * from comment where post_id = :post_id"
+            "SELECT * from user_comment_view where post_id = :post_id"
         );
 
         $statement->execute([
@@ -29,45 +28,79 @@ class CommentRepository
         return $statement->fetchAll();
     }
 
+    function findWhereComments(int $comment_id)
+    {
+        $connection = $this->dataBase->getConnection();
+        $statement = $connection->prepare(
+            "SELECT * from user_comment_view where id = :id"
+        );
+
+        $statement->execute([
+            "id" => $comment_id
+        ]);
+
+        return $statement->fetchAll();
+    }
+
     /**
      * @throws Exception
      */
-    public function createComment(array $comment)
+    public function createComment(array $comment, $fileName, $userId)
     {
         error_log('Start to connect on the DataBase(Create Comments)');
         $connection = $this->dataBase->getConnection();
-
         error_log('INSERT comments');
         // Вбивание данных из шаблона
         $statement = $connection->prepare(
             "INSERT INTO comment (content, author_id, post_id) 
                 VALUES ( :content, :author_id, :post_id )"
         );
+
         $result = $statement->execute([
             'content' => $comment['content'],
             'post_id' => $comment['post_id'],
-            'author_id' => $comment['author_id']
+            'author_id' => $comment['author_id'],
         ]);
 
         if (!$result) {
             error_log('Incorrect comment');
             throw new Exception('Incorrect comment');
         }
+
+        return $connection->lastInsertId();
+//        return $statement->fetchAll()[0];
     }
-    public function getCommentAttachmentView(int $commentID) //
+
+    public function saveCommentAttachment($userId, $fileName)
     {
         $connection = $this->dataBase->getConnection();
 
         $statement = $connection->prepare(
-            'select * from comment_attachment_view where comment_id = :comment_id'
+            "call ADDCommentAttachment(:fileName, :userId, @post_attachment_id); select @post_attachment_id;"
         );
 
-        $statement->execute([
-//            'comment_id' => 2
-            'comment_id' => (int) $commentID
-        ]);
-
+        $statement->bindParam('userId', $userId);
+        $statement->bindParam('fileName', $fileName);
+        $result = $statement->execute();
         return $statement->fetchAll();
+    }
 
+    public function findCommentAttachmentsByIds(array $ids) //
+    {
+        if (empty($ids)) {
+            return [];
+        }
+
+        $connection = $this->dataBase->getConnection();
+
+        $in  = str_repeat('?,', count($ids) - 1) . '?';
+
+        $statement = $connection->prepare(
+            "select * from comment_attachment_view where comment_id in ($in)"
+        );
+
+        $statement->execute($ids);
+
+        return $statement->fetchAll(PDO::FETCH_ASSOC);
     }
 }

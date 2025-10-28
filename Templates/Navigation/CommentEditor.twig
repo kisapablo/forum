@@ -8,13 +8,9 @@
             <div class="BuilderEditor__body-colors">
                 <div class="EditorBuilder-forms">
                     <label class="label-form">
-                        {# Editable Post title #}
-                        <input required type="text" class="post-form" name="title" placeholder="You Post Name"
-                               value="{{ post.title|escape }}">
-                        {#  Editable Post Content #}
-                        <input required type="text" class="post-form" name="{#tags#}" placeholder="You Tags Name" value="{{ tags.tags|default('tags') }}">
+                        {#  Editable Comment Content #}
                         <textarea required class="post-form" name="content" rows="3"
-                                  placeholder="You Post content">{{ post.content }}</textarea>
+                                  placeholder="You Comment content">{{ comment.content }}</textarea>
                     </label>
                     <div class="attachment-BuilderEditor__body">
                         <div class="attachment-BuilderEditor-content">

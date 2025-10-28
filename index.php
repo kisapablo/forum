@@ -28,32 +28,43 @@ $view = $container->get(Environment::class); // Временной контей�
 $app->add(new TwigMiddleware($view));
 
 // Routing
-$app->get('/user', [PersonalCabinet::class, 'showPersonalCabinet']);
 $app->get('/admin', [PersonalCabinet::class, 'showAdminPanel']);
+$app->get('/user', [PersonalCabinet::class, 'showPersonalCabinet']);
 $app->get('/user/login', [UserController::class, 'showUserLoginPage']);
 $app->get('/user/registration', [UserController::class, 'showUserRegistrationPage']);
 $app->get('/user/logout', [UserController::class, 'DeleteSession']);
 $app->post('/user/login', [UserController::class, 'authorizeUser']);
 $app->post('/user/registration', [UserController::class, 'registerUser']);
 
+
 $app->get('/about', AboutPage::class);
 $app->get('/', [PostsController::class, 'showAllPosts']);
+$app->get('/posts/delete/{post_id}', [PostsController::class, 'showDeletePosts']);
+$app->get('/posts/delete/{post_id}/comments/{comment_id}', [PostsController::class, 'showDeleteComments']);
 $app->get('/posts', [PostsController::class, 'showAllPosts']);
-$app->get('/posts/all[/{page}]', [PostsController::class, 'showAllPosts']);
+//$app->get('/posts/all[/{page}]', [PostsController::class, 'showAllPosts']);
 $app->get('/posts/builders', [PostsController::class, 'showPostBuilderPage']);
+$app->get('/posts/leaders', [PostsController::class, 'showLeaderKarma']);
 $app->post('/posts/{post_id}/comments', [PostsController::class, 'createNewPostComment']);
 $app->get('/user/posts/PostEditor/{post_id}', [PostsController::class, 'getPostInfo']);
+$app->get('/user/posts/CommentEditor/{post_id}/{comment_id}', [PostsController::class, 'getCommentInfo']);
+//$app->get('/search/posts/test', [PostsController::class, 'getResultSearch']);
+//$app->get('/search/users/test', [PostsController::class, 'getResultSearch']);
 $app->get('/posts/{post_id}', [PostsController::class, 'showPostPage']);
 //$app->get('/posts/old/blog', [PostsController::class, 'getallOldPage']); // Заморожено, реабилитация страницы не эффективна
 
 $app->post('/posts', [PostsController::class, 'createNewPost']);
 $app->post('/user/posts/PostEditor/{post_id}', [PostsController::class, 'updatePost']);
+$app->post('/user/posts/CommentEditor/{post_id}/{comment_id}', [PostsController::class, 'updateComment']);
+$app->post('/posts/delete/{post_id}/initial', [PostsController::class, 'DeletePost']);
+$app->post('/posts/delete/{post_id}/comments/{comment_id}/initial', [PostsController::class, 'DeleteComment']);
 $app->get('/user/UserEditor', [PersonalCabinet::class, 'showUserEditor']);
-$app->post('/user/UserEditor/debug', [PersonalCabinet::class, 'addUserIco']);
-$app->post('/debug', [PersonalCabinet::class, 'getglobalvariable']);
+$app->post('/user/UserEditor/debug', [PersonalCabinet::class, 'UpdateUserInfo']);
+$app->post('/debug', [PersonalCabinet::class, 'getGlobalVariable']);
 $app->post('/user/icons/debug', [PersonalCabinet::class, 'getSelectedDefaultIco']);
-$app->get('/user/posts/select', [PersonalCabinet::class, 'showPublishedPosts']);
+//$app->get('/user/posts/select', [PersonalCabinet::class, 'showPublishedPosts']);
 $app->get('/user/icons/default', [PersonalCabinet::class, 'showDefaultIconsSelect']);
+$app->get('/{url_id}', [PostsController::class, 'NotFoundURL']);
 // end routing
 
 $app->run();

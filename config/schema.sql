@@ -4,9 +4,11 @@
 /*  DBMS       : MySql 						*/
 /* ---------------------------------------------------- */
 
-SET FOREIGN_KEY_CHECKS=0
-; 
+SET FOREIGN_KEY_CHECKS = 0
+;
 /* Drop Views */
+
+DROP VIEW IF EXISTS `post_tag_view` CASCADE;
 
 DROP VIEW IF EXISTS `comment_attachment_view` CASCADE
 ;
@@ -20,6 +22,11 @@ DROP VIEW IF EXISTS `user_icon_view` CASCADE
 DROP VIEW IF EXISTS `user_post_view` CASCADE
 ;
 
+DROP VIEW IF EXISTS `user_comment_view` CASCADE
+;
+
+DROP VIEW IF EXISTS `user_info_view` CASCADE
+;
 /* Drop Tables */
 
 DROP TABLE IF EXISTS `attachment` CASCADE
@@ -56,289 +63,328 @@ DROP TABLE IF EXISTS `user_icon` CASCADE
 
 CREATE TABLE `attachment`
 (
-	`id` BIGINT NOT NULL AUTO_INCREMENT,
-	`name` VARCHAR(255) NULL,
-	CONSTRAINT `PK_attachment` PRIMARY KEY (`id` ASC)
+    `id`   BIGINT       NOT NULL AUTO_INCREMENT,
+    `name` VARCHAR(255) NULL,
+    CONSTRAINT `PK_attachment` PRIMARY KEY (`id` ASC)
 )
-
 ;
 
 CREATE TABLE `comment`
 (
-	`id` BIGINT NOT NULL AUTO_INCREMENT,
-	`content` VARCHAR(1024) NOT NULL,
-	`author_id` BIGINT NOT NULL,
-	`post_id` BIGINT NOT NULL,
-	CONSTRAINT `PK_comment` PRIMARY KEY (`id` ASC)
+    `id`               BIGINT        NOT NULL AUTO_INCREMENT,
+    `content`          VARCHAR(1024) NOT NULL,
+    `author_id`        BIGINT        NOT NULL,
+    `post_id`          BIGINT        NOT NULL,
+    `publication_date` TIMESTAMP     NOT NULL DEFAULT CURRENT_TIMESTAMP(),
+    CONSTRAINT `PK_comment` PRIMARY KEY (`id` ASC)
 )
-
 ;
 
 CREATE TABLE `comment_attachment`
 (
-	`id` BIGINT NOT NULL,
-	`comment_id` BIGINT NOT NULL,
-	CONSTRAINT `PK_comment_attachment` PRIMARY KEY (`id` ASC)
+    `id`         BIGINT NOT NULL,
+    `comment_id` BIGINT NOT NULL,
+    CONSTRAINT `PK_comment_attachment` PRIMARY KEY (`id` ASC)
 )
-
 ;
 
 CREATE TABLE `m2m_tag_post`
 (
-	`tag_id` INT NULL,
-	`post_id` BIGINT NULL
+    `tag_id`  INT    NULL,
+    `post_id` BIGINT NULL
 )
-
 ;
 
 CREATE TABLE `post`
 (
-	`id` BIGINT NOT NULL AUTO_INCREMENT,
-	`title` VARCHAR(64) NOT NULL,
-	`content` VARCHAR(1024) NOT NULL,
-	`publication_date` DATETIME NOT NULL,
-	`author_id` BIGINT NOT NULL,
-	CONSTRAINT `PK_post` PRIMARY KEY (`id` ASC)
+    `id`               BIGINT        NOT NULL AUTO_INCREMENT,
+    `title`            VARCHAR(64)   NOT NULL,
+    `content`          VARCHAR(1024) NOT NULL,
+    `publication_date` TIMESTAMP     NOT NULL DEFAULT CURRENT_TIMESTAMP(),
+    `author_id`        BIGINT        NOT NULL,
+    CONSTRAINT `PK_post` PRIMARY KEY (`id` ASC)
 )
-
 ;
 
 CREATE TABLE `post_attachment`
 (
-	`id` BIGINT NOT NULL,
-	`post_id` BIGINT NOT NULL,
-	CONSTRAINT `PK_post_attachment` PRIMARY KEY (`id` ASC)
+    `id`      BIGINT NOT NULL,
+    `post_id` BIGINT NOT NULL,
+    CONSTRAINT `PK_post_attachment` PRIMARY KEY (`id` ASC)
 )
-
 ;
 
 CREATE TABLE `role`
 (
-	`id` SMALLINT NOT NULL AUTO_INCREMENT,
-	`en_name` VARCHAR(50) NOT NULL,
-	`ru_name` VARCHAR(50) NOT NULL,
-	CONSTRAINT `PK_role` PRIMARY KEY (`id` ASC)
+    `id`      SMALLINT    NOT NULL AUTO_INCREMENT,
+    `en_name` VARCHAR(50) NOT NULL,
+    `ru_name` VARCHAR(50) NOT NULL,
+    CONSTRAINT `PK_role` PRIMARY KEY (`id` ASC)
 )
-
 ;
 
 CREATE TABLE `tag`
 (
-	`id` INT NOT NULL AUTO_INCREMENT,
-	`name` VARCHAR(32) NULL,
-	CONSTRAINT `PK_tag` PRIMARY KEY (`id` ASC)
+    `id`   INT         NOT NULL AUTO_INCREMENT,
+    `name` VARCHAR(32) NULL,
+    CONSTRAINT `PK_tag` PRIMARY KEY (`id` ASC)
 )
-
 ;
 
 CREATE TABLE `user`
 (
-	`id` BIGINT NOT NULL AUTO_INCREMENT,
-	`name` VARCHAR(32) NULL,
-	`password_hash` VARCHAR(64) NOT NULL,
-	`password_salt` VARCHAR(64) NOT NULL,
-	`role_id` SMALLINT NOT NULL,
-	`icon_id` BIGINT NULL DEFAULT NULL COMMENT 'По умолчанию, у пользователя нет никакой иконки',
-	`registration_date` DATETIME NOT NULL,
-	`last_visit_date` DATETIME NULL,
-	`moto` VARCHAR(50) NOT NULL DEFAULT '',
-	CONSTRAINT `PK_user` PRIMARY KEY (`id` ASC)
+    `id`                BIGINT      NOT NULL AUTO_INCREMENT,
+    `name`              VARCHAR(32) NULL,
+    `password_hash`     VARCHAR(64) NOT NULL,
+    `password_salt`     VARCHAR(64) NOT NULL,
+    `role_id`           SMALLINT    NOT NULL,
+    `icon_id`           BIGINT      NULL     DEFAULT NULL COMMENT 'По умолчанию, у пользователя нет никакой иконки',
+    `registration_date` DATETIME    NOT NULL,
+    `last_visit_date`   DATETIME    NULL,
+    `moto`              VARCHAR(50) NOT NULL DEFAULT '',
+    CONSTRAINT `PK_user` PRIMARY KEY (`id` ASC)
 )
-
 ;
 
 CREATE TABLE `user_icon`
 (
-	`id` BIGINT NOT NULL,
-	`is_default` BOOL NOT NULL DEFAULT False COMMENT 'if is_default = TRUE then user cannot delete it (only admin can)',
-	`user_id` BIGINT NOT NULL COMMENT 'Пользователь, который добавил иконку',
-	CONSTRAINT `PK_user_icon` PRIMARY KEY (`id` ASC)
+    `id`         BIGINT NOT NULL,
+    `is_default` BOOL   NOT NULL DEFAULT False COMMENT 'if is_default = TRUE then user cannot delete it (only admin can)',
+    `user_id`    BIGINT NOT NULL COMMENT 'Пользователь, который добавил иконку',
+    CONSTRAINT `PK_user_icon` PRIMARY KEY (`id` ASC)
 )
-
 ;
 
 /* Create Primary Keys, Indexes, Uniques, Checks */
 
-ALTER TABLE `comment` 
- ADD CONSTRAINT `CHK_empty_content` CHECK (content <> '')
+ALTER TABLE `comment`
+    ADD CONSTRAINT `CHK_empty_content` CHECK (content <> '')
 ;
 
-ALTER TABLE `comment` 
- ADD INDEX `IXFK_comment_post` (`post_id` ASC)
+ALTER TABLE `comment`
+    ADD INDEX `IXFK_comment_post` (`post_id` ASC)
 ;
 
-ALTER TABLE `comment` 
- ADD INDEX `IXFK_comment_user` (`author_id` ASC)
+ALTER TABLE `comment`
+    ADD INDEX `IXFK_comment_user` (`author_id` ASC)
 ;
 
-ALTER TABLE `comment_attachment` 
- ADD INDEX `IXFK_comment_attachment_attachment` (`id` ASC)
+ALTER TABLE `comment_attachment`
+    ADD INDEX `IXFK_comment_attachment_attachment` (`id` ASC)
 ;
 
-ALTER TABLE `comment_attachment` 
- ADD INDEX `IXFK_comment_attachment_comment` (`comment_id` ASC)
+ALTER TABLE `comment_attachment`
+    ADD INDEX `IXFK_comment_attachment_comment` (`comment_id` ASC)
 ;
 
-ALTER TABLE `m2m_tag_post` 
- ADD INDEX `IXFK_m2m_tag_post_post` (`post_id` ASC)
+ALTER TABLE `m2m_tag_post`
+    ADD INDEX `IXFK_m2m_tag_post_post` (`post_id` ASC)
 ;
 
-ALTER TABLE `m2m_tag_post` 
- ADD INDEX `IXFK_m2m_tag_post_tag` (`tag_id` ASC)
+ALTER TABLE `m2m_tag_post`
+    ADD INDEX `IXFK_m2m_tag_post_tag` (`tag_id` ASC)
 ;
 
-ALTER TABLE `post` 
- ADD INDEX `IXFK_post_user` (`author_id` ASC)
+ALTER TABLE m2m_tag_post
+    ADD PRIMARY KEY (tag_id, post_id);
+
+ALTER TABLE `post`
+    ADD INDEX `IXFK_post_user` (`author_id` ASC)
 ;
 
-ALTER TABLE `post_attachment` 
- ADD INDEX `IXFK_post_attachment_attachment` (`id` ASC)
+ALTER TABLE `post_attachment`
+    ADD INDEX `IXFK_post_attachment_attachment` (`id` ASC)
 ;
 
-ALTER TABLE `post_attachment` 
- ADD INDEX `IXFK_post_attachment_post` (`post_id` ASC)
+ALTER TABLE `post_attachment`
+    ADD INDEX `IXFK_post_attachment_post` (`post_id` ASC)
 ;
 
-ALTER TABLE `role` 
- ADD CONSTRAINT `UNQ_en_role_name` UNIQUE (`en_name` ASC)
+ALTER TABLE `role`
+    ADD CONSTRAINT `UNQ_en_role_name` UNIQUE (`en_name` ASC)
 ;
 
-ALTER TABLE `role` 
- ADD CONSTRAINT `UNQ_ru_role_name` UNIQUE (`ru_name` ASC)
+ALTER TABLE `role`
+    ADD CONSTRAINT `UNQ_ru_role_name` UNIQUE (`ru_name` ASC)
 ;
 
-ALTER TABLE `user` 
- ADD CONSTRAINT `UNQ_user_name` UNIQUE (`name` ASC)
+ALTER TABLE `user`
+    ADD CONSTRAINT `UNQ_user_name` UNIQUE (`name` ASC)
 ;
 
-ALTER TABLE `user` 
- ADD INDEX `IXFK_user_role` (`role_id` ASC)
+ALTER TABLE `user`
+    ADD INDEX `IXFK_user_role` (`role_id` ASC)
 ;
 
-ALTER TABLE `user_icon` 
- ADD INDEX `IXFK_user_icon_attachment` (`id` ASC)
+ALTER TABLE `user_icon`
+    ADD INDEX `IXFK_user_icon_attachment` (`id` ASC)
 ;
 
-ALTER TABLE `user_icon` 
- ADD INDEX `IXFK_user_icon_user` (`user_id` ASC)
+ALTER TABLE `user_icon`
+    ADD INDEX `IXFK_user_icon_user` (`user_id` ASC)
 ;
 
 /* Create Foreign Key Constraints */
 
-ALTER TABLE `comment` 
- ADD CONSTRAINT `FK_comment_post`
-	FOREIGN KEY (`post_id`) REFERENCES `post` (`id`) ON DELETE Restrict ON UPDATE Restrict
+ALTER TABLE `comment`
+    ADD CONSTRAINT `FK_comment_post`
+        FOREIGN KEY (`post_id`) REFERENCES `post` (`id`) ON DELETE Restrict ON UPDATE Restrict
 ;
 
-ALTER TABLE `comment` 
- ADD CONSTRAINT `FK_comment_user`
-	FOREIGN KEY (`author_id`) REFERENCES `user` (`id`) ON DELETE Restrict ON UPDATE Restrict
+ALTER TABLE `comment`
+    ADD CONSTRAINT `FK_comment_user`
+        FOREIGN KEY (`author_id`) REFERENCES `user` (`id`) ON DELETE Restrict ON UPDATE Restrict
 ;
 
-ALTER TABLE `comment_attachment` 
- ADD CONSTRAINT `FK_comment_attachment_attachment`
-	FOREIGN KEY (`id`) REFERENCES `attachment` (`id`) ON DELETE Restrict ON UPDATE Restrict
+ALTER TABLE `comment_attachment`
+    ADD CONSTRAINT `FK_comment_attachment_attachment`
+        FOREIGN KEY (`id`) REFERENCES `attachment` (`id`) ON DELETE Restrict ON UPDATE Restrict
 ;
 
-ALTER TABLE `comment_attachment` 
- ADD CONSTRAINT `FK_comment_attachment_comment`
-	FOREIGN KEY (`comment_id`) REFERENCES `comment` (`id`) ON DELETE Restrict ON UPDATE Restrict
+ALTER TABLE `comment_attachment`
+    ADD CONSTRAINT `FK_comment_attachment_comment`
+        FOREIGN KEY (`comment_id`) REFERENCES `comment` (`id`) ON DELETE Restrict ON UPDATE Restrict
 ;
 
-ALTER TABLE `m2m_tag_post` 
- ADD CONSTRAINT `FK_m2m_tag_post_post`
-	FOREIGN KEY (`post_id`) REFERENCES `post` (`id`) ON DELETE Restrict ON UPDATE Restrict
+ALTER TABLE `m2m_tag_post`
+    ADD CONSTRAINT `FK_m2m_tag_post_post`
+        FOREIGN KEY (`post_id`) REFERENCES `post` (`id`) ON DELETE Restrict ON UPDATE Restrict
 ;
 
-ALTER TABLE `m2m_tag_post` 
- ADD CONSTRAINT `FK_m2m_tag_post_tag`
-	FOREIGN KEY (`tag_id`) REFERENCES `tag` (`id`) ON DELETE Restrict ON UPDATE Restrict
+ALTER TABLE `m2m_tag_post`
+    ADD CONSTRAINT `FK_m2m_tag_post_tag`
+        FOREIGN KEY (`tag_id`) REFERENCES `tag` (`id`) ON DELETE Restrict ON UPDATE Restrict
 ;
 
-ALTER TABLE `post` 
- ADD CONSTRAINT `FK_post_user`
-	FOREIGN KEY (`author_id`) REFERENCES `user` (`id`) ON DELETE Restrict ON UPDATE Restrict
+ALTER TABLE `post`
+    ADD CONSTRAINT `FK_post_user`
+        FOREIGN KEY (`author_id`) REFERENCES `user` (`id`) ON DELETE Restrict ON UPDATE Restrict
 ;
 
-ALTER TABLE `post_attachment` 
- ADD CONSTRAINT `FK_post_attachment_attachment`
-	FOREIGN KEY (`id`) REFERENCES `attachment` (`id`) ON DELETE Restrict ON UPDATE Restrict
+ALTER TABLE `post_attachment`
+    ADD CONSTRAINT `FK_post_attachment_attachment`
+        FOREIGN KEY (`id`) REFERENCES `attachment` (`id`) ON DELETE Restrict ON UPDATE Restrict
 ;
 
-ALTER TABLE `post_attachment` 
- ADD CONSTRAINT `FK_post_attachment_post`
-	FOREIGN KEY (`post_id`) REFERENCES `post` (`id`) ON DELETE Restrict ON UPDATE Restrict
+ALTER TABLE `post_attachment`
+    ADD CONSTRAINT `FK_post_attachment_post`
+        FOREIGN KEY (`post_id`) REFERENCES `post` (`id`) ON DELETE Restrict ON UPDATE Restrict
 ;
 
-ALTER TABLE `user` 
- ADD CONSTRAINT `FK_user_role`
-	FOREIGN KEY (`role_id`) REFERENCES `role` (`id`) ON DELETE Restrict ON UPDATE Restrict
+ALTER TABLE `user`
+    ADD CONSTRAINT `FK_user_role`
+        FOREIGN KEY (`role_id`) REFERENCES `role` (`id`) ON DELETE Restrict ON UPDATE Restrict
 ;
 
-ALTER TABLE `user_icon` 
- ADD CONSTRAINT `FK_user_icon_attachment`
-	FOREIGN KEY (`id`) REFERENCES `attachment` (`id`) ON DELETE Restrict ON UPDATE Restrict
+ALTER TABLE `user_icon`
+    ADD CONSTRAINT `FK_user_icon_attachment`
+        FOREIGN KEY (`id`) REFERENCES `attachment` (`id`) ON DELETE Restrict ON UPDATE Restrict
 ;
 
-ALTER TABLE `user_icon` 
- ADD CONSTRAINT `FK_user_icon_user`
-	FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE Restrict ON UPDATE Restrict
+ALTER TABLE `user_icon`
+    ADD CONSTRAINT `FK_user_icon_user`
+        FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE Restrict ON UPDATE Restrict
 ;
 
-SET FOREIGN_KEY_CHECKS=1
-; 
+SET FOREIGN_KEY_CHECKS = 1
+;
 /* Create Views */
 
 CREATE VIEW `comment_attachment_view` AS
-SELECT 
-    ca.id,
-    a.name AS attachment_name,
-    ca.comment_id,
-    c.author_id,
-    u.name AS author_name,
-    c.post_id
+SELECT ca.id,
+       a.name AS attachment_name,
+       ca.comment_id,
+       c.author_id,
+       u.name AS author_name,
+       c.post_id
 FROM `comment_attachment` ca
-JOIN `attachment` a ON ca.id = a.id
-JOIN `comment` c ON ca.comment_id = c.id
-JOIN `user` u ON c.author_id = u.id
-JOIN `post` p ON c.post_id = p.id;
+         JOIN `attachment` a ON ca.id = a.id
+         JOIN `comment` c ON ca.comment_id = c.id
+         JOIN `user` u ON c.author_id = u.id
+         JOIN `post` p ON c.post_id = p.id;
 ;
 
 
 CREATE VIEW `post_attachment_view` AS
-SELECT 
-    pa.id,
-    a.name AS attachment_name,
-    pa.post_id,
-    p.title AS post_title,
-    p.author_id,
-    u.name AS author_name
+SELECT pa.id,
+       a.name  AS attachment_name,
+       pa.post_id,
+       p.title AS post_title,
+       p.author_id,
+       u.name  AS author_name
 FROM `post_attachment` pa
-JOIN `attachment` a ON pa.id = a.id
-JOIN `post` p ON pa.post_id = p.id
-JOIN `user` u ON p.author_id = u.id;
+         JOIN `attachment` a ON pa.id = a.id
+         JOIN `post` p ON pa.post_id = p.id
+         JOIN `user` u ON p.author_id = u.id;
 ;
 
 
 CREATE VIEW `user_icon_view` AS
-SELECT 
-    ui.id,
-    a.name AS icon_name,
-    ui.is_default,
-    ui.user_id
+SELECT ui.id,
+       a.name AS icon_name,
+       ui.is_default,
+       ui.user_id
 FROM `user_icon` ui
-JOIN `attachment` a ON ui.id = a.id
-JOIN `user` u ON ui.user_id = u.id;
+         JOIN `attachment` a ON ui.id = a.id
+         JOIN `user` u ON ui.user_id = u.id;
 ;
-
 
 create view user_post_view as
 select p.id,
-p.title,
-p.content,
-p.publication_date,
-u.name as author_name, 
-u.id as author_id
+       p.title,
+       p.content,
+       p.publication_date,
+       u.id   as author_id,
+       u.name as author_name,
+       a.name as author_icon_name
 from `post` as p
-join `user` as u on p.author_id = u.id;
+         join `user` as u on p.author_id = u.id
+         join user_icon as ui on u.icon_id = ui.id
+         join attachment as a on ui.id = a.id
 ;
+create view user_comment_view as
+select c.id,
+       c.content,
+       c.publication_date,
+       c.post_id,
+       c.author_id,
+       u.name as 'author_name',
+       a.name as 'author_icon_name'
+from comment as c
+         join user as u on c.author_id = u.id
+         join user_icon_view as uiv on u.icon_id = uiv.id
+         join attachment as a on uiv.id = a.id;
+;
+create view `post_tag_view` as
+select p.id   as post_id,
+       t.id   as tag_id,
+       t.name as tag_name
+from post as p
+         join m2m_tag_post as m2m on p.id = m2m.post_id
+         join tag as t on t.id = m2m.tag_id;
+create view `search_tag_view` as
+select p.id,
+       p.title,
+       p.content,
+       p.publication_date,
+       p.author_id,
+       p.author_name,
+       p.author_icon_name,
+       ptv.tag_name,
+       ptv.tag_id
+from post_tag_view as ptv
+         join user_post_view as p on p.id = ptv.post_id;
+        create view `user_info_view` as
+SELECT
+u.role_id,
+u.id as user_id,
+u.last_visit_date,
+u.registration_date,
+u.moto,
+r.en_name,
+r.ru_name,
+count(p.id) as total
+from `user` u
+join role r on r.id = u.role_id
+join post p on u.id = p.author_id
+GROUP BY p.author_id;

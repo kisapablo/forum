@@ -1,7 +1,7 @@
 {% extends 'base.twig' %}
 
 {% block title %}
-    Personal Cabinet
+    Admin Panel
 {% endblock %}
 {% block body %}
     <div class="profile__body profile__body-color">
@@ -14,7 +14,7 @@
         <div class="profile-text">
             <div>
             <h5 class="profile-title">{# Kisapablo Restress #}{{ user.name }}</h5>
-            <a class="nav-button profile__role-color"> {{ user.role_id |default('User') }}</a>
+                <a class="nav-button role-{{ cabinet.en_name }}-color"> {{ cabinet.en_name }}</a>
             </div>
         </div>
     </div>

@@ -3,22 +3,20 @@
         <ul class="pagination">
             {% if pagination.current > 1 %}
                 <li class="page-item">
-                    <a class="page-link" href="{{ url('posts/all/') ~ (pagination.current - 1) }}"
+                    <a class="page-link" href="{{ url(baseUrl ~ 'page=') ~ (pagination.current - 1) }}"
                        aria-label="Previous"> Previous
                     </a>
                 </li>
             {% endif %}
-            {% for page in 1..pagination.paging %}
+            {% for page in pagination.current.. min(pagination.pagesCount, pagination.current + 2) %}
                 <li class="page-item {% if pagination.current == page %} active {% endif %}">
                     <a class="page-link"
-                       href="{{ url('posts/all/' ~ page) }}">{{ page }}</a> {# Переход кнопке там где цифры #}
-                </li> {# Переход по кнопке 1 #}
-                {#        <li class="page-item"><a class="page-link" href="blog/2">2</a></li> #} {# переход на /blog/2 по кнопке 2 #}
-                {#        <li class="page-item"><a class="page-link" href="blog/3">3</a></li> #} {# переход на /blog/3 по кнопке 3 #}
+                       href="{{ url( baseUrl ~ 'page=' ~ page) }}">{{ page }}</a> {# Переход кнопке там где цифры #}
+                </li>
             {% endfor %}
-            {% if pagination.current < pagination.paging %}
+            {% if pagination.current < pagination.pagesCount %}
                 <li class="page-item"><a class="page-link"
-                                         href="{{ url('posts/all/') ~ (pagination.current + 1) }}">Next</a>
+                                         href="{{ url( baseUrl ~ 'page=' ~ (pagination.current + 1) ) }}">Next</a>
                 </li>
             {% endif %}
         </ul>

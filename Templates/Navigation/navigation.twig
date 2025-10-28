@@ -1,6 +1,9 @@
 <nav class="navbar fixed-top">
     <div class="container-fluid">
-        <a class="navbar-brand" href="{{ base_url() }}">MyApp</a>
+        <a class="navbar-brand" href="{{ base_url() }}">
+       <img class="nav-logo" src="/footer-link/mascot.png"" alt="Petos mascot">
+        <span  class="nav-text"style="color:goldenrod"> PetOS Project Forum </span> 
+        </a>
         <div class="nav__body-buttons">
             {% if user is null %}
                 <div class="nav__body-buttons">
@@ -9,11 +12,13 @@
                 </div>
             {% else %}
                 <a type="button" class="nav-button builder-color" href="{{ url('posts/builders') }}">Public new
-                    post(Beta) </a>
-{#                <a class="nav-button user-color" href="{{ url('user') }}">Author's karma</a>#}
-                <a class="nav-button logout-color marging" href="{{ url('user/logout') }}">Log Out</a>
+                    post </a>
+                <a type="button" class="nav-button leader-color" href="{{ url('posts/leaders') }}">Top Karma Leaders </a>
+                <a class="nav-button logout-color nav_button-body__lastbutton" href="{{ url('user/logout') }}">Log Out</a>
                 <a href="{{ url('user') }}" class="user__body">
+                    {% if icons is not null %}
                 <img src="{{ icons.icon_name }}" alt="Avatar" class="avatar">
+                    {% endif %}
                 <span>{# Kisapablo Restless #} {{ user.name|default('Bug submit pls') }} </span>
                 </a>
                 {# rounded-circle me-2 p-1 #}

@@ -4,27 +4,17 @@
 {% endblock %}
 {% block body %}
     <form method="POST" action="{{ url('user/UserEditor/debug') }}" enctype="multipart/form-data">
-        <div class="BuilderEditor_body-form">
-            <div class="BuilderEditor_header-form">
-                <label>
-                    <input required type="text" class="EditorBuilder-form" name="Username" placeholder="Username"
-                           value="{{ user.name }}">
-                    <input required type="text" class="EditorBuilder-form" name="Userpass"
-                           placeholder="Update your Password"
-                           value="{{ generatedhash }}">
-                    <textarea required class="EditorBuilder-form" name="content" rows="3"
-                              placeholder="Bio">Jorikk</textarea>
-                </label>
-            <div class="attachment-BuilderEditor__body">
-                <div class="attachment-BuilderEditor-content">
-                    <label for="avatar">Custom <br>Uploading<br> your Icon</label>
-                    <input type="file" id="avatar" name="avatar" accept="image/**" style="display:none;"/>
-                </div>
-            </div>
+        <div class="">
+            <label>
+                <div class="alert alert-danger-dark">Warning! if you finish editing(Click for Special button) for you profile then you need to reauthenticate</div> 
+               <input required type="text" class="form-control" name="Username" placeholder="Username"
+                      value="{{ user.name }}">
+                <input required type="text" class="form-control" name="Userpass" placeholder="Update your Password">
+               <textarea {#required#} class="form-control" name="moto" rows="3"
+                   placeholder="Bio">{{ cabinet.moto }}</textarea>
+</label>
+            <input type="file" id="avatar" name="avatar" class="" accept="image/png"/>
         </div>
-                <div class="form__body-button">
-                    <button type="submit" class="form-button user-color">Submit Comment</button>
-                </div>
-            </div>
+        <button type="submit" class="nav-button user-color">Finish Editing Profile</button>
     </form>
 {% endblock %}

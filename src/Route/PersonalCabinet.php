@@ -28,17 +28,22 @@ class PersonalCabinet
     public function showPersonalCabinet(Request $request, Response $response, array $args): Response
     {
         $icon = $this->userRepository->findUserIcon($_SESSION['user']['id']);
+        $cabinet = $this->userRepository->cabinetInfo($_SESSION['user']['id']);
+        error_log('cabinet info is' . json_encode($cabinet));
         if ($icon == null) {
             error_log("User#" . $_SESSION['user']['id'] . " has no icon");
         }
         error_log('Session is ' . json_encode($_SESSION));
+        error_log('ico' . json_encode($icon));
+        error_log('icon = ' . json_encode($icon['icon_name']));
 //        if (!isset($user) || !$user['id']) {
 //            return $response->withStatus(301)->withHeader('Location', '/user/login');
 //        }
 
         $body = $this->view->render('Navigation/PersonalCabinet.twig', [
             'user' => $_SESSION['user'],
-            'icons' => $icon
+            'icons' => $icon,
+            'cabinet' => $cabinet
         ]);
         $response->getBody()->write($body);
         return $response;
@@ -47,64 +52,24 @@ class PersonalCabinet
 
     public function showAdminPanel(Request $request, Response $response, array $args): Response
     {
-            $icon = $this->userRepository->findUserIcon($_SESSION['user']['id']);
-            if ($icon == null) {
-                error_log("User#" . $_SESSION['user']['id'] . " has no icon");
-            }
+        $icon = $this->userRepository->findUserIcon($_SESSION['user']['id']);
+        if ($icon == null) {
+            error_log("User#" . $_SESSION['user']['id'] . " has no icon");
+        }
         error_log('Session is ' . json_encode($_SESSION));
 //        if (!isset($user) || !$user['id']) {
 //            return $response->withStatus(301)->withHeader('Location', '/user/login');
 //        }
 
+        $cabinet = $this->userRepository->cabinetInfo($_SESSION['user']['id']);
+
         $body = $this->view->render('Navigation/admin.twig', [
             'user' => $_SESSION['user'],
-            'icons' => $icon
-        ]);
-        $response->getBody()->write($body);
-        return $response;
-    }
-
-    // Selecting Posts... Personal Cabinet SelectPosts
-    public function showPublishedPosts(Request $request, Response $response, array $args = []): Response
-    {
-        $userId = $_SESSION['user']['id'];
-        $page = isset($args['page']) ? (int)$args['page'] : 1;
-        $totalCount = $this->postRepository->getTotalCountUsers($userId);
-        $limit = 3;
-        $start = (int)(($page - 1) * $limit);
-
-
-        error_log('ID Value is' . json_encode($userId));
-
-        $post_id = (int)$args['post_id'];
-        error_log('Post_ID Value is' . json_encode($post_id));
-
-        $posts = $this->postRepository->findAllPostsByAuthorId($userId);
-
-        error_log('Posts Value is' . json_encode($posts));
-
-        error_log('Session is ' . json_encode($_SESSION));
-//        if (!isset($user) || !    $user['userId']) {
-//            return $response->withStatus(301)->withHeader('Location', '/user/login');
-//        }
-//
-        $icon = $this->userRepository->findUserIcon($_SESSION['user']['id']);
-        if ($icon == null) {
-            error_log("User#" . $_SESSION['user']['id'] . " has no icon");
-        }
-
-        $body = $this->view->render('Navigation/PersonalCabinet-SelectPosts.twig', [
-            'posts' => $posts,
-            'user' => $_SESSION['user'],
             'icons' => $icon,
-             'pagination' => [
-        'current' => $page,  // current page number(текущ. номер страницы)
-        'paging' => ceil($totalCount / $limit) // вычисление всего кол-ва страниц через $totalCount деля на $limit и округления ceilом
-    ]
+            'cabinet' => $cabinet
         ]);
         $response->getBody()->write($body);
         return $response;
-        // Конец отрисовки
     }
 
     public function showUserEditor(Request $request, Response $response)
@@ -121,7 +86,7 @@ class PersonalCabinet
         return $response;
     }
 
-    public function addUserIco(Request $request, Response $response)
+    public function UpdateUserInfo(Request $request, Response $response)
     {
         $iconName = $_FILES['avatar']['name'];
         $userId = $_SESSION['user']['id'];
@@ -133,16 +98,26 @@ class PersonalCabinet
             error_log('File name ' . $dir);
             move_uploaded_file($_FILES['avatar']['tmp_name'], $dir);
 
-        } else {
-            exit("error!");
-        }
+        } 
         error_log('filename is ' . json_encode($fileName));
         error_log('Files is ' . json_encode($_FILES));
 //        print_r($_FILES);
-        $icon = $this->userRepository->saveUserIcon($fileName, $userId);
-        print_r($icon);
+
+        // $icon = $this->userRepository->saveUserIcon($fileName, $userId);
+        error_log('Moto value is ' . json_encode($_POST['moto']));
+        $desc = $this->userRepository->updateUserInfo($_POST['moto'], $userId);
+        error_log('New Moto Value is ' . json_encode($desc));
+
+        $newNickName = $this->userRepository->updateUserName($_SESSION['user']['id'], $_POST['Username']);
+//         if ($newNickName) {
+// $_SESSION['user'] = ['name' => $newNickName['name']];
+        error_log('New Password Hash Value is ' . json_encode($newNickName));
+        $generateNewPasswordHash = $_POST['Userpass'];
+        $newPasswordHash = $this->userRepository->UpdatePasswordHash($generateNewPasswordHash, $_SESSION['user']['id']);
+        error_log('New Password Hash Value is ' . json_encode($newPasswordHash));
+        // print_r($icon);
 //                return $response;
-        return $response->withStatus(301)->withHeader('Location', '/user');
+        return $response->withStatus(301)->withHeader('Location', '/user/logout' );
     }
 
     public function showDefaultIconsSelect(Request $request, Response $response)
@@ -174,7 +149,7 @@ class PersonalCabinet
         return $response->withStatus(301)->withHeader('Location', '/user');
     }
 
-    public function getglobalvariable()
+    public function getGlobalVariable()
     {
         echo 'Post Value is ';
         print_r($_POST);
@@ -185,16 +160,4 @@ class PersonalCabinet
         echo '<br> Cookie Value is ';
         print_r($_COOKIE);
     }
-    /*
-    public function updateUserInfo(Request $request, Response $response)
-    {
-        $UserName = $_POST['Username'];
-        $User_Content = $_POST['user_content'];
-        $Newavatar = $_POST['avatar'];
-        error_log('$_POST Value is' . json_encode($_POST));
-        error_log('$User_Content Value is' . json_encode($User_Content));
-        error_log('$Username Value is' . json_encode($UserName));
-        error_log('$NewAvatar Value is' . json_encode($Newavatar));
-    }
-    */
 }

@@ -8,32 +8,25 @@
 
         <div class="post-toolbar post-header">
             {% include 'Navigation/pagination.twig' with pagination %}
-
-            <form method="POST" action="{{ url('debug') }}" class="mb-5">
+{#            search=') ~ (posts )#}
+            {# Мб будет так-же в форм поиска#}
+            <form method="get" action="{{ url('posts?') }}" class="search-header">
                 <label class="toolbar-search-body">
                     Поиск
-                    <input type="search" class="form-control" name="title" placeholder="Search">
-                    <input type="search" class="form-control" name="title" placeholder="Search with author_id">
+                    <input type="search" class="search-form" name="search" placeholder="Search">
+                    <input type="search" class="search-form" name="author" placeholder="Search with author_id">
+                    <select name="tags" id="tags" class="search-form">
+                        <option selected>Very tag</option>
+                        <option>This Tag</option>
+                    </select>
                     <button type="submit" class="nav-button builder-color">Search</button>
                     {#                    <a type="" class="nav-button builder-color">Search</a>#}
                 </label>
             </form>
-            {# Мб будет так-же в форм поиска#}
-            <div class="post-filter__body">
-                <label for="filter">
-                    <select name="filter" id="filter" class="form-control">
-                        <option selected value="joriik">Latest Update</option>
-                        <option value="jor">New Posts!</option>
-                    </select>
-                </label>
-            </div>
-            {% if user is not null %}
-            <a type="button" class="button-nearby-post builder-color"
-               href="{{ url('posts/builders') }}">
-                Publish new post
-                {% else %}
-                {% endif %}
-            </a>
+{#            {% if user is not null %}#}
+{#                <span class="search-header">Тут может что то появится со временем</span>#}
+{#                {% else %}#}
+{#                {% endif %}#}
         </div>
     </div>
 </div>

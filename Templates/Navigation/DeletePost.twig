@@ -1,0 +1,22 @@
+{% extends 'base.twig' %}
+
+{% block title %}
+    Access Request to Delete Post
+{% endblock %}
+{% block body %}
+    <div class="container">
+        <div class="delete_body">
+            <div class="delete_body-colors">
+                <div style="margin-bottom: 5rem;">
+                    <div class="delete_title">Are you serious about removing this</div>
+                    <div class="class" style="/*display: flex; flex-wrap: wrap;*/ justify-content:center; align-items:center;">
+                        <a class="nav-button cancel-button-color" href="{{ url('posts' ) ~ post.id  }}">No, I need some more thinking</a>
+                        <form method="POST" action="{{ url('posts/delete/' ~ post.id ~ '/initial') }}">
+                        <button type="submit" class="nav-button delete-button-color">Yes, I'm thinking and aware</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
