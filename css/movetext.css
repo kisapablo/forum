@@ -297,9 +297,14 @@ html {
     margin-bottom: 0.325rem;
 }
 
+
 .post-tags-color {
     border-color: #3ead28;
     color: #3ead28;
+}
+
+a.post-tags-color{
+    margin-bottom: 0.3rem;
 }
 
 .post-tags-color:hover {
@@ -598,34 +603,38 @@ padding: 0.5rem .4rem;
 
 .footer__body {
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: space-around;
-    position: marker;
-    margin-top: 6rem;
-    margin-bottom: 6rem;
+    margin-top: 4rem;
+    padding-top: 2.25rem;
+    padding-bottom: 1.5rem;
 }
 
 .footer__body-colors {
     background-color: #23252b;
-    border: 1px solid #5a5a63;
-    padding: .5rem;
+    border-top: 1px solid #5a5a63;
+}
+
+.footer-title {
+    display: flex;
+    justify-content: center;
+    align-items: self-end;
+    flex-direction: row;
+    justify-self: center;
+    gap: 0.35rem;
 }
 
 .footer-img {
     object-fit: contain;
-    object-position: center;
-    width: 2.5rem;
+    /* object-position: center; */
+    height: 3rem;
 }
 
 .footer-img:hover {
     transform: scale(1.02);
 }
 
-.footer-img {
-    object-fit: contain;
-    object-position: center;
-    width: 2.5rem;
-}
 
 .footer-github {
     /*background: linear-gradient(60deg, #1b1a1a, #777878);*/
@@ -654,21 +663,12 @@ padding: 0.5rem .4rem;
 }
 
 .footer-submit{
+    display: flex;
     background: linear-gradient(60deg, #B71010, #1AAA2F );
     background-clip: text;
     color: transparent;
 }
 
-.footer-title {
-    display: flex;
-    justify-content: center;
-    align-items: self-end;
-    flex-direction: row;
-    justify-self: center;
-    gap: 0.5rem;
-    margin-top: 0.5rem;
-    text-shadow: none;
-}
 
 .text-avatar {
     position: relative;
