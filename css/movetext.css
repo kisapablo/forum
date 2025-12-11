@@ -10,6 +10,7 @@ color через hover плохая идея
     font-family: "Roboto", sans-serif, "Roboto Mono", monospace;
     margin: 0;
     padding: 0;
+    /* flex-wrap: wrap; */
     /*Поиск выпирающих элементов*/
     /* outline: 4px solid green !important; */
 
@@ -152,6 +153,7 @@ html {
     display: inline-flex;
     justify-content: center;
     align-items: center;
+    flex-wrap: wrap;
     /* padding-top: .3125rem; */
     /* padding-bottom: .3125rem; */
     margin-right: 1rem;
@@ -168,11 +170,11 @@ html {
 }
 
 .nav-button {
-    margin-left: .25rem;
-    margin-right: .25rem;
+    margin: 0 .25rem .25rem;
+    /* margin-left: .25rem; */
+    /* margin-right: .25rem; */
     display: inline-block;
     font-weight: 400;
-    text-align: center;
     user-select: none;
     background-color: transparent;
     border: 1px solid transparent;
@@ -304,7 +306,7 @@ html {
 }
 
 a.post-tags-color{
-    margin-bottom: 0.3rem;
+    margin-bottom: 0.6rem;
 }
 
 .post-tags-color:hover {
@@ -335,8 +337,8 @@ a.post-tags-color{
     width: fit-content;
     border-radius: 20px;
     background-color: #2f3031;
-    border-bottom: 1px solid #5a5a63;
-    color: darkorange;
+    padding: 0.25rem;
+    /* border-bottom: 1px solid #5a5a63; */
     margin-bottom: 5px;
 }
 
@@ -365,8 +367,15 @@ a.post-tags-color{
 
 .search-header {
     margin-right: 1.75rem;
+    margin-left: 0.5rem;
 }
 
+                    
+.search-title{
+    color: darkorange;
+    display: flex;
+    justify-content: center;
+}
 .search-form{
     display: flex;
     width: 100%;
@@ -510,8 +519,7 @@ padding: 0.5rem .4rem;
 .pagination-body {
     display: flex;
     justify-content: center;
-    margin-left: .95rem;
-    margin-right: .95rem;
+    margin: 0.5rem .95rem 0;
 }
 
 .user__body {
@@ -606,6 +614,7 @@ padding: 0.5rem .4rem;
     flex-direction: column;
     align-items: center;
     justify-content: space-around;
+    flex-wrap: wrap;
     margin-top: 4rem;
     padding-top: 2.25rem;
     padding-bottom: 1.5rem;
@@ -728,6 +737,7 @@ padding: 0.5rem .4rem;
     background-clip: border-box;
     justify-content: center;
     align-items: center;
+    padding-bottom: 2.1rem;
 }
 
 .authentication__formBody {
