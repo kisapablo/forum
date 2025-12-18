@@ -21,9 +21,10 @@
 
                 <h3 class="profile_info-title">Account Info</h3>
                 <span class="registration-date">Register on: {{ cabinet.registration_date }}</span>
-                <div> {# Первый столб #}
-                    <p class="profile_info-content">{{ cabinet.lvl|default('1000') }} LVL {{ cabinet.total }} posts<br>Last
+                    <p class="profile_info-content">{{ cabinet.lvl|default('1000') }}
+                        LVL {{ cabinet.total|default('0') }} posts<br>Last
                         Activity: {{ cabinet.last_visit_date|default('1hour ago') }}</p>
+                <div> {# Первый столб #}
                     <a href="{{ url('posts?author=') ~ (user.id) }}" class="profile-button builder-color">Search Your
                         Posts</a>
 
@@ -31,9 +32,9 @@
                 </div>
                 <div> {# Второй столб #}
                     <a class="profile-button info-color" href="{{ url('user/UserEditor') }}">Update user info</a>
-                    {#            {% if cabinet.moto == 'admin' or cabinet.moto == 'helper' %} #}
-                    <a class="profile-button secret-color" href="{{ url('admin') }}">Admin panel</a>
-                    {#            {% endif %} #}
+                    {% if cabinet.moto == 'admin' or cabinet.moto == 'helper' %}
+                        <a class="profile-button secret-color" href="{{ url('admin') }}">Admin panel</a>
+                    {% endif %}
                 </div>
             </div>
         </div>

@@ -11,7 +11,7 @@
                     <div class="delete_title">Are you serious about removing this</div>
                     <div class="class" style="/*display: flex; flex-wrap: wrap;*/ justify-content:center; align-items:center;">
                         <a class="nav-button cancel-button-color" href="{{ url('posts' ) ~ post.id  }}">No, I need some more thinking</a>
-                        <form method="POST" action="{{ url('posts/delete/' ~ post.id ~ '/comments/' ~ comment.id ~ '/initial') }}">
+                        <form method="POST" action="{{ url('posts/delete/' ~ post.id ~ 'comments/' ~ comment.id ~ 'initial') }}">
                         <button type="submit" class="nav-button delete-button-color">Yes, I'm thinking and aware</button>
                         </form>
                     </div>

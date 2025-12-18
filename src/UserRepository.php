@@ -239,6 +239,8 @@ class UserRepository
             'password' => $password,
             'UserID' => $UserID
         ]);
+
+        return $statement->fetchAll();
     }
 
     public function Updateactivity($UserID)

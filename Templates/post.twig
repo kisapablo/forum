@@ -49,8 +49,8 @@
                     {% if comment.author_id == user.id %}
                     <div class="post_edit-body">
                         <a class="nav-button auth-color" href="{{ url('user/posts/CommentEditor/' ~ post.id ~ "/" ~ comment.id) }}">Edit
-                            post</a>
-                        <a class="nav-button logout-color" href="{{ url('posts/delete/' ) ~ post.id  ~ '/comments/' ~ comment.id  }}">Delete Post</a>
+                            comment</a>
+                        <a class="nav-button logout-color" href="{{ url('posts/delete/' ) ~ post.id  ~ '/comments/' ~ comment.id  }}">Delete Comment</a>
                     </div>
                     {% endif %}
                     <div class="position">

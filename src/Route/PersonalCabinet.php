@@ -20,7 +20,7 @@ class PersonalCabinet
     public function __construct(Environment $view, PostRepository $postRepository, UserRepository $userRepository)
     {
         $this->view = $view;
-        $this->postRepository = $postRepository;
+//        $this->postRepository = $postRepository;
         $this->userRepository = $userRepository;
     }
 
@@ -43,7 +43,7 @@ class PersonalCabinet
         $body = $this->view->render('Navigation/PersonalCabinet.twig', [
             'user' => $_SESSION['user'],
             'icons' => $icon,
-            'cabinet' => $cabinet
+            'cabinet' => $cabinet,
         ]);
         $response->getBody()->write($body);
         return $response;
@@ -112,7 +112,7 @@ class PersonalCabinet
 //         if ($newNickName) {
 // $_SESSION['user'] = ['name' => $newNickName['name']];
         error_log('New Password Hash Value is ' . json_encode($newNickName));
-        $generateNewPasswordHash = $_POST['Userpass'];
+        $generateNewPasswordHash = password_hash($_POST['Userpass'], PASSWORD_DEFAULT);
         $newPasswordHash = $this->userRepository->UpdatePasswordHash($generateNewPasswordHash, $_SESSION['user']['id']);
         error_log('New Password Hash Value is ' . json_encode($newPasswordHash));
         // print_r($icon);
