@@ -3,31 +3,25 @@
     Builder New Posts
 {% endblock %}
 {% block body %}
-    <form method="POST" action="{{ url('posts') }}" enctype="multipart/form-data">
-        <div class="BuilderEditor_body">
-            <div class="BuilderEditor__body-colors">
-                <div class="EditorBuilder-forms">
-                    <label class="label-form">
-                        <select name="tags" id="tags" class="EditorBuilder-form ">
+    <form method="POST" action="{{ url('posts') }}" enctype="multipart/form-data" class="Builder_body">
+    <div style='margin-top: 0.25rem;'>
+                        <select name="tags" id="tags" class="Builder-tags">
                             <option selected>Latest Update</option>
                             <option>New Posts!</option>
                         </select>
-                        <input required type="text" class="EditorBuilder-form" name="title" placeholder="You Post Name">
-                        <input required type="text" class="EditorBuilder-form" name="tags" placeholder="You Tags Name">
-                        <textarea required class="EditorBuilder-form" name="content" rows="3"
+                        <input required type="text" class="Builder-form" name="title" placeholder="You Post Name">
+                        <input required type="text" class="Builder-form" name="tags" placeholder="You Tags Name">
+                        <textarea required class="Builder-form" name="content" rows="3"
                                   placeholder="You Post content"></textarea>
-                    </label>
-                    <div class="attachment-BuilderEditor__body">
-                        <div class="attachment-BuilderEditor-content">
+                     
+    <div class="Builder-attachments__body">
                             <label for="avatar">Custom <br>Uploading<br> your Icon</label>
                             <input type="file" id="avatar" name="avatar" accept="image/**" style="display:none;"/>
-                        </div>
-                    </div>
-                </div>
-                <div class="form__body-button">
-                    <button type="submit" class="form-button user-color"> Push Public post</button>
-                </div>
-            </div>
-        </div>
+                            </div>
+    </div>
+                                                         <span class="form__body-button">
+                    <button type="submit" class="form-button user-color">Push Public post</button>
+                </span>
+                        {# </div> #}
     </form>
 {% endblock %}

@@ -4,9 +4,9 @@
 {% endblock %}
 {% block body %}
     <form method="POST" action="" enctype="multipart/form-data">
-        <div class="BuilderEditor_body">
-            <div class="BuilderEditor__body-colors">
-                <div class="EditorBuilder-forms">
+        <div class="Editor_body">
+            <div class="Builder__body-colors">
+                <div class="Editor-forms">
                     <label class="label-form">
                         {# Editable Post title #}
                         <input required type="text" class="post-form" name="title" placeholder="You Post Name"
@@ -16,8 +16,8 @@
                         <textarea required class="post-form" name="content" rows="3"
                                   placeholder="You Post content">{{ post.content }}</textarea>
                     </label>
-                    <div class="attachment-BuilderEditor__body">
-                        <div class="attachment-BuilderEditor-content">
+                    <div class="attachment-Editor__body">
+                        <div class="attachment-Editor-content">
                             <label for="attachment">Custom <br>Uploading<br> your Icon</label>
                             <input type="file" id="avatar" name="attachment" accept="image/**" style="display:none;"/>
                         </div>

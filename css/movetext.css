@@ -52,65 +52,66 @@ html {
     margin-left: auto;
 }
 
-.BuilderEditor_body {
-    display: flex;
-    flex-wrap: wrap;
+.Builder_body {
     border: 5px solid transparent;
+    display: flex;
     justify-content: center;
+    align-content: center;
     flex-direction: column;
-    margin-top: 1rem;
-    position: relative;
-    border-radius: 5px;
-    background-color: transparent;
+    flex-wrap: wrap;
+    border-radius: 0.5rem;
+    background-color: #24242d; 
     transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
 }
 
-.BuilderEditor__body-colors {
-    background-color: #24242d;
-    border-radius: 2rem;
-}
-
-.BuilderEditor_tags {
+.Builder-attachments__body {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    /*margin-left: 0.25rem;*/
+    border-radius: 1rem;
+    background-color: rgba(122, 122, 122, 0.56);
+    padding: 2rem;
 }
 
-.BuilderEditor_header-form {
+
+.Builder-tags{
+    padding: .450rem;
+    border-radius: .50rem;
+    font-size: 1rem;
+    color: #ffffff;
+    background-color: #3d3d3f;
+    border: 1px solid #ced4da;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* margin: 0 .5rem .3rem; */
+    margin-bottom: 0.3rem;
+
+}
+
+
+.Builder_header-form {
     margin-top: 1rem;
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-.EditorBuilder-form {
+.Builder-form {
     padding: .6rem;
     border-radius: .50rem;
     font-size: 1rem;
     color: #ffffff;
     background-color: #3d3d3f;
     border: 1px solid #ced4da;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    margin-bottom: 5px;
-}
-
-.label-form {
+    margin-bottom: 0.3rem;
     display: flex;
-    flex-direction: column;
-    margin-left: .5rem;
-    margin-right: .5rem;
 }
-
-/*input.EditorBuilder-form {*/
-/*    width: fit-content;*/
-/*}*/
 
 .form-group {
     margin-bottom: 1rem;
-
 }
 
 .form-control {
@@ -529,27 +530,6 @@ padding: 0.5rem .4rem;
     justify-content: space-between;
 }
 
-.attachment-BuilderEditor__body {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    /*margin-left: 0.25rem;*/
-
-}
-
-.EditorBuilder-forms {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    align-content: center;
-}
-
-.attachment-BuilderEditor-content {
-    border-radius: 1rem;
-    background-color: rgba(122, 122, 122, 0.56);
-    padding: 2rem;
-}
 
 .pagination {
     display: flex;
@@ -608,7 +588,7 @@ padding: 0.5rem .4rem;
     flex-wrap: wrap;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: center;;
     transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
 }
 
@@ -616,6 +596,7 @@ padding: 0.5rem .4rem;
     border: 1px solid #5a5a63;
     background-color: #23252b;
     border-radius: 1rem;
+    padding: 0 .5rem
 }
 
 .delete_title {
@@ -1091,11 +1072,6 @@ ul {
 textarea.form-control {
     height: auto;
 }
-
-textarea.EditorBuilder-form {
-    height: auto;
-}
-
 
 textarea {
     overflow: auto;
