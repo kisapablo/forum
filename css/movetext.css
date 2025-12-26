@@ -53,7 +53,7 @@ html {
 }
 
 .Builder_body {
-    border: 2px solid #5a5a45; 
+    border: 2px solid #5a5a45;
     display: flex;
     position: relative;
     flex-direction: column;
@@ -65,31 +65,30 @@ html {
     transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
 }
 
-.Builder-forms{
+.Builder-forms {
     display: flex;
     justify-content: center;
     flex-direction: column;
-    margin:auto;
+    margin: auto;
     /* align-items: center; */
 }
 
 .Builder-attachments__body {
     display: flex;
-    justify-content:center;
-    flex-wrap:wrap;
+    justify-content: center;
+    flex-wrap: wrap;
     align-items: center;
     margin-left: 0.25rem;
 }
 
-.Builder-attachments-color
-{
-        border-radius: 0.5rem;
+.Builder-attachments-color {
+    border-radius: 0.5rem;
     background-color: rgba(122, 122, 122, 0.56);
     padding: 0.75rem;
 }
 
 
-.Builder-tags{
+.Builder-tags {
     padding: .450rem;
     border-radius: .50rem;
     font-size: 1rem;
@@ -123,7 +122,77 @@ html {
     display: flex;
 }
 
-.upload-ico{
+.Editor_body {
+    border: 2px solid #5a5a45;
+    display: flex;
+    position: relative;
+    flex-direction: column;
+    flex-wrap: wrap;
+    border-radius: 1.5rem;
+    background-color: #24242d;
+    /*padding-top: 1.25rem;*/
+    padding: 1.25rem 0 1.25rem;
+    transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+}
+
+.Editor-forms {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    margin: auto;
+    align-items: center;
+}
+
+.Editor-attachments__body {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    align-items: center;
+    margin-left: 0.25rem;
+}
+
+.Editor-attachments-color {
+    border-radius: 0.5rem;
+    background-color: rgba(122, 122, 122, 0.56);
+    padding: 0.75rem;
+}
+
+
+.Editor-tags {
+    padding: .450rem;
+    border-radius: .50rem;
+    font-size: 1rem;
+    color: #ffffff;
+    background-color: #3d3d3f;
+    border: 1px solid #ced4da;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* margin: 0 .5rem .3rem; */
+    margin-bottom: 0.3rem;
+
+}
+
+
+.Editor_header-form {
+    margin-top: 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.Editor-form {
+    padding: .6rem;
+    border-radius: .50rem;
+    font-size: 1rem;
+    color: #ffffff;
+    background-color: #3d3d3f;
+    border: 1px solid #ced4da;
+    margin-bottom: 0.3rem;
+    display: flex;
+}
+
+.upload-ico {
     /*background-color: rgba(122, 122, 122, 0.56);*/
     border-radius: 50%;
     border: 3px solid #80831a;

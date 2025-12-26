@@ -4,17 +4,20 @@
 {% endblock %}
 {% block body %}
     <form method="POST" action="{{ url('posts') }}" enctype="multipart/form-data" class="Builder_body">
-    <div class="Builder-forms">
-        <select name="tags" id="tags" class="Builder-tags">
-            <option selected>Latest Update</option>
-            <option>New Posts!</option>
-        </select>
-        <input required type="text" class="Builder-form" name="title" placeholder="You Post Name">
-        <input required type="text" class="Builder-form" name="tags" placeholder="You Tags Name">
-        <textarea required class="Builder-form" name="content" rows="3"
-                  placeholder="You Post content"></textarea>
-                  </div>
-        <label for="avatar" class="Builder-attachments__body"><span class="Builder-attachments-color"><img src="/footer-link/uploading.png" alt="" class="upload-ico">Upload your attachment</span></label>
+        <div class="Builder-forms">
+            <label>
+                <select name="tags" id="tags" class="Builder-tags">
+                    <option selected>Latest Update</option>
+                    <option>New Posts!</option>
+                </select>
+                <input required type="text" class="Builder-form" name="title" placeholder="You Post Name">
+                <input required type="text" class="Builder-form" name="tags" placeholder="You Tags Name">
+                <textarea required class="Builder-form" name="content" rows="3"
+                          placeholder="You Post content"></textarea>
+            </label>
+        </div>
+        <label for="avatar" class="Builder-attachments__body"><span class="Builder-attachments-color"><img
+                        src="/footer-link/uploading.png" alt="" class="upload-ico">Upload your attachment</span></label>
         <input type="file" id="avatar" name="avatar" accept="image/**" style="display:none;"/>
         <span class="form__body-button">
                     <button type="submit" class="form-button user-color">Push Public post</button>

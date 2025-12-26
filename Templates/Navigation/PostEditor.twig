@@ -3,30 +3,29 @@
     Post Editor
 {% endblock %}
 {% block body %}
-    <form method="POST" action="" enctype="multipart/form-data">
-        <div class="Editor_body">
-            <div class="Builder__body-colors">
-                <div class="Editor-forms">
-                    <label class="label-form">
-                        {# Editable Post title #}
-                        <input required type="text" class="post-form" name="title" placeholder="You Post Name"
-                               value="{{ post.title|escape }}">
-                        {#  Editable Post Content #}
-                        <input required type="text" class="post-form" name="{#tags#}" placeholder="You Tags Name" value="{{ tags.tags|default('tags') }}">
-                        <textarea required class="post-form" name="content" rows="3"
-                                  placeholder="You Post content">{{ post.content }}</textarea>
-                    </label>
-                    <div class="attachment-Editor__body">
-                        <div class="attachment-Editor-content">
-                            <label for="attachment">Custom <br>Uploading<br> your Icon</label>
-                            <input type="file" id="avatar" name="attachment" accept="image/**" style="display:none;"/>
-                        </div>
-                    </div>
-                </div>
-                <div class="form__body-button">
-                    <button type="submit" class="form-button user-color">Save editing</button>
+    <form method="POST" action="" enctype="multipart/form-data" class="Editor_body">
+        <div class="Editor-forms">
+            <label>
+                <input required type="text" class="Editor-form" name="title" placeholder="You Post Name"
+                       value="{{ post.title|escape }}">
+                <input required type="text" class="Editor-form" name="{# tags #}" placeholder="You Tags Name"
+                       value="{{ tags.tags|default('tags') }}">
+                <textarea required class="Editor-form" name="content" rows="3"
+                          placeholder="You Post content">{{ post.content }}</textarea>
+            </label>
+            <div class="attachment-Editor__body">
+                <div class="attachment-Editor-content">
+                    <label for="avatar" class="Builder-attachments__body"><span class="Builder-attachments-color"><img
+                                    src="/footer-link/uploading.png" alt=""
+                                    class="upload-ico">Upload your attachment</span></label>
+                    <input type="file" id="avatar" name="attachment" accept="image/**" style="display:none;"/>
                 </div>
             </div>
+        </div>
+        <div class="form__body-button">
+            <button type="submit" class="form-button user-color">Save editing</button>
+        </div>
+        </div>
         </div>
     </form>
 {% endblock %}
