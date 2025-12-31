@@ -5,6 +5,8 @@
         <span class="nav-text" style="color:goldenrod">PetOS Project Forum</span>
     </a>
     <div class="nav__body-buttons">
+        <a href="#{#/user/report/debug#}" class="submit-button nav-submit"><img src="/footer-link/bug.png" alt="telegram" class="submit-img">
+            <span class="">Submit Bug</span></a>
         {% if user is null %}
             <div class="nav__body-buttons">
                 <a class="nav-button auth-color" href="{{ url('user/login') }}">Log In</a>

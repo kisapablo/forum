@@ -1,0 +1,39 @@
+{% extends 'base.twig' %}
+
+{% block title %}
+    Help for forum
+{% endblock %}
+
+{% block body %}
+    <div class="submit__body">
+        <div class="submit-color">
+            <h2>Чтобы сообщить о проблеме, пожалуйста заполните форму.</h2>
+            <form action="/debug" method="post" enctype="multipart/form-data">
+                <label for="name">
+                <input type="text" id="name" name="name" required placeholder="Введите ваше имя" class="search-form">
+                </label>
+                <label for="email">Укажите ваш Электронный адрес почты для уточнения</label>
+                <input required type="email" id="email" name="email" placeholder="Поле для ввода адреса" class="search-form">
+                <label for="url">
+                <input type="url" id="url" name="url" placeholder="Страница с неисправностью" class="search-form">
+                </label>
+                <label for="description">
+                <textarea id="description" name="description" required
+                          placeholder="Описание проблемы" class="search-form"></textarea>
+                </label>
+                <div class="attachment-Editor__body">
+                    <div class="attachment-Editor-content">
+                        <label for="avatar" class="Builder-attachments__body"><span class="Builder-attachments-color"><img
+                                        src="/footer-link/uploading.png" alt=""
+                                        class="upload-ico">Скриншот проблемы</span></label>
+                        <input type="file" id="avatar" name="attachment" accept="image/**" style="display:none;"/>
+                    </div>
+                </div>
+                <input CLASS="search-form" type="file" id="screenshot" name="screenshot" accept="image/*, .txt" style="display: none;">
+                <div class="note"></div>
+
+                <button type="submit" class="nav-button logout-color">Отправить отчёт</button>
+            </form>
+        </div>
+    </div>
+{% endblock %}

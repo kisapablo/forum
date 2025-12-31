@@ -44,6 +44,13 @@ class UserController
         return $response;
     }
 
+    public function showSubmitBug(Request $request, Response $response): Response
+    {
+        $body = $this->view->render('report.twig', ['message' => '']);
+        $response->getBody()->write($body);
+        return $response;
+    }
+
     public function registerUser(Request $request, Response $response): Response
     {
         $login = $_POST['login'];
@@ -88,14 +95,13 @@ class UserController
         try {
             $user = $this->userRepository->findUserByLoginAndPassword($login, $password);
             error_log('Founding result of user ' . json_encode($user));
-            // Не доходит до проверки валидации
             if (password_verify($password, $user['password_hash'])) {
-            $_SESSION['user'] = ['id' => $user['id'], 'name' => $user['name']];
-            return $response->withStatus(301)->withHeader('Location', '/user');
-                error_log('Пароль валидный');
+                $_SESSION['user'] = ['id' => $user['id'], 'name' => $user['name']];
+                return $response->withStatus(301)->withHeader('Location', '/user');
+                error_log('Password valid');
             } else {
-            error_log('Invalid user password');
-            throw new Exception('User password is not valid');
+                error_log('Invalid user password');
+                throw new Exception('User password is not valid');
             }
         } catch (Exception $e) {
             error_log('Пароль невалиден');
@@ -105,6 +111,12 @@ class UserController
             return $response;
         }
     }
+
+    public function SubmitBug(Request $request, Response $response): Response
+    {
+        return $response;
+    }
+
     public function DeleteSession(Request $request, Response $response): Response
     {
         unset($_SESSION['user']);

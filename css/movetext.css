@@ -82,6 +82,8 @@ html {
 }
 
 .Builder-attachments-color {
+    display: flex;
+    align-items: center;
     border-radius: 0.5rem;
     background-color: rgba(122, 122, 122, 0.56);
     padding: 0.75rem;
@@ -257,10 +259,9 @@ html {
 }
 
 .nav-logo {
-    object-fit: contain;
-    object-position: center;
+    object-fit: fill;
     margin-right: 1rem;
-    height: 1.75rem /*2.125rem*/;
+    height: 2rem /*2.125rem*/;
 }
 
 .nav-button {
@@ -789,14 +790,6 @@ padding: 0.5rem .4rem;
     color: transparent;
 }
 
-.footer-submit {
-    display: flex;
-    background: linear-gradient(60deg, #B71010, #1AAA2F);
-    background-clip: text;
-    color: transparent;
-}
-
-
 .text-avatar {
     position: relative;
     left: 3.8rem;
@@ -961,6 +954,58 @@ padding: 0.5rem .4rem;
     /*display: flex;*/
     justify-content: space-between;
     align-items: center;
+}
+
+.nav-submit {
+    background: linear-gradient(60deg, #B71010, #1AAA2F);
+    background-clip: text;
+    color: transparent;
+}
+
+.submit-button{
+    /*margin: 0 .25rem .25rem;*/
+    /* margin-left: .25rem; */
+    /* margin-right: .25rem; */
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    font-weight: 400;
+    user-select: none;
+    background-color: transparent;
+    border: 1px solid transparent;
+    padding: .375rem .75rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    border-radius: .25rem;
+    transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+}
+
+.submit-img{
+    object-fit: fill;
+    height: 2rem /*2.125rem*/;
+}
+
+.submit__body{
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    margin: auto;
+    align-items: center;
+    /*border: 2px solid #5a5a45;*/
+    position: relative;
+    flex-wrap: wrap;
+    border-radius: 1.5rem;
+    /*background-color: #24242d;*/
+    /*padding-top: 1.25rem;*/
+    /*padding: 1.25rem 0 1.25rem;*/
+    transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+}
+
+.submit-color{
+    background-color: #24242d;
+    border: 2px solid #7d4548;
+    border-radius: 0.5rem;
+    padding: 1.25rem;
 }
 
 .logout-color {
