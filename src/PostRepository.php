@@ -89,7 +89,7 @@ class PostRepository
         $connection = $this->dataBase->getConnection();
 
         $statement = $connection->prepare(
-            'SELECT * FROM user_post_view ORDER BY publication_date DESC LIMIT :limit OFFSET :start' //:start
+            'SELECT * FROM user_post_view ORDER BY publication_date ASC LIMIT :limit OFFSET :start' //:start
         );
 
         $statement->bindValue(':limit', $limit, PDO::PARAM_INT);

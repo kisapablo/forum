@@ -92,6 +92,7 @@ class PostsController
         // Лимит отрисовки страниц(если будет 5 постов то отрисуется только 3 из них если лимит равен 3)
         $limit = 3;
         $start = (int)(($page - 1) * $limit);
+        error_log("Start =" . json_encode($start));
 
         // Ищем посты которые опубликовал пользователь
         if (isset($params['author'])) {
@@ -146,7 +147,10 @@ class PostsController
 
 
         error_log("Ids Value" . json_encode($ids));
+        if($_SESSION['user'] != null)
+{
         $icon = $this->userRepository->findUserIcon($_SESSION['user']['id']);
+}
         //        $userIcon = $this->userRepository->findUserIcon($posts['author_id']);
         $totalCount = $this->postRepository->getTotalCount();
         error_log('Session is ' . json_encode($_SESSION));
