@@ -66,7 +66,7 @@ $app->post('/user/icons/debug', [PersonalCabinet::class, 'getSelectedDefaultIco'
 $app->get('/user/icons/default', [PersonalCabinet::class, 'showDefaultIconsSelect']);
 $app->get('/{url_id}', [PostsController::class, 'NotFoundURL']);
 $app->get('/user/report', [UserController::class, 'showSubmitBug']);
-$app->post('/user/report/debug', [UserController::class, 'UpdateUserInfo']);
+$app->post('/user/report/debug', [UserController::class, 'SubmitBug']);
 // end routing
 
 $app->run();

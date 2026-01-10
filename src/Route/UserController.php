@@ -46,7 +46,12 @@ class UserController
 
     public function showSubmitBug(Request $request, Response $response): Response
     {
-        $body = $this->view->render('report.twig', ['message' => '']);
+
+        $icon = $this->userRepository->findUserIcon($_SESSION['user']['id']);
+        $body = $this->view->render('report.twig', [
+            'user' => $_SESSION['user'],
+            'icons' => $icon
+        ]);
         $response->getBody()->write($body);
         return $response;
     }
@@ -114,7 +119,10 @@ class UserController
 
     public function SubmitBug(Request $request, Response $response): Response
     {
-        return $response;
+        error_log('$_POST VALUE is ' . json_encode($_POST));
+        error_log('SESSION VALUE ' . json_encode($_SESSION));
+        $sending = $this->userRepository->sendreport($_POST);
+       return $response->withStatus(301)->withHeader('Location', '/');
     }
 
     public function DeleteSession(Request $request, Response $response): Response

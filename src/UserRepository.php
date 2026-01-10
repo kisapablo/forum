@@ -254,6 +254,18 @@ class UserRepository
         ]);
     }
 
+public function sendreport()
+{
+    $POST = $_POST;
+    
+    $connection = $this->dataBase->getConnection();
+    
+    $statement = $connection->prepare('INSERT INTO');
+
+    $statement->execute([
+    'var' => $POST
+]);
+}
 
     //fixme
     function generateSalt()
@@ -261,7 +273,6 @@ class UserRepository
         return '64';
     }
 
-    //fixme
     function generateHash($salt, $password)
     {
         $password = password_hash($password, PASSWORD_DEFAULT);

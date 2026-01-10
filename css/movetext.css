@@ -960,7 +960,7 @@ padding: 0.5rem .4rem;
 .nav-submit:hover {
     color: #fff;
     background-color: #28a745;
-    border-color: #28a745;
+    /* border-color: #28a745; */
 }
 
 .submit-button {
@@ -980,7 +980,7 @@ padding: 0.5rem .4rem;
 
 .submit-img {
     object-fit: fill;
-    height: 2rem; /*2.125rem*/
+    height: 1.5rem; /*2.125rem 2rem*/
     margin-right: 0.5rem;
 }
 
@@ -990,7 +990,6 @@ padding: 0.5rem .4rem;
     flex-direction: column;
     margin: auto;
     align-items: center;
-    border: 2px solid #5a5a45;
     position: relative;
     flex-wrap: wrap;
     border-radius: 1.5rem;
