@@ -66,16 +66,18 @@ class PostsController
             error_log("User#" . $_SESSION['user']['id'] . " has no icon");
         }
 
-        if (password_verify('qwerty', $hash)) {
-            $text = 'Пароль правильный!';
-        } else {
-            $text = 'Пароль неправильный.';
-        }
+        $KarmaSession = $this->postRepository->getKarmaSession($_SESSION['user']['id']);
+        error_log("User Karma is ". json_encode($KarmaSession));
+        // error_log("User Karma is ". json_encode($KarmaSession['karma']));
+        $LeadersKarma = $this->postRepository->getAllKarma();
+        error_log("Leaders Karma is " . json_encode($LeadersKarma));
+        // error_log("Leaders Karma is " . json_encode($LeadersKarma['karma']));
 
         $body = $this->view->render('Navigation/LeaderKarma.twig', [
-            'leaderboard' => rand(1, 50491254195489),
-            'user' => $_SESSION['user'],
-            'icons' => $icon,
+        'user' => $_SESSION['user'],
+        'icons' => $icon,
+        'karma' => $LeadersKarma,
+        'karmaSession' => $KarmaSession,
         ]);
 
         $response->getBody()->write($body);

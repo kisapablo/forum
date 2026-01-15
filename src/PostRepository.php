@@ -17,7 +17,7 @@ class PostRepository
     {
         $connection = $this->dataBase->getConnection();
 
-        $statement = $connection->prepare( // Если не робит то добавь перед getConnection, dataBase-> неактуально делай через $connection
+        $statement = $connection->prepare( 
             'SELECT count(id) as total FROM post'
         );
 
@@ -31,7 +31,7 @@ class PostRepository
     {
         $connection = $this->dataBase->getConnection();
 
-        $statement = $connection->prepare( // Если не робит то добавь перед getConnection, dataBase-> неактуально делай через $connection
+        $statement = $connection->prepare(  
             'SELECT count(id) as total FROM post where author_id = :author_id'
         );
 
@@ -301,4 +301,32 @@ class PostRepository
         ]);
         return $statement->fetchAll();
     }
+    public function getAllKarma()
+    {
+        $connection = $this->dataBase->getConnection();
+
+        $statement = $connection->prepare(
+            'SELECT count(id) as karma FROM user_post_view ORDER BY publication_date'
+        );
+
+        $statement->execute();
+
+        return $statement->fetchAll();
+
+}
+
+    public function getKarmaSession($authorId)
+    {
+        $connection = $this->dataBase->getConnection();
+
+        $statement = $connection->prepare(
+            'SELECT count(id) as karma FROM user_post_view WHERE author_id = :author_id ORDER BY publication_date'
+        );
+
+        $statement->bindValue(':author_id', $authorId, PDO::PARAM_INT);
+        $statement->execute();
+
+        return $statement->fetchAll();
+
+}
 }
