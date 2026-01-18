@@ -54,6 +54,9 @@ spec:
             - ping
             - -h
             - localhost
+            - -u
+            - root
+            - p$MYSQL_ROOT_PASSWORD
           initialDelaySeconds: 30
           periodSeconds: 10
         readinessProbe:
@@ -63,6 +66,9 @@ spec:
             - ping
             - -h
             - localhost
+            - -u
+            - root
+            - p$MYSQL_ROOT_PASSWORD
           initialDelaySeconds: 5
           periodSeconds: 5
       # Uncomment to enable persistence
