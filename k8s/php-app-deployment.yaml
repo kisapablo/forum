@@ -65,7 +65,10 @@ spec:
   - protocol: TCP
     port: 8081
     targetPort: 8081
-  type: ClusterIP
+  type: LoadBalancer
+  ipFamilies:
+    - IPv6
+  ipFamilyPolicy: SingleStack
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
@@ -73,10 +76,11 @@ metadata:
   name: php-app-ingress
   namespace: quasi-forum
   annotations:
-    # nginx.ingress.kubernetes.io/rewrite-target: /
+    nginx.ingress.kubernetes.io/rewrite-target: /
 spec:
+  ingressClassName: nginx
   rules:
-  - host: forum.local  # Change this to your actual domain
+  - host: quasi.su
     http:
       paths:
       - path: /
