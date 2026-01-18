@@ -16,7 +16,10 @@ session_start();
 
 $builder = new ContainerBuilder(); // dependency container,контейнер зависимостей
 $builder->addDefinitions('config/di.php'); // dependency container,контейнер зависимостей
-(new DotEnv(__DIR__ . '/.env'))->load(); // dependency container,контейнер зависимостей
+$env_file = __DIR__ . '/.env';
+if (file_exists($env_file)) {
+	(new DotEnv(__DIR__ . '/.env'))->load(); // dependency container,контейнер зависимостей
+}
 $container = $builder->build(); // dependency container, контейнер зависимостей
 
 AppFactory::setContainer($container); // dependency container, контейнер зависимостей
