@@ -72,8 +72,8 @@ jobs:
       - name: Update image references in manifests
         run: |
           # Replace $GITHUB_REPOSITORY placeholder with actual repository name
-          sed -i "s|\$GITHUB_REPOSITORY|${GITHUB_REPOSITORY,,}|g" k8s/mysql-deployment.yaml
-          sed -i "s|\$GITHUB_REPOSITORY|${GITHUB_REPOSITORY,,}|g" k8s/php-app-deployment.yaml
+          sed -i "s|\$GITHUB_REPOSITORY|forum|g" k8s/mysql-deployment.yaml
+          sed -i "s|\$GITHUB_REPOSITORY|forum|g" k8s/php-app-deployment.yaml
 
       - name: Deploy MySQL database
         run: |
