@@ -1,0 +1,49 @@
+name: Lint
+
+on:
+  push:
+    branches: [main, master, dev]
+  pull_request:
+    branches: [main, master, dev]
+
+jobs:
+  php-lint:
+    runs-on: ubuntu-latest
+    name: PHP Syntax Check
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.1"
+          tools: composer:v2
+          coverage: none
+
+      - name: Validate composer.json
+        run: composer validate --strict
+
+      - name: Cache Composer packages
+        uses: actions/cache@v3
+        with:
+          path: vendor
+          key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-php-
+
+      - name: Install dependencies
+        run: composer install --prefer-dist --no-progress --no-suggest
+
+      - name: PHP Syntax Check
+        run: find . -name "*.php" -not -path "./vendor/*" -exec php -l {} \;
+
+      - name: Check code style with PHP_CodeSniffer
+        run: |
+          if [ -f "vendor/bin/phpcs" ]; then
+            vendor/bin/phpcs --standard=PSR12 src/ || echo "Note: Consider adding squizlabs/php_codesniffer to composer.json for stricter linting"
+          else
+            echo "PHP_CodeSniffer not installed. Skipping code style check."
+            echo "To enable code style checking, run: composer require --dev squizlabs/php_codesniffer"
+          fi

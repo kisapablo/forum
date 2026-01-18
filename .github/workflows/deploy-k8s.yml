@@ -1,0 +1,143 @@
+name: Deploy to Kubernetes
+
+on:
+  workflow_run:
+    workflows: ["Build and Push Docker Images"]
+    types:
+      - completed
+    branches:
+      - main
+      - master
+  workflow_dispatch: # Allow manual trigger
+
+env:
+  NAMESPACE: quasi-forum
+  KUBECTL: microk8s kubectl
+
+jobs:
+  deploy:
+    runs-on: self-hosted
+    if: ${{ github.event.workflow_run.conclusion == 'success' || github.event_name == 'workflow_dispatch' }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Verify microk8s is running
+        run: |
+          microk8s status --wait-ready
+          echo "MicroK8s is ready"
+
+      - name: Create namespace if not exists
+        run: |
+          ${{ env.KUBECTL }} get namespace ${{ env.NAMESPACE }} || \
+          ${{ env.KUBECTL }} apply -f k8s/namespace.yaml
+
+      - name: Create or update secrets
+        env:
+          MYSQL_ROOT_PASSWORD: ${{ secrets.MYSQL_ROOT_PASSWORD }}
+          MYSQL_DATABASE: ${{ secrets.MYSQL_DATABASE }}
+          MYSQL_USER: ${{ secrets.MYSQL_USER }}
+          MYSQL_PASSWORD: ${{ secrets.MYSQL_PASSWORD }}
+        run: |
+          # Check if secret exists
+          if ${{ env.KUBECTL }} get secret mysql-secret -n ${{ env.NAMESPACE }} &> /dev/null; then
+            echo "Secret mysql-secret already exists, skipping creation"
+          else
+            if [ -z "$MYSQL_ROOT_PASSWORD" ] || [ -z "$MYSQL_DATABASE" ] || [ -z "$MYSQL_USER" ] || [ -z "$MYSQL_PASSWORD" ]; then
+              echo "ERROR: Required GitHub secrets are not set:"
+              echo "  - MYSQL_ROOT_PASSWORD"
+              echo "  - MYSQL_DATABASE"
+              echo "  - MYSQL_USER"
+              echo "  - MYSQL_PASSWORD"
+              exit 1
+            fi
+
+            echo "Substituting secrets into k8s/secrets.yaml"
+            # Create a temporary file with substituted values
+            sed \
+              -e "s|\${MYSQL_ROOT_PASSWORD}|${MYSQL_ROOT_PASSWORD}|g" \
+              -e "s|\${MYSQL_DATABASE}|${MYSQL_DATABASE}|g" \
+              -e "s|\${MYSQL_USER}|${MYSQL_USER}|g" \
+              -e "s|\${MYSQL_PASSWORD}|${MYSQL_PASSWORD}|g" \
+              k8s/secrets.yaml > k8s/secrets-substituted.yaml
+
+            echo "Applying secrets to Kubernetes"
+            ${{ env.KUBECTL }} apply -f k8s/secrets-substituted.yaml
+
+            # Clean up temporary file
+            rm k8s/secrets-substituted.yaml
+          fi
+
+      - name: Update image references in manifests
+        run: |
+          # Replace $GITHUB_REPOSITORY placeholder with actual repository name
+          sed -i "s|\$GITHUB_REPOSITORY|${{ github.repository }}|g" k8s/mysql-deployment.yaml
+          sed -i "s|\$GITHUB_REPOSITORY|${{ github.repository }}|g" k8s/php-app-deployment.yaml
+
+      - name: Deploy MySQL database
+        run: |
+          # Apply PVC if needed (uncomment in mysql-pvc.yaml first)
+          # ${{ env.KUBECTL }} apply -f k8s/mysql-pvc.yaml
+
+          ${{ env.KUBECTL }} apply -f k8s/mysql-deployment.yaml
+
+          # Wait for MySQL to be ready
+          ${{ env.KUBECTL }} wait --for=condition=ready pod \
+            -l app=mysql-db \
+            -n ${{ env.NAMESPACE }} \
+            --timeout=300s
+
+      - name: Deploy PHP application
+        run: |
+          ${{ env.KUBECTL }} apply -f k8s/php-app-deployment.yaml
+
+          # Wait for PHP app to be ready
+          ${{ env.KUBECTL }} wait --for=condition=ready pod \
+            -l app=php-app \
+            -n ${{ env.NAMESPACE }} \
+            --timeout=300s
+
+      - name: Restart deployments to pull latest images
+        run: |
+          ${{ env.KUBECTL }} rollout restart deployment/mysql-db -n ${{ env.NAMESPACE }}
+          ${{ env.KUBECTL }} rollout restart deployment/php-app -n ${{ env.NAMESPACE }}
+
+          # Wait for rollout to complete
+          ${{ env.KUBECTL }} rollout status deployment/mysql-db -n ${{ env.NAMESPACE }}
+          ${{ env.KUBECTL }} rollout status deployment/php-app -n ${{ env.NAMESPACE }}
+
+      - name: Verify deployment
+        run: |
+          echo "=== Deployments ==="
+          ${{ env.KUBECTL }} get deployments -n ${{ env.NAMESPACE }}
+
+          echo "=== Pods ==="
+          ${{ env.KUBECTL }} get pods -n ${{ env.NAMESPACE }}
+
+          echo "=== Services ==="
+          ${{ env.KUBECTL }} get services -n ${{ env.NAMESPACE }}
+
+          echo "=== Ingress ==="
+          ${{ env.KUBECTL }} get ingress -n ${{ env.NAMESPACE }} || echo "No ingress found"
+
+      - name: Get application URL
+        run: |
+          echo "Application deployed successfully!"
+          echo "Access the application using the service:"
+          ${{ env.KUBECTL }} get svc php-app -n ${{ env.NAMESPACE }}
+
+          # If using ingress
+          INGRESS_HOST=$(${{ env.KUBECTL }} get ingress php-app-ingress -n ${{ env.NAMESPACE }} -o jsonpath='{.spec.rules[0].host}' 2>/dev/null || echo "")
+          if [ ! -z "$INGRESS_HOST" ]; then
+            echo "Ingress host: $INGRESS_HOST"
+          fi
+
+      - name: Show recent logs
+        if: always()
+        run: |
+          echo "=== PHP App Logs ==="
+          ${{ env.KUBECTL }} logs -l app=php-app -n ${{ env.NAMESPACE }} --tail=50 || true
+
+          echo "=== MySQL Logs ==="
+          ${{ env.KUBECTL }} logs -l app=mysql-db -n ${{ env.NAMESPACE }} --tail=50 || true
