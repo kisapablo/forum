@@ -1,5 +1,7 @@
 # Forum on PHP and MySQL
 
+![CI](https://github.com/kisapablo/Forum/actions/workflows/lint.yml/badge.svg)
+
 PHP Warning: Не забудь подправить варнинги в консоле
 
 Todo List:

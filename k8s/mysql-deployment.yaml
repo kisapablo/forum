@@ -47,30 +47,30 @@ spec:
         # volumeMounts:
         # - name: mysql-storage
         #   mountPath: /var/lib/mysql
-        livenessProbe:
-          exec:
-            command:
-            - mysqladmin
-            - ping
-            - -h
-            - localhost
-            - -u
-            - root
-            - p$MYSQL_ROOT_PASSWORD
-          initialDelaySeconds: 30
-          periodSeconds: 10
-        readinessProbe:
-          exec:
-            command:
-            - mysqladmin
-            - ping
-            - -h
-            - localhost
-            - -u
-            - root
-            - p$MYSQL_ROOT_PASSWORD
-          initialDelaySeconds: 5
-          periodSeconds: 5
+        # livenessProbe:
+        #   exec:
+        #     command:
+        #     - mysqladmin
+        #     - ping
+        #     - -h
+        #     - localhost
+        #     - -u
+        #     - root
+        #     - p$MYSQL_ROOT_PASSWORD
+        #   initialDelaySeconds: 30
+        #   periodSeconds: 10
+        # readinessProbe:
+        #   exec:
+        #     command:
+        #     - mysqladmin
+        #     - ping
+        #     - -h
+        #     - localhost
+        #     - -u
+        #     - root
+        #     - p$MYSQL_ROOT_PASSWORD
+        #   initialDelaySeconds: 5
+        #   periodSeconds: 5
       # Uncomment to enable persistence
       # volumes:
       # - name: mysql-storage
