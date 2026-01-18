@@ -85,7 +85,7 @@ jobs:
           ${{ env.KUBECTL }} apply -f k8s/mysql-deployment.yaml
 
           # Wait for MySQL to be ready
-          ${{ env.KUBECTL }} wait --for=condition=ready pod \
+          ${{ env.KUBECTL }} wait --for=jsonpath='{.status.phase}'=Running pod \
             -l app=mysql-db \
             -n ${{ env.NAMESPACE }} \
             --timeout=300s
@@ -94,8 +94,7 @@ jobs:
         run: |
           ${{ env.KUBECTL }} apply -f k8s/php-app-deployment.yaml
 
-          # Wait for PHP app to be ready
-          ${{ env.KUBECTL }} wait --for=condition=ready pod \
+          ${{ env.KUBECTL }} wait --for=jsonpath='{.status.phase}'=Running pod \
             -l app=php-app \
             -n ${{ env.NAMESPACE }} \
             --timeout=300s
