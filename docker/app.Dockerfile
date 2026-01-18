@@ -1,11 +1,9 @@
-FROM php:8.1-cli
+FROM php:8.1-cli-alpine
 
 # Install system dependencies
-RUN apt-get update && apt-get install -y \
-    libpq-dev git \
+RUN apk add --no-cache git \
     && docker-php-ext-install mysqli pdo pdo_mysql \
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/*
+    && rm -rf /var/cache/apk/*
 
 WORKDIR /app
 
