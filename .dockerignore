@@ -1,0 +1,5 @@
+k8s/
+.git
+.github
+*.md
+.env*
