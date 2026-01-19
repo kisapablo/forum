@@ -42,6 +42,7 @@ pub struct UserInfo {
 pub struct SessionUser {
     pub id: i64,
     pub name: String,
+    pub icon_name: String,
 }
 
 impl User {
@@ -199,5 +200,29 @@ impl User {
         password: &str,
     ) -> Result<String, bcrypt::BcryptError> {
         bcrypt::hash(password, bcrypt::DEFAULT_COST)
+    }
+
+    /// Get user's icon name or default
+    pub async fn get_icon_name(
+        pool: &MySqlPool,
+        user: &User,
+    ) -> Result<String, sqlx::Error> {
+        if let Some(icon_id) = user.icon_id {
+            // Try to get icon from user_icon_view
+            let result: Option<(String,)> = sqlx::query_as(
+                "SELECT icon_name FROM user_icon_view WHERE id = ? AND user_id = ?",
+            )
+            .bind(icon_id)
+            .bind(user.id)
+            .fetch_optional(pool)
+            .await?;
+
+            if let Some((icon_name,)) = result {
+                return Ok(icon_name);
+            }
+        }
+
+        // Default icon
+        Ok("/public/images/default_ico/default-avatar.png".to_string())
     }
 }

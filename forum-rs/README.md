@@ -160,6 +160,208 @@ The easiest way to run Forum-RS is using Docker Compose:
 
 The application will be available at `http://localhost:3000`, and the database will be automatically initialized with the schema.
 
+### Running Only MySQL with Docker
+
+If you want to run MySQL in Docker while running the Rust application directly on your host machine (useful for development), follow these steps:
+
+#### 1. Start MySQL Container Only
+
+```bash
+# Start only the database service from docker-compose.yml
+docker-compose up -d db
+```
+
+This command:
+- Starts **only** the MySQL database container
+- Runs it in detached mode (`-d` flag)
+- Uses the configuration from `docker-compose.yml`
+- Exposes MySQL on port `3306` of your host machine
+
+#### 2. Verify MySQL is Running
+
+```bash
+# Check container status
+docker-compose ps
+
+# Should show something like:
+# NAME          SERVICE   STATUS    PORTS
+# forum-rs-db   db        running   0.0.0.0:3306->3306/tcp
+```
+
+#### 3. Test Database Connection
+
+```bash
+# Connect to MySQL from your host machine
+mysql -h 127.0.0.1 -u quasi -proot petos_forum_db
+
+# Or use docker exec to connect from inside the container
+docker-compose exec db mysql -u quasi -proot petos_forum_db
+```
+
+#### 4. Load Database Schema (First Time Only)
+
+If this is your first time running the database, you need to load the schema:
+
+```bash
+# From your host machine
+mysql -h 127.0.0.1 -u quasi -proot petos_forum_db < ../config/schema.sql
+
+# Or from inside the container
+docker-compose exec -T db mysql -u quasi -proot petos_forum_db < ../config/schema.sql
+```
+
+#### 5. Create Test User (Optional)
+
+```bash
+mysql -h 127.0.0.1 -u quasi -proot petos_forum_db << 'EOF'
+INSERT INTO user (name, password, salt, role_id) 
+VALUES ('testuser', '$2b$12$LQv3c1yqBWVHxkd0LHAkCOYz6TtxMQJqhN8/LewY5GyYqYj5qJ5K6', '', 1);
+EOF
+
+# Now you can login with: testuser / testpass123
+```
+
+#### 6. Run the Rust Application
+
+With MySQL running in Docker, start the Rust application on your host:
+
+```bash
+# Make sure .env file has the correct DATABASE_URL
+echo "DATABASE_URL=mysql://quasi:root@127.0.0.1/petos_forum_db" > .env
+
+# Build and run
+cargo build
+cargo run
+```
+
+The application will connect to the MySQL container at `127.0.0.1:3306`.
+
+#### 7. Useful Docker Commands
+
+```bash
+# View MySQL logs
+docker-compose logs -f db
+
+# Stop MySQL only
+docker-compose stop db
+
+# Start MySQL again
+docker-compose start db
+
+# Restart MySQL
+docker-compose restart db
+
+# Remove MySQL container (data persists in volume)
+docker-compose down
+
+# Remove MySQL container AND delete all data
+docker-compose down -v
+
+# Check MySQL resource usage
+docker stats forum-rs-db-1
+
+# Execute SQL query directly
+docker-compose exec db mysql -u quasi -proot petos_forum_db -e "SELECT COUNT(*) FROM post;"
+
+# Backup database
+docker-compose exec db mysqldump -u quasi -proot petos_forum_db > backup.sql
+
+# Restore database
+docker-compose exec -T db mysql -u quasi -proot petos_forum_db < backup.sql
+```
+
+#### 8. Troubleshooting MySQL Docker
+
+**Problem: Port 3306 already in use**
+```bash
+# Check what's using port 3306
+sudo lsof -i :3306
+
+# If you have MySQL running locally, stop it
+sudo systemctl stop mysql
+
+# Or change the port in docker-compose.yml
+ports:
+  - "3307:3306"  # Map to host port 3307 instead
+```
+
+**Problem: Can't connect to MySQL**
+```bash
+# Check if container is running
+docker-compose ps
+
+# Check container logs for errors
+docker-compose logs db
+
+# Verify network connectivity
+docker-compose exec db ping -c 3 host.docker.internal
+```
+
+**Problem: Permission denied**
+```bash
+# Make sure you have docker permissions
+sudo usermod -aG docker $USER
+newgrp docker
+```
+
+**Problem: Database data is corrupted**
+```bash
+# Remove volume and start fresh
+docker-compose down -v
+docker-compose up -d db
+
+# Reload schema
+mysql -h 127.0.0.1 -u quasi -proot petos_forum_db < ../config/schema.sql
+```
+
+#### 9. MySQL Configuration
+
+The MySQL container is configured in `docker-compose.yml`:
+
+```yaml
+db:
+  image: mysql:8.0
+  environment:
+    MYSQL_ROOT_PASSWORD: root
+    MYSQL_DATABASE: petos_forum_db
+    MYSQL_USER: quasi
+    MYSQL_PASSWORD: root
+  ports:
+    - "3306:3306"
+  volumes:
+    - mysql_data:/var/lib/mysql
+```
+
+To customize MySQL settings, create a `my.cnf` file:
+
+```bash
+# Create custom MySQL config
+cat > my.cnf << 'EOF'
+[mysqld]
+max_connections=200
+max_allowed_packet=64M
+character-set-server=utf8mb4
+collation-server=utf8mb4_unicode_ci
+EOF
+```
+
+Then mount it in `docker-compose.yml`:
+
+```yaml
+db:
+  volumes:
+    - mysql_data:/var/lib/mysql
+    - ./my.cnf:/etc/mysql/conf.d/custom.cnf
+```
+
+#### Benefits of Running MySQL in Docker
+
+- **Isolation**: Database runs in its own container, no system MySQL installation needed
+- **Consistency**: Same MySQL version across all development environments
+- **Easy cleanup**: Remove container and volume to start fresh
+- **No conflicts**: Won't interfere with other MySQL installations
+- **Portable**: Same setup works on Linux, Mac, and Windows (with WSL2)
+
 ## API Endpoints
 
 All endpoints from the original PHP application have been preserved:

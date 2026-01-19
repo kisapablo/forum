@@ -9,17 +9,9 @@
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container-fluid">
-            <a class="navbar-brand" href="/">Forum</a>
-            <div class="collapse navbar-collapse">
-                <ul class="navbar-nav ms-auto">
-                    <% if let Some(ref u) = self.user { %>
-                        <li class="nav-item"><span class="navbar-text">Welcome, <%= u.name %></span></li>
-                        <li class="nav-item"><a class="nav-link" href="/user/logout">Logout</a></li>
-                    <% } else { %>
-                        <li class="nav-item"><a class="nav-link" href="/user/login">Login</a></li>
-                        <li class="nav-item"><a class="nav-link" href="/user/registration">Register</a></li>
-                    <% } %>
-                </ul>
+            <a class="navbar-brand" href="/">PetOS Forum</a>
+            <div class="ms-auto">
+                <a href="/user/registration" class="btn btn-outline-light">Register</a>
             </div>
         </div>
     </nav>
@@ -45,13 +37,17 @@
                                 <label for="password" class="form-label">Password</label>
                                 <input type="password" class="form-control" id="password" name="password" required>
                             </div>
-                            <button type="submit" class="btn btn-primary">Login</button>
-                            <a href="/user/registration" class="btn btn-link">Register</a>
+                            <button type="submit" class="btn btn-primary w-100">Login</button>
+                            <div class="text-center mt-3">
+                                <a href="/user/registration">Don't have an account? Register</a>
+                            </div>
                         </form>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

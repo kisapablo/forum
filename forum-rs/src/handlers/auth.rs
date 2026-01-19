@@ -59,14 +59,14 @@ pub async fn login(
                 user: None,
                 message: Some("Invalid username or password".to_string()),
             };
-            return Html(template.render_once().unwrap());
+            return Html(template.render_once().unwrap()).into_response();
         }
         Err(_) => {
             let template = LoginTemplate {
                 user: None,
                 message: Some("Database error".to_string()),
             };
-            return Html(template.render_once().unwrap());
+            return Html(template.render_once().unwrap()).into_response();
         }
     };
 
@@ -76,30 +76,31 @@ pub async fn login(
             user: None,
             message: Some("Invalid username or password".to_string()),
         };
-        return Html(template.render_once().unwrap());
+        return Html(template.render_once().unwrap()).into_response();
     }
 
     // Update last visit
     let _ = User::update_last_visit(&state.db, user.id).await;
 
+    // Get user's icon
+    let icon_name =
+        User::get_icon_name(&state.db, &user)
+            .await
+            .unwrap_or_else(|_| {
+                "/public/images/default_ico/default-avatar.png".to_string()
+            });
+
     // Store user in session
     let session_user = SessionUser {
         id: user.id,
         name: user.name.clone(),
+        icon_name: icon_name.clone(),
     };
 
     let _ = session.insert("user", session_user).await;
 
-    // Redirect to personal cabinet
-    let template = LoginTemplate {
-        user: Some(SessionUser {
-            id: user.id,
-            name: user.name,
-        }),
-        message: Some("Login successful! Redirecting...".to_string()),
-    };
-
-    Html(template.render_once().unwrap())
+    // Redirect to homepage
+    Redirect::to("/").into_response()
 }
 
 /// Show registration page
@@ -128,7 +129,7 @@ pub async fn register(
             user: None,
             message: Some("Username and password are required".to_string()),
         };
-        return Html(template.render_once().unwrap());
+        return Html(template.render_once().unwrap()).into_response();
     }
 
     if form.login.len() > 32 {
@@ -136,7 +137,7 @@ pub async fn register(
             user: None,
             message: Some("Username must be 32 characters or less".to_string()),
         };
-        return Html(template.render_once().unwrap());
+        return Html(template.render_once().unwrap()).into_response();
     }
 
     // Check if user already exists
@@ -145,7 +146,7 @@ pub async fn register(
             user: None,
             message: Some("Username already taken".to_string()),
         };
-        return Html(template.render_once().unwrap());
+        return Html(template.render_once().unwrap()).into_response();
     }
 
     // Hash password
@@ -156,7 +157,7 @@ pub async fn register(
                 user: None,
                 message: Some("Error hashing password".to_string()),
             };
-            return Html(template.render_once().unwrap());
+            return Html(template.render_once().unwrap()).into_response();
         }
     };
 
@@ -176,7 +177,7 @@ pub async fn register(
                 user: None,
                 message: Some("Error creating user".to_string()),
             };
-            return Html(template.render_once().unwrap());
+            return Html(template.render_once().unwrap()).into_response();
         }
     };
 
@@ -184,16 +185,13 @@ pub async fn register(
     let session_user = SessionUser {
         id: user_id,
         name: form.login.clone(),
+        icon_name: "/public/images/default_ico/default-avatar.png".to_string(),
     };
 
     let _ = session.insert("user", session_user.clone()).await;
 
-    let template = RegisterTemplate {
-        user: Some(session_user),
-        message: Some("Registration successful!".to_string()),
-    };
-
-    Html(template.render_once().unwrap())
+    // Redirect to homepage
+    Redirect::to("/").into_response()
 }
 
 /// Logout user
