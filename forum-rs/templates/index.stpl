@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Forum - Home</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="/">Forum</a>
+            <div>
+                <% if let Some(ref u) = self.user { %>
+                    <a href="/user" class="text-white me-3"><%= u.name %></a>
+                    <a href="/user/logout" class="btn btn-sm btn-outline-light">Logout</a>
+                <% } else { %>
+                    <a href="/user/login" class="btn btn-sm btn-primary me-2">Login</a>
+                    <a href="/user/registration" class="btn btn-sm btn-secondary">Register</a>
+                <% } %>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <div class="d-flex justify-content-between mb-3">
+            <h2>Forum Posts</h2>
+            <% if self.user.is_some() { %>
+                <a href="/posts/builders" class="btn btn-success">New Post</a>
+            <% } %>
+        </div>
+
+        <% for post_with_tags in &self.posts { %>
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h5><a href="/posts/<%= post_with_tags.post.id %>"><%= &post_with_tags.post.title %></a></h5>
+                    <p><%= &post_with_tags.post.content %></p>
+                    <small class="text-muted">By <%= &post_with_tags.post.author_name %> on <%= post_with_tags.post.publication_date.format("%Y-%m-%d %H:%M").to_string() %></small>
+                </div>
+            </div>
+        <% } %>
+
+        <nav>
+            <ul class="pagination">
+                <% for page in 1..=self.pagination.pages_count { %>
+                    <li class="page-item <% if page == self.pagination.current { %>active<% } %>">
+                        <a class="page-link" href="?page=<%= page %>"><%= page %></a>
+                    </li>
+                <% } %>
+            </ul>
+        </nav>
+    </div>
+</body>
+</html>

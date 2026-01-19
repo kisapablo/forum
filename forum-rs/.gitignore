@@ -1,0 +1,38 @@
+# Rust
+/target
+**/*.rs.bk
+*.pdb
+Cargo.lock
+
+# Environment
+.env
+.env.local
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Uploaded files (keep directory structure)
+forum-rs/static/images/*
+!forum-rs/static/images/.gitkeep
+
+# Database
+*.sql.backup
+*.db
+
+# Logs
+*.log
+
+# Build artifacts
+/bin/
+*.exe
+*.dll
+*.so
+*.dylib

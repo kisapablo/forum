@@ -1,0 +1,48 @@
+version: '3.8'
+
+services:
+  # MySQL Database
+  db:
+    image: mysql:8.0
+    container_name: forum_rs_db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: petos_forum_db
+      MYSQL_USER: quasi
+      MYSQL_PASSWORD: root
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+      - ../config/schema.sql:/docker-entrypoint-initdb.d/schema.sql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
+
+  # Rust Forum Application
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: forum_rs_app
+    restart: always
+    ports:
+      - "3000:3000"
+    environment:
+      DATABASE_URL: mysql://quasi:root@db/petos_forum_db
+      HOST: 0.0.0.0
+      PORT: 3000
+      RUST_ENV: production
+      RUST_LOG: info,forum_rs=debug
+      SESSION_SECRET: ${SESSION_SECRET:-change-this-in-production-use-long-random-string}
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      - ./static/images:/app/static/images
+
+volumes:
+  db_data:
+    driver: local
