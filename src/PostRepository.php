@@ -187,12 +187,10 @@ class PostRepository
 
     public function findAllPostsByAuthorId($authorId, $limit, $start): array
     {
-        // Проверяем переменная обьявлена ли и разницу с null
 
         $connection = $this->dataBase->getConnection();
 
         $statement = $connection->prepare(
-//            'SELECT * FROM post where author_id = :id' //
             'SELECT * FROM user_post_view WHERE author_id = :author_id ORDER BY publication_date LIMIT :limit OFFSET :start'
         );
 
