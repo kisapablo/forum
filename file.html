@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DarkCore Forum</title>
+    <style>
+        /* --- Основные стили и сброс --- */
+        :root {
+            --bg-body: #121212;       /* Очень темный фон */
+            --bg-element: #1e1e1e;    /* Фон блоков */
+            --bg-hover: #2c2c2c;      /* Фон при наведении */
+            --border-color: #333333;  /* Цвет границ */
+            --text-main: #e0e0e0;     /* Основной текст */
+            --text-dim: #a0a0a0;      /* Второстепенный текст */
+            --accent: #5c85d6;        /* Акцентный цвет (приглушенный синий) */
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            line-height: 1.6;
+        }
+
+        a { text-decoration: none; color: inherit; transition: 0.2s; }
+        a:hover { color: var(--accent); }
+
+        /* --- Шапка (Header) --- */
+        header {
+            background-color: var(--bg-element);
+            border-bottom: 1px solid var(--border-color);
+            padding: 15px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo { font-size: 24px; font-weight: bold; letter-spacing: 1px; }
+        .logo span { color: var(--accent); }
+
+        .nav-links a { margin-left: 20px; color: var(--text-dim); font-size: 14px; }
+        .nav-links a:hover { color: var(--text-main); }
+        
+        .btn {
+            background-color: var(--accent);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        .btn:hover { opacity: 0.9; color: white; }
+
+        /* --- Макет (Layout) --- */
+        .main-layout {
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        /* --- Сайдбар (Sidebar) --- */
+        .sidebar-block {
+            background-color: var(--bg-element);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+
+        .sidebar-title {
+            font-size: 14px;
+            text-transform: uppercase;
+            color: var(--text-dim);
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .sidebar-list li { list-style: none; margin-bottom: 8px; }
+        .sidebar-list a { color: var(--text-dim); display: block; padding: 5px 0; }
+        .sidebar-list a:hover { color: var(--text-main); transform: translateX(5px); }
+
+        /* --- Форум (Content) --- */
+        .category-header {
+            background-color: var(--bg-element);
+            border: 1px solid var(--border-color);
+            padding: 12px 20px;
+            border-radius: 6px 6px 0 0;
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+        
+        /* Убираем отступ у первого заголовка */
+        .category-section:first-child .category-header { margin-top: 0; }
+
+        .forum-row {
+            background-color: var(--bg-body); /* Чуть темнее чем header */
+            border: 1px solid var(--border-color);
+            border-top: none;
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .forum-row:last-child { border-radius: 0 0 6px 6px; }
+        .forum-row:hover { background-color: var(--bg-element); }
+
+        .forum-info { flex-grow: 1; }
+        .forum-title { font-size: 18px; font-weight: 600; display: block; margin-bottom: 4px; }
+        .forum-desc { color: var(--text-dim); font-size: 13px; }
+
+        .forum-stats {
+            text-align: center;
+            min-width: 100px;
+            color: var(--text-dim);
+            font-size: 12px;
+            display: none; /* Скрываем на мобильных */
+        }
+        
+        .forum-last-post {
+            min-width: 200px;
+            text-align: right;
+            font-size: 12px;
+            color: var(--text-dim);
+        }
+        
+        .user-avatar {
+            width: 30px; 
+            height: 30px; 
+            background: #444; 
+            border-radius: 50%; 
+            display: inline-block;
+            vertical-align: middle;
+            margin-left: 10px;
+        }
+
+        @media (min-width: 768px) {
+            .forum-stats { display: block; }
+        }
+        
+        @media (max-width: 768px) {
+            .main-layout { grid-template-columns: 1fr; }
+            .sidebar { display: none; } /* Упрощение для мобильных */
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="container header-content">
+            <div class="logo">DARK<span>CORE</span></div>
+            <nav class="nav-links">
+                <a href="#">Форум</a>
+                <a href="#">Пользователи</a>
+                <a href="#">Правила</a>
+            </nav>
+            <div>
+                <a href="#" style="margin-right: 15px; font-size: 14px; color: var(--text-dim);">Войти</a>
+                <a href="#" class="btn">Регистрация</a>
+            </div>
+        </div>
+    </header>
+
+    <div class="container main-layout">
+        
+        <aside class="sidebar">
+            <div class="sidebar-block">
+                <div class="sidebar-title">Навигация</div>
+                <ul class="sidebar-list">
+                    <li><a href="#">🔥 Новые темы</a></li>
+                    <li><a href="#">💬 Мои сообщения</a></li>
+                    <li><a href="#">🔍 Поиск</a></li>
+                </ul>
+            </div>
+
+            <div class="sidebar-block">
+                <div class="sidebar-title">Статистика</div>
+                <div style="font-size: 13px; color: var(--text-dim);">
+                    <p>Тем: 12,405</p>
+                    <p>Сообщений: 890,123</p>
+                    <p>Пользователей: 5,400</p>
+                </div>
+            </div>
+        </aside>
+
+        <main class="content">
+            
+            <div class="category-section">
+                <div class="category-header">
+                    <span>ОБЩИЙ РАЗДЕЛ</span>
+                </div>
+
+                <div class="forum-row">
+                    <div class="forum-icon"></div>
+                    <div class="forum-info">
+                        <a href="#" class="forum-title">Новости и объявления</a>
+                        <span class="forum-desc">Официальные новости проекта и важная информация.</span>
+                    </div>
+                    <div class="forum-stats">
+                        <div>120 тем</div>
+                        <div>5k постов</div>
+                    </div>
+                    <div class="forum-last-post">
+                        Вчера, 18:30 <br> от <span style="color:var(--text-main)">Admin</span>
+                        <div class="user-avatar"></div>
+                    </div>
+                </div>
+
+                <div class="forum-row">
+                    <div class="forum-info">
+                        <a href="#" class="forum-title">Свободное общение</a>
+                        <span class="forum-desc">Разговоры обо всем на свете (оффтопик).</span>
+                    </div>
+                    <div class="forum-stats">
+                        <div>3.4k тем</div>
+                        <div>150k постов</div>
+                    </div>
+                    <div class="forum-last-post">
+                        1 мин назад <br> от <span style="color:var(--text-main)">ShadowUser</span>
+                        <div class="user-avatar"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="category-section">
+                <div class="category-header">
+                    <span>ТЕХНИЧЕСКИЙ РАЗДЕЛ</span>
+                </div>
+
+                <div class="forum-row">
+                    <div class="forum-info">
+                        <a href="#" class="forum-title">Гайды и туториалы</a>
+                        <span class="forum-desc">Полезные инструкции и мануалы от сообщества.</span>
+                    </div>
+                    <div class="forum-stats">
+                        <div>450 тем</div>
+                        <div>12k постов</div>
+                    </div>
+                    <div class="forum-last-post">
+                        Сегодня, 10:15 <br> от <span style="color:var(--text-main)">Coder123</span>
+                        <div class="user-avatar"></div>
+                    </div>
+                </div>
+
+                <div class="forum-row">
+                    <div class="forum-info">
+                        <a href="#" class="forum-title">Техническая поддержка</a>
+                        <span class="forum-desc">Вопросы по работе сайта и помощь новичкам.</span>
+                    </div>
+                    <div class="forum-stats">
+                        <div>89 тем</div>
+                        <div>1k постов</div>
+                    </div>
+                    <div class="forum-last-post">
+                        2 ч назад <br> от <span style="color:var(--text-main)">Support_Bot</span>
+                        <div class="user-avatar"></div>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+</body>
+</html>

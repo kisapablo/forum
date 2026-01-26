@@ -1,5 +1,6 @@
 {
   "name": "nikita/blog",
+  "license": "GPL-3.0-or-later",
   "description": "Forum on PHP and MySQL",
   "type": "project",
   "authors": [

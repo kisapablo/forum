@@ -187,12 +187,10 @@ class PostRepository
 
     public function findAllPostsByAuthorId($authorId, $limit, $start): array
     {
-        // Проверяем переменная обьявлена ли и разницу с null
 
         $connection = $this->dataBase->getConnection();
 
         $statement = $connection->prepare(
-//            'SELECT * FROM post where author_id = :id' //
             'SELECT * FROM user_post_view WHERE author_id = :author_id ORDER BY publication_date LIMIT :limit OFFSET :start'
         );
 
@@ -306,12 +304,12 @@ class PostRepository
         $connection = $this->dataBase->getConnection();
 
         $statement = $connection->prepare(
-            'SELECT count(id) as karma FROM user_post_view ORDER BY publication_date'
+            'select * from post_karma limit 7' 
         );
 
         $statement->execute();
 
-        return $statement->fetchAll();
+            return $statement->fetchAll(PDO::FETCH_ASSOC);
 
 }
 
@@ -320,13 +318,12 @@ class PostRepository
         $connection = $this->dataBase->getConnection();
 
         $statement = $connection->prepare(
-            'SELECT count(id) as karma FROM user_post_view WHERE author_id = :author_id ORDER BY publication_date'
+            'select * from post_karma where id = :author_id'
         );
 
         $statement->bindValue(':author_id', $authorId, PDO::PARAM_INT);
-        $statement->execute();
+            $statement->execute();
 
-        return $statement->fetchAll();
-
+            return $statement->fetch(PDO::FETCH_ASSOC);
 }
 }

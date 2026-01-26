@@ -71,13 +71,13 @@ class PostsController
         // error_log("User Karma is ". json_encode($KarmaSession['karma']));
         $LeadersKarma = $this->postRepository->getAllKarma();
         error_log("Leaders Karma is " . json_encode($LeadersKarma));
-        // error_log("Leaders Karma is " . json_encode($LeadersKarma['karma']));
+        error_log("Karma value is " . json_encode($LeadersKarma['karma']));
 
         $body = $this->view->render('Navigation/LeaderKarma.twig', [
         'user' => $_SESSION['user'],
         'icons' => $icon,
-        'karma' => $LeadersKarma,
-        'karmaSession' => $KarmaSession,
+        'rateleaders' => $LeadersKarma,
+        'userrate' => $KarmaSession,
         ]);
 
         $response->getBody()->write($body);

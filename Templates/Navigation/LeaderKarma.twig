@@ -4,11 +4,15 @@
 Leader Board for Karma
 {% endblock %}
 {% block body %}
-    
-    {# {% for userkarma in karma %} #}
-        
-    {# {% endfor %} #}
-
-<div> You rate {{ user.name }} {{ karmaSession }} </div>
-
+<div class="leader__body"> 
+<div class="leader__body-color">
+{% for karma in rateleaders %} 
+<div class="leader__header"> 
+<img class="post-icon" src="{{ karma.author_icon_name }}" alt="">
+{{ karma.author_name }} {{ karma.karma }} 
+</div>
+    {% endfor %}
+<div class="leader-user"> <h2>YOU</h2> <span>{{ user.name|default('User') }}</span> {{ userrate.karma|default('0') }}</div> {# transform для более большего эффекта #}
+</div>
+</div>
 {% endblock %}

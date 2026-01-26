@@ -261,7 +261,7 @@ html {
 .nav-logo {
     object-fit: fill;
     margin-right: 1rem;
-    width: 2.5rem
+    height: 2.5rem
         /*2.125rem*/
     ;
 }
@@ -929,27 +929,44 @@ padding: 0.5rem .4rem;
     margin-bottom: 1rem;
 }
 
-.Leader__body {
-    display: flex;
+.leader__body {
+  display: flex;
+    position: relative;
+    flex-direction: row;
     justify-content: center;
     align-items: center;
-    border-radius: 5px;
-    position: relative;
     flex-wrap: wrap;
-    flex-direction: column;
     transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+    width: 100%;
+
 }
 
-.Leader__body-colors {
-    background-color: #2f3031;
-    border: #6c6c6c 2px solid;
-    color: #a7a7aa;
+.leader__body-color{
+    border-radius: 5px;
+    background-color: #313136;
+    border: 1px solid #2a2a3a;
 }
 
-.leader-text {
-    /*display: flex;*/
+.leader__header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 0.5rem;
+}
+
+.leader-user {
+    display: flex;
     justify-content: space-between;
     align-items: center;
+    border: 2px solid #5a5a63;
+    border-radius: .25rem;
+}
+
+.leader-user h2{
+    margin-right: 0.5rem
+}
+
+.leader-user span{
+    margin-right: 0.5rem;
 }
 
 .nav-submit {
@@ -980,7 +997,8 @@ padding: 0.5rem .4rem;
 
 .submit-img {
     object-fit: fill;
-    height: 1.5rem; /*2.125rem 2rem*/
+    height: 1.6rem;
+    /*2.125rem 2rem*/
     margin-right: 0.5rem;
 }
 
