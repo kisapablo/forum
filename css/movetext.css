@@ -12,7 +12,7 @@ color через hover плохая идея
     padding: 0;
     /* flex-wrap: wrap; */
     /*Поиск выпирающих элементов*/
-    /* outline: 4px solid green !important; */
+    /* outline: 4px solid green !important;*/
 
 }
 
@@ -262,8 +262,7 @@ html {
     object-fit: fill;
     margin-right: 1rem;
     height: 2.5rem
-        /*2.125rem*/
-    ;
+    /*2.125rem*/;
 }
 
 .nav-button {
@@ -731,20 +730,18 @@ padding: 0.5rem .4rem;
 
 .footer__body {
     display: flex;
-    flex-direction: row;
     flex-wrap: wrap;
     justify-content: center;
-    gap: 1.35rem;
-    padding-top: 2.25rem;
-    padding-bottom: 1.5rem;
-}
-
-.footer__body-colors {
+    padding: 2.25rem 15px;
     margin-top: 1.25rem;
     background-color: #23252b;
     border: 1px solid #5a5a63;
     border-bottom: 0;
     border-radius: 5px;
+}
+
+.footer__body a {
+    margin-left: .75rem;
 }
 
 .footer__body img {
@@ -930,7 +927,7 @@ padding: 0.5rem .4rem;
 }
 
 .leader__body {
-  display: flex;
+    display: flex;
     position: relative;
     flex-direction: row;
     justify-content: center;
@@ -941,7 +938,7 @@ padding: 0.5rem .4rem;
 
 }
 
-.leader__body-color{
+.leader__body-color {
     border-radius: 5px;
     background-color: #313136;
     border: 1px solid #2a2a3a;
@@ -961,11 +958,11 @@ padding: 0.5rem .4rem;
     border-radius: .25rem;
 }
 
-.leader-user h2{
+.leader-user h2 {
     margin-right: 0.5rem
 }
 
-.leader-user span{
+.leader-user span {
     margin-right: 0.5rem;
 }
 

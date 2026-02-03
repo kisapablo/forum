@@ -11,8 +11,9 @@
                 <a class="nav-button auth-color" href="{{ url('user/registration') }}">Register</a>
             </div>
         {% else %}
-            <a href="user/report" class="submit-button nav-submit"><img src="/footer-link/bug.png" alt="bug ico" class="submit-img">
-            <span class="">Submit Bug</span></a>
+            <a href="user/report" class="submit-button nav-submit"><img src="/footer-link/bug.png" alt="bug ico"
+                                                                        class="submit-img">
+                <span class="">Submit Bug</span></a>
             <a class="nav-button builder-color" href="{{ url('posts/builders') }}">Public new post </a>
             <a class="nav-button leader-color" href="{{ url('posts/leaders') }}">Top Karma Leaders </a>
             <a class="nav-button logout-color nav-lastbutton" href="{{ url('user/logout') }}">Log Out</a>
@@ -24,5 +25,4 @@
             </a>
         {% endif %}
     </div>
-    {#    </div> #}
 </nav>

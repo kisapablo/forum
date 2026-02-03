@@ -228,11 +228,11 @@ class UserRepository
         return $statement->fetchAll();
     }
 
-    public function UpdatePasswordHash($password, $UserID)
+    public function updatePasswordHash($password, $UserID)
     {
         $connection = $this->dataBase->getConnection();
 
-// unhashing pass
+        // unhashing pass
         $statement = $connection->prepare('UPDATE `user` SET `password_hash` = :password WHERE id = :UserID;');
 
         $statement->execute([
@@ -243,7 +243,7 @@ class UserRepository
         return $statement->fetchAll();
     }
 
-    public function Updateactivity($UserID)
+    public function updateActivity($UserID)
     {
         $connection = $this->dataBase->getConnection();
 
@@ -254,18 +254,31 @@ class UserRepository
         ]);
     }
 
-public function sendreport()
-{
-    $POST = $_POST;
-    
-    $connection = $this->dataBase->getConnection();
-    
-    $statement = $connection->prepare('INSERT INTO');
+    public function getNewNick($UserID)
+    {
+        $connection = $this->dataBase->getConnection();
 
-    $statement->execute([
-    'var' => $POST
-]);
-}
+        $statement = $connection->prepare('Select name from user where id = :UserID');
+
+        $statement->execute([
+            'UserID' => $UserID
+        ]);
+
+        return $statement->fetchAll();
+    }
+
+    public function sendreport()
+    {
+        $POST = $_POST;
+
+        $connection = $this->dataBase->getConnection();
+
+        $statement = $connection->prepare('INSERT INTO');
+
+        $statement->execute([
+            'var' => $POST
+        ]);
+    }
 
     //fixme
     function generateSalt()
