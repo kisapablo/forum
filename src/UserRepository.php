@@ -264,7 +264,7 @@ class UserRepository
             'UserID' => $UserID
         ]);
 
-        return $statement->fetchAll();
+        return ($statement->fetchColumn() ?? 0);
     }
 
     public function sendreport()

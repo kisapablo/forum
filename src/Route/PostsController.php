@@ -177,6 +177,7 @@ class PostsController
     // rendering DeletePosts.twig
     function showDeletePosts(Request $request, Response $response, array $args): Response
     {
+    error_log('Args value' . json_encode($args));
         if (!isset($args['post_id'])) {
             $body = $this->view->render('not-found.twig');
             $response->getBody()->write($body);
@@ -184,8 +185,12 @@ class PostsController
         }
         $post_id = (int)$args['post_id'];
         error_log('pid var' . json_encode($post_id));
-
         $post = $this->postRepository->findPostById($post_id);
+        if (!isset($post)) {
+            $body = $this->view->render('not-found.twig');
+            $response->getBody()->write($body);
+            return $response;
+        }
         $icon = $this->userRepository->findUserIcon($_SESSION['user']['id']);
         $totalCount = $this->postRepository->getTotalCount();
         error_log('Session is ' . json_encode($_SESSION));
@@ -238,8 +243,23 @@ class PostsController
             return $response;
         }
         //        $totalCount = $this->postRepository->getTotalCount();
+                $post_id = (int)$args['post_id'];
+        error_log('pid var' . json_encode($post_id));
+        $post = $this->postRepository->findPostById($post_id);
+        if (!isset($post)) {
+            $body = $this->view->render('not-found.twig');
+            $response->getBody()->write($body);
+            return $response;
+        }
         $comment_id = (int)$args['comment_id'];
         $comments = $this->commentRepository->findWhereComments($comment_id);
+error_log('Comments finded' . json_encode($comments));
+if (!isset($comments)) {
+            $body = $this->view->render('not-found.twig');
+            $response->getBody()->write($body);
+            return $response;        
+            }
+
         error_log('Delete Comments Value is ' . json_encode($comments));
         $icon = $this->userRepository->findUserIcon($_SESSION['user']['id']);
         error_log('Session is ' . json_encode($_SESSION));

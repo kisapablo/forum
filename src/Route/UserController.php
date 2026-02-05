@@ -140,7 +140,9 @@ class UserController
         error_log('New Password Hash Value is ' . json_encode($newPasswordHash));
         unset($_SESSION['user']['name']);
         $nick = $this->userRepository->getNewNick($_SESSION['user']['id']);
-        $_SESSION['user'] = ['name' => $nick['name']];
+        error_log('new nick' . json_encode($nick));
+        // $_SESSION['user'] = ['name' => $nick['name']];
+        $_SESSION['user']['name'] = $nick['name'];
         return $response->withStatus(301)->withHeader('Location', '/');
     }
 
@@ -169,5 +171,6 @@ class UserController
     {
         unset($_SESSION['user']);
         return $response->withStatus(301)->withHeader('Location', '/user/login');
+
     }
 }

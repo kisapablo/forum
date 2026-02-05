@@ -1,5 +1,5 @@
-<button class="collapse-button collapse-color" type="button" data-toggle="collapse"
-        data-target="#toolbarCollapse" aria-expanded="false" aria-controls="toolbarCollapse">
+<button class="collapse-button collapse-color" type="button" data-toggle="collapse" data-target="#toolbarCollapse"
+    aria-expanded="false" aria-controls="toolbarCollapse">
     <img class="collapse-ico" src="/public/images/default_ico/favicon.png" alt="Hello">
     <span {# class="Toolbar-text" #}>Toolbar</span>
 </button>
@@ -8,11 +8,11 @@
 
         <div class="post-toolbar post-header">
             {% include 'Navigation/pagination.twig' with pagination %}
-{#            search=') ~ (posts )#}
+            {#            search=') ~ (posts )#}
             {# Мб будет так-же в форм поиска#}
             <form method="get" action="{{ url('posts?') }}" class="search-header">
                 <label class="toolbar-search-body">
-                   <span class="search-title">Поиск</span>
+                    <span class="search-title">Поиск</span>
                     <input type="search" class="search-form" name="search" placeholder="Search">
                     <input type="search" class="search-form" name="author" placeholder="Search with author_id">
                     <select name="tags" id="tags" class="search-form">
@@ -23,10 +23,10 @@
                     {#                    <a type="" class="nav-button builder-color">Search</a>#}
                 </label>
             </form>
-{#            {% if user is not null %}#}
-{#                <span class="search-header">Тут может что то появится со временем</span>#}
-{#                {% else %}#}
-{#                {% endif %}#}
+            {#            {% if user is not null %}#}
+            {#                <span class="search-header">Тут может что то появится со временем</span>#}
+            {#                {% else %}#}
+            {#                {% endif %}#}
         </div>
     </div>
 </div>
