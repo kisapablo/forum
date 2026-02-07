@@ -71,13 +71,13 @@ class PostsController
         // error_log("User Karma is ". json_encode($KarmaSession['karma']));
         $LeadersKarma = $this->postRepository->getAllKarma();
         error_log("Leaders Karma is " . json_encode($LeadersKarma));
-        // error_log("Leaders Karma is " . json_encode($LeadersKarma['karma']));
+        error_log("Karma value is " . json_encode($LeadersKarma['karma']));
 
         $body = $this->view->render('Navigation/LeaderKarma.twig', [
         'user' => $_SESSION['user'],
         'icons' => $icon,
-        'karma' => $LeadersKarma,
-        'karmaSession' => $KarmaSession,
+        'rateleaders' => $LeadersKarma,
+        'userrate' => $KarmaSession,
         ]);
 
         $response->getBody()->write($body);
@@ -102,6 +102,7 @@ class PostsController
             $posts = $this->postRepository->findAllPostsByAuthorId($authorId, $limit, $start);
             $baseUrl = 'posts?author=' . $authorId . '&';
         } else {
+// Рендер постов на главной странице
             $posts = $this->postRepository->findAllPosts($limit, $start);
             $baseUrl = 'posts?';
         }
@@ -177,6 +178,7 @@ class PostsController
     // rendering DeletePosts.twig
     function showDeletePosts(Request $request, Response $response, array $args): Response
     {
+    error_log('Args value' . json_encode($args));
         if (!isset($args['post_id'])) {
             $body = $this->view->render('not-found.twig');
             $response->getBody()->write($body);
@@ -184,8 +186,12 @@ class PostsController
         }
         $post_id = (int)$args['post_id'];
         error_log('pid var' . json_encode($post_id));
-
         $post = $this->postRepository->findPostById($post_id);
+        if (!isset($post)) {
+            $body = $this->view->render('not-found.twig');
+            $response->getBody()->write($body);
+            return $response;
+        }
         $icon = $this->userRepository->findUserIcon($_SESSION['user']['id']);
         $totalCount = $this->postRepository->getTotalCount();
         error_log('Session is ' . json_encode($_SESSION));
@@ -227,19 +233,29 @@ class PostsController
     // rendering DeleteComments.twig
     function showDeleteComments(Request $request, Response $response, array $args): Response
     {
-        if (!isset($args['post_id'])) {
-            $body = $this->view->render('not-found.twig');
-            $response->getBody()->write($body);
-            return $response;
-        }
-        if (!isset($args['comment_id'])) {
-            $body = $this->view->render('not-found.twig');
-            $response->getBody()->write($body);
-            return $response;
-        }
+        // if (!isset($args['post_id'])) {
+        //     $body = $this->view->render('not-found.twig');
+        //     $response->getBody()->write($body);
+        //     return $response;
+        // }
+        // if (!isset($args['comment_id'])) {
+        //     $body = $this->view->render('not-found.twig');
+        //     $response->getBody()->write($body);
+        //     return $response;
+        // }
         //        $totalCount = $this->postRepository->getTotalCount();
+                $post_id = (int)$args['post_id'];
+        error_log('pid var' . json_encode($post_id));
+        $post = $this->postRepository->findPostById($post_id);
         $comment_id = (int)$args['comment_id'];
         $comments = $this->commentRepository->findWhereComments($comment_id);
+        if (!isset($post) || !isset($comments)) {
+            $body = $this->view->render('not-found.twig');
+            $response->getBody()->write($body);
+            return $response;
+        }
+error_log('Comments finded' . json_encode($comments));
+error_log('Comments finded' . json_encode($post));
         error_log('Delete Comments Value is ' . json_encode($comments));
         $icon = $this->userRepository->findUserIcon($_SESSION['user']['id']);
         error_log('Session is ' . json_encode($_SESSION));

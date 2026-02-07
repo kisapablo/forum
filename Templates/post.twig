@@ -1,88 +1,88 @@
 {% extends 'base.twig' %}
 
 {% block body %}
-    {# Rendering content #}
-    <div class="PostPreview">
-        <div class="PostPreview-title">
-            <h1>{{ post.title|escape }}</h1>
-            {% if post.author_id == user.id %}
-            <div class="post_edit-body">
-                <a class="nav-button auth-color" href="{{ url('user/posts/PostEditor/' ~ post.id) }}">
+{# Rendering content #}
+<div class="PostPreview">
+    <div class="PostPreview-title">
+        <h1>{{ post.title|escape }}</h1>
+        {% if post.author_id == user.id %}
+        <div class="post_edit-body">
+            <a class="nav-button auth-color" href="{{ url('user/posts/PostEditor/' ~ post.id) }}">
                 Edit post
-                </a>
-                <a class="nav-button logout-color" href="{{ url('posts/delete/' ) ~ post.id  }}">Delete Post</a>
-            </div>
-            {% endif %}
+            </a>
+            <a class="nav-button logout-color" href="{{ url('posts/delete/' ) ~ post.id  }}">Delete Post</a>
         </div>
-        <span class="text-muted" style="text-align: left">
-                {{ post.author_id }} | {{ post.published_date|date("F d, Y") }}
-            </span>
-        <div class="PostPreview-author">
-            <img src="{{ icon.icon_name }}" alt="Avatar" class="avatar-post">
-            <div class="PostPreview-auth-text">Jorik!</div>
-        </div>
-        <div class="post__body">
-            {{ post.content|raw }}
+        {% endif %}
+    </div>
+    <span class="text-muted" style="text-align: left">
+        {{ post.author_id }} | {{ post.published_date|date("F d, Y") }}
+    </span>
+    <div class="PostPreview-author">
+        <img src="{{ icon.icon_name }}" alt="Avatar" class="avatar-post">
+        <div class="PostPreview-auth-text">Jorik!</div>
+    </div>
+    <div class="post__body">
+        {{ post.content|raw }}
 
-            <div class="post_img_body">
-                <div class="container">
+        <div class="post_img_body">
+            <div class="container">
                 {% for post_attachment in post_attachments %}
-                    <div class="post_img_body-shadow">
-                        <img src="{{ post_attachment.attachment_name }}" alt="PostPhoto" class="post-img">
-                    </div>
+                <div class="post_img_body-shadow">
+                    <img src="{{ post_attachment.attachment_name }}" alt="PostPhoto" class="post-img">
+                </div>
             </div>
-                {% endfor %}
+            {% endfor %}
 
-            </div>
         </div>
     </div>
-    {#  Start Comment's #}
-    <div class="container">
-        <h3 class="comment_h3-body">Comments</h3>
-        {% if comments %}
-            {% for comment in comments %}
-                <div class="post__body comment-color">
-                    <div class="comment-title">
-                        <p class="comment-text">   {{ comment.content | e }}</p>
-                        <span class="post-publication-date">{{ comment.publication_data|date("F d, Y, H:m ") }}</span>
-                    </div>
-                    {% if comment.author_id == user.id %}
-                    <div class="post_edit-body">
-                        <a class="nav-button auth-color" href="{{ url('user/posts/CommentEditor/' ~ post.id ~ "/" ~ comment.id) }}">Edit
-                            comment</a>
-                        <a class="nav-button logout-color" href="{{ url('posts/delete/' ) ~ post.id  ~ '/comments/' ~ comment.id  }}">Delete Comment</a>
-                    </div>
-                    {% endif %}
-                    <div class="position">
-                        {% for comments_attachment in comment.attachments %}
-                            <img src="{{ comments_attachment.attachment_name }}" alt="Never" class="comment-img post_img_body-shadow">
-                        {% endfor %}
-                    </div>
-                    <p class="comment-text text-muted">
-                        <img src="{{ comment.author_icon_name }}" alt="avatars" class="avatar">
-                        <small style="">{{ comment.attachments.author_name }}</small>
-                    </p>
-                </div>
+</div>
+{#  Start Comment's #}
+<div class="container">
+    <h3 class="comment_h3-body">Comments</h3>
+    {% if comments %}
+    {% for comment in comments %}
+    <div class="post__body comment-color">
+        <div class="comment-title">
+            <p class="comment-text"> {{ comment.content | e }}</p>
+            <span class="post-publication-date">{{ comment.publication_data|date("F d, Y, H:m ") }}</span>
+        </div>
+        {% if comment.author_id == user.id %}
+        <div class="post_edit-body">
+            <a class="nav-button auth-color"
+                href="{{ url('user/posts/CommentEditor/' ~ post.id ~ "/" ~ comment.id) }}">Edit
+                comment</a>
+            <a class="nav-button logout-color"
+                href="{{ url('posts/delete/' ) ~ post.id  ~ '/comments/' ~ comment.id  }}">Delete Comment</a>
+        </div>
+        {% endif %}
+        <div class="position">
+            {% for comments_attachment in comment.attachments %}
+            <img src="{{ comments_attachment.attachment_name }}" alt="Never" class="comment-img post_img_body-shadow">
             {% endfor %}
-        {% else %}
-            <div class="alert alert-info-black" role="alert">
-                No comments yet.
-            </div>
-        {% endif %}
-        {% if user is not null %}
-            <form method="POST" action="/posts/{{ post.id }}/comments" class="mb-5" enctype="multipart/form-data">
-                <div class="form-group">
-                    <label class="Comment__Desc-main" for="exampleFormControlTextarea1">Add new Comment, write your
-                        think of this
-                        post!</label>
-                    <textarea required class="form-control" name="content" id="exampleFormControlTextarea1"
-                              rows="2"></textarea>
-                    <input type="file" id="avatar" name="avatar" class="" accept="image/png, image/jpeg"/>
-                </div>
-                <button type="submit" class="nav-button user-color">Submit Comment</button>
-            </form>
-        {% else %}
-        {% endif %}
+        </div>
+        <p class="comment-text text-muted">
+            <img src="{{ comment.author_icon_name }}" alt="avatars" class="avatar">
+            <small style="">{{ comment.attachments.author_name }}</small>
+        </p>
     </div>
+    {% endfor %}
+    {% else %}
+    <div class="alert alert-info-black" role="alert">
+        No comments yet.
+    </div>
+    {% endif %}
+    {% if user is not null %}
+    <form method="POST" action="/posts/{{ post.id }}/comments" class="mb-5" enctype="multipart/form-data">
+        <div class="form-group">
+            <label class="Comment__Desc-main" for="exampleFormControlTextarea1">Add new Comment, write your
+                think of this
+                post!</label>
+            <textarea required class="form-control" name="content" id="exampleFormControlTextarea1" rows="2"></textarea>
+            <input type="file" id="avatar" name="avatar" class="" accept="image/png, image/jpeg" />
+        </div>
+        <button type="submit" class="nav-button user-color">Submit Comment</button>
+    </form>
+    {% else %}
+    {% endif %}
+</div>
 {% endblock %}
-

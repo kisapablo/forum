@@ -1,9 +1,3 @@
-/* border обводка
-height - обозначение высоты
-width - ширина
-pagination navbar form control footer
-color через hover плохая идея
-*/
 * {
 
     box-sizing: border-box;
@@ -12,7 +6,7 @@ color через hover плохая идея
     padding: 0;
     /* flex-wrap: wrap; */
     /*Поиск выпирающих элементов*/
-    /* outline: 4px solid green !important; */
+    /* outline: 4px solid green !important;*/
 
 }
 
@@ -24,6 +18,9 @@ body {
 
 html {
     background-color: #15171e;
+    height: 100%;
+    width: 100%;
+    /* min-height: 100vh; */
 }
 
 .container-visible {
@@ -261,9 +258,8 @@ html {
 .nav-logo {
     object-fit: fill;
     margin-right: 1rem;
-    width: 2.5rem
-        /*2.125rem*/
-    ;
+    height: 2.5rem
+    /*2.125rem*/;
 }
 
 .nav-button {
@@ -730,22 +726,31 @@ padding: 0.5rem .4rem;
 }
 
 .footer__body {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 1.35rem;
-    padding-top: 2.25rem;
-    padding-bottom: 1.5rem;
-}
-
-.footer__body-colors {
-    margin-top: 1.25rem;
     background-color: #23252b;
     border: 1px solid #5a5a63;
     border-bottom: 0;
-    border-radius: 5px;
+    border-radius: 12px 12px 0 0;
+    width: 100%;
+    height: 100%;
+    padding: 2.25rem 0.9rem;
+    margin-top: 1.25rem;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    flex: 1 0 auto;
+    flex-shrink: 0;
 }
+
+.footer__body a {
+    margin-left: .75rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: #ccc;
+    transition: color 0.2s;
+}
+
+
 
 .footer__body img {
     object-fit: contain;
@@ -758,6 +763,9 @@ padding: 0.5rem .4rem;
     transform: scale(1.02);
 }
 
+.footer-github, .footer-twitter, .footer-facebook, .footer-telegram {
+    font-size: 0.9rem;
+}
 
 .footer-github {
     /*background: linear-gradient(60deg, #1b1a1a, #777878);*/
@@ -929,27 +937,44 @@ padding: 0.5rem .4rem;
     margin-bottom: 1rem;
 }
 
-.Leader__body {
+.leader__body {
     display: flex;
+    position: relative;
+    flex-direction: row;
     justify-content: center;
     align-items: center;
-    border-radius: 5px;
-    position: relative;
     flex-wrap: wrap;
-    flex-direction: column;
     transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+    width: 100%;
+
 }
 
-.Leader__body-colors {
-    background-color: #2f3031;
-    border: #6c6c6c 2px solid;
-    color: #a7a7aa;
+.leader__body-color {
+    border-radius: 5px;
+    background-color: #313136;
+    border: 1px solid #2a2a3a;
 }
 
-.leader-text {
-    /*display: flex;*/
+.leader__header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 0.5rem;
+}
+
+.leader-user {
+    display: flex;
     justify-content: space-between;
     align-items: center;
+    border: 2px solid #5a5a63;
+    border-radius: .25rem;
+}
+
+.leader-user h2 {
+    margin-right: 0.5rem
+}
+
+.leader-user span {
+    margin-right: 0.5rem;
 }
 
 .nav-submit {
@@ -980,7 +1005,8 @@ padding: 0.5rem .4rem;
 
 .submit-img {
     object-fit: fill;
-    height: 1.5rem; /*2.125rem 2rem*/
+    height: 1.6rem;
+    /*2.125rem 2rem*/
     margin-right: 0.5rem;
 }
 

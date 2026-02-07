@@ -1,25 +1,25 @@
 {% extends 'base.twig' %}
 {% block title %}
-    Comment Editor
+Comment Editor
 {% endblock %}
 {% block body %}
-    <form method="POST" action="" enctype="multipart/form-data" class="Editor_body">
-        <div class="Editor-forms">
-            <label>
-                        <textarea required class="Editor-form" name="content" rows="3"
-                                  placeholder="You Comment content">{{ comment.content }}</textarea>
-            </label>
-            <div class="attachment-Editor__body">
-                <div class="attachment-Editor-content">
-                    <label for="avatar" class="Builder-attachments__body"><span class="Builder-attachments-color"><img
-                                    src="/footer-link/uploading.png" alt=""
-                                    class="upload-ico">Upload your attachment</span></label>
-                    <input type="file" id="avatar" name="attachment" accept="image/**" style="display:none;"/>
-                </div>
+<form method="POST" action="" enctype="multipart/form-data" class="Editor_body">
+    <div class="Editor-forms">
+        <label>
+            <textarea required class="Editor-form" name="content" rows="3"
+                placeholder="You Comment content">{{ comment.content }}</textarea>
+        </label>
+        <div class="attachment-Editor__body">
+            <div class="attachment-Editor-content">
+                <label for="avatar" class="Builder-attachments__body"><span class="Builder-attachments-color"><img
+                            src="/footer-link/uploading.png" alt="" class="upload-ico">Upload your
+                        attachment</span></label>
+                <input type="file" id="avatar" name="attachment" accept="image/**" style="display:none;" />
             </div>
         </div>
-        <div class="form__body-button">
-            <button type="submit" class="form-button user-color">Save editing</button>
-        </div>
-    </form>
+    </div>
+    <div class="form__body-button">
+        <button type="submit" class="form-button user-color">Save editing</button>
+    </div>
+</form>
 {% endblock %}

@@ -6,23 +6,23 @@
     </a>
     <div class="nav__body-buttons">
         {% if user is null %}
-            <div class="nav__body-buttons">
-                <a class="nav-button auth-color" href="{{ url('user/login') }}">Log In</a>
-                <a class="nav-button auth-color" href="{{ url('user/registration') }}">Register</a>
-            </div>
+        <div class="nav__body-buttons">
+            <a class="nav-button auth-color" href="{{ url('user/login') }}">Log In</a>
+            <a class="nav-button auth-color" href="{{ url('user/registration') }}">Register</a>
+        </div>
         {% else %}
-            <a href="user/report" class="submit-button nav-submit"><img src="/footer-link/bug.png" alt="bug ico" class="submit-img">
+        <a href="user/report" class="submit-button nav-submit"><img src="/footer-link/bug.png" alt="bug ico"
+                class="submit-img">
             <span class="">Submit Bug</span></a>
-            <a class="nav-button builder-color" href="{{ url('posts/builders') }}">Public new post </a>
-            <a class="nav-button leader-color" href="{{ url('posts/leaders') }}">Top Karma Leaders </a>
-            <a class="nav-button logout-color nav-lastbutton" href="{{ url('user/logout') }}">Log Out</a>
-            <a href="{{ url('user') }}" class="user__body">
-                {% if icons is not null %}
-                    <img src="{{ icons.icon_name }}" alt="Avatar" class="avatar">
-                {% endif %}
-                <span> {{ user.name|default('Bug submit pls') }} </span>
-            </a>
+        <a class="nav-button builder-color" href="{{ url('posts/builders') }}">Public new post </a>
+        <a class="nav-button leader-color" href="{{ url('posts/leaders') }}">Top Karma Leaders </a>
+        <a class="nav-button logout-color nav-lastbutton" href="{{ url('user/logout') }}">Log Out</a>
+        <a href="{{ url('user') }}" class="user__body">
+            {% if icons is not null %}
+            <img src="{{ icons.icon_name }}" alt="Avatar" class="avatar">
+            {% endif %}
+            <span> {{ user.name|default('Bug submit pls') }} </span>
+        </a>
         {% endif %}
     </div>
-    {#    </div> #}
 </nav>

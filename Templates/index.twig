@@ -1,14 +1,14 @@
 {% extends 'base.twig' %}
 
 {% block body %}
+<div class="container">
+    <h3 class="latestPosts">Latest Posts</h3>
     <div class="container">
-        <h3 class="latestPosts">Latest Posts</h3>
-        <div class="container">
-            {% include 'Navigation/Toolbar.twig' %}
-            {% include 'Navigation/posts.twig' with posts %}
-            <div class="mt-3">
+        {% include 'Navigation/Toolbar.twig' %}
+        {% include 'Navigation/posts.twig' with posts %}
+        <div class="mt-3">
             {% include 'Navigation/pagination.twig' with pagination %}
-            </div>
         </div>
     </div>
+</div>
 {% endblock %}

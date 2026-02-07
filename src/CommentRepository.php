@@ -39,7 +39,13 @@ class CommentRepository
             "id" => $comment_id
         ]);
 
-        return $statement->fetchAll();
+        $posts = $statement->fetchAll();
+
+        if (empty($posts)) {
+            return null;
+        }
+
+        return $posts[0];
     }
 
     /**

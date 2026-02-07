@@ -3,29 +3,32 @@
 Registration
 {% endblock %}
 {% block body %}
-    <div class="authentication__MainBody">
-        <div class="authentication_color">
-            <div class="Authentication__title">
-                <h3>Регистрация пользователя</h3>
-            </div>
-            {% if message %}
-            <div class="alert {% if message starts with 'Ошибка' %}alert-danger-dark{% else %}alert-success-dark{% endif %}" role="alert">
-                {{ message }}
-            </div>
-            {% endif %}
-            <form method="POST" action="/user/registration" class="authentication__formBody">
-                <div class="authentication__formUserName">
-                    <label for="login" class="form-label">Логин</label>
-                    <input type="text" class="authentication__forms" name="login" id="login" placeholder="Введите логин"required>
-                </div>
-                <div class="authentication__formPassword">
-                    <label for="password" class="form-label">Пароль</label>
-                    <input type="password" class="authentication__forms" name="password" id="password" placeholder="Введите пароль" required>
-                </div>
-                <div class="authentication__formSubmit">
-                    <button type="submit" class="nav-button auth-button">Зарегистрировать</button>
-                </div>
-            </form>
+<div class="authentication__MainBody">
+    <div class="authentication_color">
+        <div class="Authentication__title">
+            <h3>Регистрация пользователя</h3>
         </div>
+        {% if message %}
+        <div class="alert {% if message starts with 'Ошибка' %}alert-danger-dark{% else %}alert-success-dark{% endif %}"
+            role="alert">
+            {{ message }}
+        </div>
+        {% endif %}
+        <form method="POST" action="/user/registration" class="authentication__formBody">
+            <div class="authentication__formUserName">
+                <label for="login" class="form-label">Логин</label>
+                <input type="text" class="authentication__forms" name="login" id="login" placeholder="Введите логин"
+                    required>
+            </div>
+            <div class="authentication__formPassword">
+                <label for="password" class="form-label">Пароль</label>
+                <input type="password" class="authentication__forms" name="password" id="password"
+                    placeholder="Введите пароль" required>
+            </div>
+            <div class="authentication__formSubmit">
+                <button type="submit" class="nav-button auth-button">Зарегистрировать</button>
+            </div>
+        </form>
     </div>
+</div>
 {% endblock %}

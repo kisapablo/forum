@@ -1,25 +1,25 @@
 {% extends 'base.twig' %}
 {% block title %}
-    User Editor
+User Editor
 {% endblock %}
 {% block body %}
-    <form method="POST" action="{{ url('user/UserEditor/debug') }}" enctype="multipart/form-data" class='Editor_body'>
-        <div class="Editor-forms">
-            <div class="alert alert-danger-dark">Warning! if you finish editing(Click for Special button) for you
-                profile then you need to reauthenticate
-            </div>
-            <label>
-                <input required type="text" class="Editor-form" name="Username" placeholder="Username"
-                       value="{{ user.name }}">
-                <input required type="text" class="Editor-form" name="Userpass" placeholder="Update your Password">
-                <textarea class="Editor-form" name="moto" rows="3" placeholder="Bio">{{ cabinet.moto }}</textarea>
-            </label>
+<form method="POST" action="{{ url('user/UserEditor/debug') }}" enctype="multipart/form-data" class='Editor_body'>
+    <div class="Editor-forms">
+        <div class="alert alert-danger-dark">Warning! if you finish editing(Click for Special button) for you
+            profile then you need to reauthenticate
         </div>
-        <label for="avatar" class="Editor-attachments__body"><span class="Editor-attachments-color"><img
-                        src="/footer-link/uploading.png" alt="" class="upload-ico">Upload your attachment</span></label>
-        <input type="file" id="avatar" name="avatar" accept="image/**" style="display:none;"/>
-        <div class="Editor-forms">
-            <button type="submit" class="form-button user-color">Finish Editing Profile</button>
-        </div>
-    </form>
+        <label>
+            <input required type="text" class="Editor-form" name="Username" placeholder="Username"
+                value="{{ user.name }}">
+            <input required type="text" class="Editor-form" name="Userpass" placeholder="Update your Password">
+            <textarea class="Editor-form" name="moto" rows="3" placeholder="Bio">{{ cabinet.moto }}</textarea>
+        </label>
+    </div>
+    <label for="avatar" class="Editor-attachments__body"><span class="Editor-attachments-color"><img
+                src="/footer-link/uploading.png" alt="" class="upload-ico">Upload your attachment</span></label>
+    <input type="file" id="avatar" name="avatar" accept="image/**" style="display:none;" />
+    <div class="Editor-forms">
+        <button type="submit" class="form-button user-color">Finish Editing Profile</button>
+    </div>
+</form>
 {% endblock %}
