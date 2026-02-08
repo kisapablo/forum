@@ -6,6 +6,7 @@ Leader Board for Karma
 {% block body %}
 <div class="leader__body">
     <div class="leader__body-color">
+    <div class="leader-title">LEADERS OF KARMA</div>
         {% for karma in rateleaders %}
         <div class="leader__header">
             <img class="post-icon" src="{{ karma.author_icon_name }}" alt="">
@@ -13,7 +14,7 @@ Leader Board for Karma
         </div>
         {% endfor %}
         <div class="leader-user">
-            <h2>YOU</h2> <span>{{ user.name|default('User') }}</span> {{ userrate.karma|default('0') }}
+            <div>YOU</div> <span>{{ user.name|default('User') }}</span>  <div>{{ userrate.karma|default('0') }} </div>
         </div> {# transform для более большего эффекта #}
     </div>
 </div>

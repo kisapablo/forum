@@ -259,7 +259,8 @@ html {
     object-fit: fill;
     margin-right: 1rem;
     height: 2.5rem
-    /*2.125rem*/;
+        /*2.125rem*/
+    ;
 }
 
 .nav-button {
@@ -763,7 +764,10 @@ padding: 0.5rem .4rem;
     transform: scale(1.02);
 }
 
-.footer-github, .footer-twitter, .footer-facebook, .footer-telegram {
+.footer-github,
+.footer-twitter,
+.footer-facebook,
+.footer-telegram {
     font-size: 0.9rem;
 }
 
@@ -952,29 +956,60 @@ padding: 0.5rem .4rem;
 .leader__body-color {
     border-radius: 5px;
     background-color: #313136;
-    border: 1px solid #2a2a3a;
+    /* border: 1px solid #2a2a3a; */
+    border: 2px solid #5a5a5a;
+    width: 100%;
+    max-width: 15rem;
+}
+
+.leader-title {
+    padding: .75rem 1.25rem;
+    display: flex;
+    justify-content: center;
+    background-color: #28282e;
+    border-bottom: 2px solid #4f4f4f;
+    border-radius: .25rem;
+    color: #AC8B1FFF;
 }
 
 .leader__header {
     display: flex;
     align-items: center;
-    margin-bottom: 0.5rem;
+    justify-content: center;
+    /* margin-bottom: 0.5rem; */
+    border-bottom: 0;
+    padding: 0.25rem
+}
+
+.leader__header:hover {
+    transform: scale(1.02);
+    box-shadow: 0.25rem 0 0.5rem rgba(94, 94, 94, 0.3), -0.25rem 0 0.5rem rgba(94, 94, 94, 0.3);
 }
 
 .leader-user {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border: 2px solid #5a5a63;
+    border-top: 2px solid #5a5a63;
     border-radius: .25rem;
+    font-weight: bolder;
+    font-size: x-large;
 }
 
-.leader-user h2 {
-    margin-right: 0.5rem
-}
+
+
 
 .leader-user span {
-    margin-right: 0.5rem;
+    margin-right: 0.75rem;
+    font-size: large;
+}
+
+.leader-user div:first-child {
+    color: gold;
+}
+
+.leader-user div:last-child {
+    color: darkcyan
 }
 
 .nav-submit {
