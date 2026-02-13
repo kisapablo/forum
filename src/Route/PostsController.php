@@ -67,17 +67,17 @@ class PostsController
         }
 
         $KarmaSession = $this->postRepository->getKarmaSession($_SESSION['user']['id']);
-        error_log("User Karma is ". json_encode($KarmaSession));
+        error_log("User Karma is " . json_encode($KarmaSession));
         // error_log("User Karma is ". json_encode($KarmaSession['karma']));
         $LeadersKarma = $this->postRepository->getAllKarma();
         error_log("Leaders Karma is " . json_encode($LeadersKarma));
         error_log("Karma value is " . json_encode($LeadersKarma['karma']));
 
         $body = $this->view->render('Navigation/LeaderKarma.twig', [
-        'user' => $_SESSION['user'],
-        'icons' => $icon,
-        'rateleaders' => $LeadersKarma,
-        'userrate' => $KarmaSession,
+            'user' => $_SESSION['user'],
+            'icons' => $icon,
+            'rateleaders' => $LeadersKarma,
+            'userrate' => $KarmaSession,
         ]);
 
         $response->getBody()->write($body);
@@ -93,22 +93,33 @@ class PostsController
         $page = isset($params['page']) ? (int)$params['page'] : 1;
         // Лимит отрисовки страниц(если будет 5 постов то отрисуется только 3 из них если лимит равен 3)
         $limit = 3;
-        $start = (int)(($page - 1) * $limit);
-        error_log("Start =" . json_encode($start));
+
+        // Для поиска получаем все посты без пагинации
+        $needSearch = isset($params['search']);
 
         // Ищем посты которые опубликовал пользователь
         if (isset($params['author'])) {
             $authorId = (int)$params['author'];
-            $posts = $this->postRepository->findAllPostsByAuthorId($authorId, $limit, $start);
+            if ($needSearch) {
+                $posts = $this->postRepository->findAllPostsByAuthorId($authorId, PHP_INT_MAX, 0);
+            } else {
+                $start = (int)(($page - 1) * $limit);
+                $posts = $this->postRepository->findAllPostsByAuthorId($authorId, $limit, $start);
+            }
             $baseUrl = 'posts?author=' . $authorId . '&';
         } else {
-// Рендер постов на главной странице
-            $posts = $this->postRepository->findAllPosts($limit, $start);
+            // Рендер постов на главной странице
+            if ($needSearch) {
+                $posts = $this->postRepository->findAllPosts(PHP_INT_MAX, 0);
+            } else {
+                $start = (int)(($page - 1) * $limit);
+                $posts = $this->postRepository->findAllPosts($limit, $start);
+            }
             $baseUrl = 'posts?';
         }
 
         // Ищем посты в которых есть имя которое отправил пользователь
-        if (isset($params['search'])) {
+        if ($needSearch) {
             $searchName = $params['search'];
             $outposts = [];
             foreach ($posts as $post) {
@@ -117,7 +128,12 @@ class PostsController
                 }
             }
             $posts = $outposts;
+            // Применяем пагинацию после поиска
+            $start = (int)(($page - 1) * $limit);
+            $posts = array_slice($posts, $start, $limit);
         }
+
+        error_log("Start =" . json_encode($start ?? 0));
 
         // Форматируем посты для поиска тэгов
         $ids = array_map(fn($p): int => $p['id'], $posts);
@@ -150,10 +166,9 @@ class PostsController
 
 
         error_log("Ids Value" . json_encode($ids));
-        if($_SESSION['user'] != null)
-{
-        $icon = $this->userRepository->findUserIcon($_SESSION['user']['id']);
-}
+        if ($_SESSION['user'] != null) {
+            $icon = $this->userRepository->findUserIcon($_SESSION['user']['id']);
+        }
         //        $userIcon = $this->userRepository->findUserIcon($posts['author_id']);
         $totalCount = $this->postRepository->getTotalCount();
         error_log('Session is ' . json_encode($_SESSION));
@@ -178,7 +193,7 @@ class PostsController
     // rendering DeletePosts.twig
     function showDeletePosts(Request $request, Response $response, array $args): Response
     {
-    error_log('Args value' . json_encode($args));
+        error_log('Args value' . json_encode($args));
         if (!isset($args['post_id'])) {
             $body = $this->view->render('not-found.twig');
             $response->getBody()->write($body);
@@ -212,14 +227,24 @@ class PostsController
             $response->getBody()->write($body);
             return $response;
         }
+
         $post_id = (int)$args['post_id'];
 
+        $attachmentID = $this->postRepository->findAttachmentsPost($post_id);
+
+        if (!isset($attachmentID)) {
+            $statuscomment = $this->postRepository->deleteAllPostComment($post_id);
+            $statuspost = $this->postRepository->deletePost($post_id);
+        } else {
+            $statusAttachment = $this->postRepository->deleteAttachments($attachmentID);
+            $statuscomment = $this->postRepository->deleteAllPostComment($post_id);
+            $statuspost = $this->postRepository->deletePost($post_id);
+        }
         // Удаляем комментарии с поста
-        $statuscomment = $this->postRepository->deleteAllPostComment($post_id);
         // Удаляем пост
-        $statuspost = $this->postRepository->deletePost($post_id);
         error_log('Status Delete Comment is ' . json_encode($statuscomment));
         error_log('Status Delete Comment is ' . json_encode($statuspost));
+        error_log('Status Delete Comment is ' . json_encode($statusAttachment));
         //    if (!empty($statuspost)){
         //        $message = 'Удаление запроса произошло успешно';
         //    } else{
@@ -244,7 +269,7 @@ class PostsController
         //     return $response;
         // }
         //        $totalCount = $this->postRepository->getTotalCount();
-                $post_id = (int)$args['post_id'];
+        $post_id = (int)$args['post_id'];
         error_log('pid var' . json_encode($post_id));
         $post = $this->postRepository->findPostById($post_id);
         $comment_id = (int)$args['comment_id'];
@@ -254,8 +279,8 @@ class PostsController
             $response->getBody()->write($body);
             return $response;
         }
-error_log('Comments finded' . json_encode($comments));
-error_log('Comments finded' . json_encode($post));
+        error_log('Comments finded' . json_encode($comments));
+        error_log('Comments finded' . json_encode($post));
         error_log('Delete Comments Value is ' . json_encode($comments));
         $icon = $this->userRepository->findUserIcon($_SESSION['user']['id']);
         error_log('Session is ' . json_encode($_SESSION));
@@ -532,7 +557,8 @@ error_log('Comments finded' . json_encode($post));
 
         return $response;
     }
-    public function NotFoundURL(Request $request, Response $response, array $args) {
+    public function NotFoundURL(Request $request, Response $response, array $args)
+    {
 
         $url_id = (int)$args['url_id'];
 
@@ -541,7 +567,7 @@ error_log('Comments finded' . json_encode($post));
         if ($icon == null) {
             error_log("User#" . $_SESSION['user']['id'] . " has no icon");
         }
- $body = $this->view->render('not-found.twig', [
+        $body = $this->view->render('not-found.twig', [
             'user' => $_SESSION['user'],
             'icons' => $icon,
         ]);
@@ -549,8 +575,7 @@ error_log('Comments finded' . json_encode($post));
         $response->getBody()->write($body);
 
         return $response;
-
-}
+    }
 
     public function updateComment(Request $request, Response $response, array $args)
     {

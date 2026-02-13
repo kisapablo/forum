@@ -17,7 +17,7 @@ class PostRepository
     {
         $connection = $this->dataBase->getConnection();
 
-        $statement = $connection->prepare( 
+        $statement = $connection->prepare(
             'SELECT count(id) as total FROM post'
         );
 
@@ -31,7 +31,7 @@ class PostRepository
     {
         $connection = $this->dataBase->getConnection();
 
-        $statement = $connection->prepare(  
+        $statement = $connection->prepare(
             'SELECT count(id) as total FROM post where author_id = :author_id'
         );
 
@@ -62,12 +62,6 @@ class PostRepository
         return $connection->lastInsertId();
     }
 
-
-    public function getNewPostID()
-    {
-
-    }
-
     public function savePostAttachment($id, $fileName)
     {
         $connection = $this->dataBase->getConnection();
@@ -89,11 +83,11 @@ class PostRepository
         $connection = $this->dataBase->getConnection();
 
         $statement = $connection->prepare(
-            'SELECT * FROM user_post_view ORDER BY publication_date ASC LIMIT :limit OFFSET :start' //:start
+            'SELECT * FROM user_post_view ORDER BY publication_date DESC LIMIT :limit OFFSET :start' //:start
         );
 
         $statement->bindValue(':limit', $limit, PDO::PARAM_INT);
-        $statement->bindValue('start', $start, PDO::PARAM_INT);
+        $statement->bindValue(':start', $start, PDO::PARAM_INT);
         $statement->execute();
 
         return $statement->fetchAll();
@@ -104,7 +98,7 @@ class PostRepository
         $connection = $this->dataBase->getConnection();
 
         $statement = $connection->prepare(
-            'SELECT * FROM post where id = :id'
+            'SELECT * FROM user_post_view where id = :id'
         );
 
         $statement->execute([
@@ -119,6 +113,7 @@ class PostRepository
 
         return $posts[0];
     }
+
 
     public function findCommentById($comment_id)
     {
@@ -151,7 +146,8 @@ class PostRepository
             "UPDATE post SET
                 content = :content,
                 title = :title
-                WHERE id = :post_id");
+                WHERE id = :post_id"
+        );
 
 
         $statement->execute([
@@ -173,7 +169,8 @@ class PostRepository
         $statement = $connection->prepare(
             "UPDATE comment SET
                 content = :content
-                WHERE id = :comment_id");
+                WHERE id = :comment_id"
+        );
 
 
         $statement->execute([
@@ -191,12 +188,12 @@ class PostRepository
         $connection = $this->dataBase->getConnection();
 
         $statement = $connection->prepare(
-            'SELECT * FROM user_post_view WHERE author_id = :author_id ORDER BY publication_date LIMIT :limit OFFSET :start'
+            'SELECT * FROM user_post_view WHERE author_id = :author_id ORDER BY publication_date DESC LIMIT :limit OFFSET :start'
         );
 
         $statement->bindValue(':author_id', $authorId, PDO::PARAM_INT);
         $statement->bindValue(':limit', $limit, PDO::PARAM_INT);
-        $statement->bindValue('start', $start, PDO::PARAM_INT);
+        $statement->bindValue(':start', $start, PDO::PARAM_INT);
         $statement->execute();
 
         return $statement->fetchAll();
@@ -234,11 +231,11 @@ class PostRepository
 
         $statement->execute($ids);
 
-        return $statement->fetchAll(    PDO::FETCH_ASSOC);
+        return $statement->fetchAll(PDO::FETCH_ASSOC);
     }
     public function getAllPostWhereTag($ids)
     {
-  /*
+        /*
         if (empty($ids)) {
             return [];
         }
@@ -249,13 +246,40 @@ class PostRepository
         $connection = $this->dataBase->getConnection();
 
         $statement = $connection->prepare(
-                "select * from search_tag_view;"
+            "select * from search_tag_view;"
         );
 
         //$statement->execute($ids);
         $statement->execute();
 
         return $statement->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+
+    public function findAttachmentsPost($postID)
+    {
+        $connection = $this->dataBase->getConnection();
+
+        $statement = $connection->prepare('select * from post_attachment where post_id = :postid');
+
+        $statement->execute([
+            'postid' => $postID
+        ]);
+
+        return $statement->fetchAll();
+    }
+
+    public function DeleteAttachments($AttachmentsArray)
+    {
+        $connection = $this->dataBase->getConnection();
+
+        $statement = $connection->prepare('DELETE FROM attachment WHERE id IN(106,107,108)');
+
+        $statement->execute([
+            'AttArray' => $AttachmentsArray
+        ]);
+
+        return $statement->fetchAll();
     }
 
     public function deletePost($post_id)
@@ -280,8 +304,8 @@ class PostRepository
         );
 
         $statement->execute([
-//            'id' => $comment_id
-        'id' => $post_id
+            //            'id' => $comment_id
+            'id' => $post_id
         ]);
         return $statement->fetchAll();
     }
@@ -304,14 +328,13 @@ class PostRepository
         $connection = $this->dataBase->getConnection();
 
         $statement = $connection->prepare(
-            'select * from post_karma limit 7' 
+            'select * from post_karma limit 7'
         );
 
         $statement->execute();
 
-            return $statement->fetchAll(PDO::FETCH_ASSOC);
-
-}
+        return $statement->fetchAll(PDO::FETCH_ASSOC);
+    }
 
     public function getKarmaSession($authorId)
     {
@@ -322,8 +345,8 @@ class PostRepository
         );
 
         $statement->bindValue(':author_id', $authorId, PDO::PARAM_INT);
-            $statement->execute();
+        $statement->execute();
 
-            return $statement->fetch(PDO::FETCH_ASSOC);
-}
+        return $statement->fetch(PDO::FETCH_ASSOC);
+    }
 }
