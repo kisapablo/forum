@@ -230,19 +230,11 @@ class PostsController
 
         $post_id = (int)$args['post_id'];
 
-        $attachmentID = $this->postRepository->findAttachmentsPost($post_id);
-
-        if (!isset($attachmentID)) {
+            // $attachmentID = $this->postRepository->findAttachmentsPost($post_id);
+            $statusAttachment = $this->postRepository->deleteAttachments($post_id);
             $statuscomment = $this->postRepository->deleteAllPostComment($post_id);
             $statuspost = $this->postRepository->deletePost($post_id);
-        } else {
-            $statusAttachment = $this->postRepository->deleteAttachments($attachmentID);
-            $statuscomment = $this->postRepository->deleteAllPostComment($post_id);
-            $statuspost = $this->postRepository->deletePost($post_id);
-        }
-        // Удаляем комментарии с поста
-        // Удаляем пост
-        error_log('Status Delete Comment is ' . json_encode($statuscomment));
+                      error_log('Status Delete Comment is ' . json_encode($statuscomment));
         error_log('Status Delete Comment is ' . json_encode($statuspost));
         error_log('Status Delete Comment is ' . json_encode($statusAttachment));
         //    if (!empty($statuspost)){

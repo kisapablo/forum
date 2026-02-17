@@ -1,20 +1,18 @@
 {% extends 'base.twig' %}
 
 {% block title %}
-Removing your comments...
+Removing your posts...
 {% endblock %}
 {% block body %}
-<div class="container">
-    <div class="delete_body">
-        <div class="delete_body-colors">
-            <div style="margin-bottom: 5rem;">
-                <div class="delete_title alert alert-danger-dark">If you sure click red button</div>
-                    <a class="nav-button cancel-button-color" href="{{ url('posts' ) ~ post.id  }}">Don't Remove</a>
-                    <form method="POST" action="{{ url('posts/delete/' ~ post.id ~ '/initial') }}" class="delete-form">
-                        <button type="submit" class="nav-button delete-button-color">Remove it</button>
-                    </form>
-                </div>
-            </div>
+<div class="delete_body">
+    <div class="delete_body-colors">
+        <div class="delete_title alert alert-danger-dark">If you sure, to delete your post <br>click red button</div>
+        <div class="delete-verification">
+            <a class="nav-button cancel-button-color" href="{{ url('posts' ) ~ post.id  }}">Don't Remove</a>
+            <form method="POST" action="{{ url('posts/delete/' ~ post.id ~ '/initial') }}" class="delete-form">
+                <button type="submit" class="nav-button delete-button-color">Remove it</button>
+            </form>
         </div>
     </div>
+</div>
 {% endblock %}

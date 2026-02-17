@@ -6,21 +6,23 @@
     padding: 0;
     /* flex-wrap: wrap; */
     /*Поиск выпирающих элементов*/
-    /* outline: 4px solid green !important;*/
+    /* outline: 4px solid transparent !important; */
 
 }
 
 body {
-    font-size: 1rem;
-    line-height: 1.5;
-    color: #ffffff;
+    height:100vh;
+    margin: 0;
+    padding: 0;
 }
 
 html {
     background-color: #15171e;
     height: 100%;
-    width: 100%;
-    /* min-height: 100vh; */
+    font-size: 1rem;
+    line-height: 1.5;
+    color: #ffffff;
+
 }
 
 .container-visible {
@@ -225,6 +227,7 @@ html {
 }
 
 .navbar {
+    box-sizing: border-box;
     background-color: #2b2b30;
     display: flex;
     flex-wrap: wrap;
@@ -681,9 +684,9 @@ padding: 0.5rem .4rem;
     display: flex;
     position: relative;
     flex-wrap: wrap;
-    flex-direction: column;
     align-items: center;
     justify-content: center;
+    flex-direction: column;
     transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
 }
 
@@ -691,15 +694,25 @@ padding: 0.5rem .4rem;
     border: 1px solid #5a5a63;
     background-color: #23252b;
     border-radius: 1rem;
-    padding: 0 .5rem
+    padding: 1rem
 }
 
 .delete_title {
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-top: 4rem;
     margin-bottom: 2rem;
+}
+
+
+.delete-verification {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.delete-form {
+    display: inline;
 }
 
 .ico__view-body {
@@ -740,6 +753,7 @@ padding: 0.5rem .4rem;
     justify-content: center;
     flex: 1 0 auto;
     flex-shrink: 0;
+    max-height: 9rem;
 }
 
 .footer__body a {

@@ -269,14 +269,14 @@ class PostRepository
         return $statement->fetchAll();
     }
 
-    public function DeleteAttachments($AttachmentsArray)
+    public function DeleteAttachments($pid)
     {
         $connection = $this->dataBase->getConnection();
 
-        $statement = $connection->prepare('DELETE FROM attachment WHERE id IN(106,107,108)');
+        $statement = $connection->prepare('DELETE FROM post_attachment where post_id = :pid');
 
         $statement->execute([
-            'AttArray' => $AttachmentsArray
+            'pid' => $pid
         ]);
 
         return $statement->fetchAll();
