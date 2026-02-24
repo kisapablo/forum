@@ -118,31 +118,34 @@ class UserController
     {
         $iconName = $_FILES['avatar']['name'];
         $userId = $_SESSION['user']['id'];
-
         $fileDir = "/public/images/";
         $fileName = $fileDir . $iconName;
+
         if (isset($_FILES) && $_FILES['avatar']['error'] == 0) {
             $dir = "./public/images/" . $_FILES['avatar']['name'];
             error_log('File name ' . $dir);
             move_uploaded_file($_FILES['avatar']['tmp_name'], $dir);
+            $icon = $this->userRepository->saveUserIcon($fileName, $userId);
         }
         error_log('filename is ' . json_encode($fileName));
         error_log('Files is ' . json_encode($_FILES));
-
-        error_log('Moto value is ' . json_encode($_POST['moto']));
-        $desc = $this->userRepository->updateUserInfo($_POST['moto'], $userId);
-        error_log('New Moto Value is ' . json_encode($desc));
-
+        error_log('Post value is ' . json_encode($_POST));
+        if ($_POST['moto'] != null) {
+            $desc = $this->userRepository->updateUserInfo($_POST['moto'], $userId);
+            error_log('New Moto Value is ' . json_encode($desc));
+        }
         $newNickName = $this->userRepository->updateUserName($_SESSION['user']['id'], $_POST['Username']);
         error_log('New Password Hash Value is ' . json_encode($newNickName));
-        $generateNewPasswordHash = password_hash($_POST['Userpass'], PASSWORD_DEFAULT);
-        $newPasswordHash = $this->userRepository->updatePasswordHash($generateNewPasswordHash, $_SESSION['user']['id']);
-        error_log('New Password Hash Value is ' . json_encode($newPasswordHash));
+        if ($_POST['Userpass'] != null) {
+            $generateNewPasswordHash = password_hash($_POST['Userpass'], PASSWORD_DEFAULT);
+            $newPasswordHash = $this->userRepository->UpdatePasswordHash($generateNewPasswordHash, $_SESSION['user']['id']);
+            error_log('New Password Hash Value is ' . json_encode($newPasswordHash));
+        }
         unset($_SESSION['user']['name']);
         $nick = $this->userRepository->getNewNick($_SESSION['user']['id']);
         error_log('new nick' . json_encode($nick));
         // $_SESSION['user'] = ['name' => $nick['name']];
-        $_SESSION['user']['name'] = $nick['name'];
+        $_SESSION['user']['name'] = $nick;
         return $response->withStatus(301)->withHeader('Location', '/');
     }
 
@@ -171,6 +174,5 @@ class UserController
     {
         unset($_SESSION['user']);
         return $response->withStatus(301)->withHeader('Location', '/user/login');
-
     }
 }

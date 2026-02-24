@@ -58,8 +58,8 @@ $app->post('/user/posts/PostEditor/{post_id}', [PostsController::class, 'updateP
 $app->post('/user/posts/CommentEditor/{post_id}/{comment_id}', [PostsController::class, 'updateComment']);
 $app->post('/posts/delete/{post_id}/initial', [PostsController::class, 'DeletePost']);
 $app->post('/posts/delete/{post_id}/comments/{comment_id}/initial', [PostsController::class, 'DeleteComment']);
-$app->get('/user/UserEditor', [PersonalCabinet::class, 'showUserEditor']);
-$app->post('/user/UserEditor/debug', [PersonalCabinet::class, 'UpdateUserInfo']);
+$app->get('/user/UserEditor', [UserController::class, 'showUserEditor']);
+$app->post('/user/UserEditor/debug', [UserController::class, 'UpdateUserInfo']);
 $app->post('/debug', [PersonalCabinet::class, 'getGlobalVariable']);
 $app->post('/user/icons/debug', [PersonalCabinet::class, 'getSelectedDefaultIco']);
 //$app->get('/user/posts/select', [PersonalCabinet::class, 'showPublishedPosts']);

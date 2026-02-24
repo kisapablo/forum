@@ -20,7 +20,7 @@ class PersonalCabinet
     public function __construct(Environment $view, PostRepository $postRepository, UserRepository $userRepository)
     {
         $this->view = $view;
-//        $this->postRepository = $postRepository;
+        //        $this->postRepository = $postRepository;
         $this->userRepository = $userRepository;
     }
 
@@ -36,9 +36,9 @@ class PersonalCabinet
         error_log('Session is ' . json_encode($_SESSION));
         error_log('ico' . json_encode($icon));
         error_log('icon = ' . json_encode($icon['icon_name']));
-//        if (!isset($user) || !$user['id']) {
-//            return $response->withStatus(301)->withHeader('Location', '/user/login');
-//        }
+        //        if (!isset($user) || !$user['id']) {
+        //            return $response->withStatus(301)->withHeader('Location', '/user/login');
+        //        }
 
         $body = $this->view->render('Navigation/PersonalCabinet.twig', [
             'user' => $_SESSION['user'],
@@ -57,9 +57,9 @@ class PersonalCabinet
             error_log("User#" . $_SESSION['user']['id'] . " has no icon");
         }
         error_log('Session is ' . json_encode($_SESSION));
-//        if (!isset($user) || !$user['id']) {
-//            return $response->withStatus(301)->withHeader('Location', '/user/login');
-//        }
+        //        if (!isset($user) || !$user['id']) {
+        //            return $response->withStatus(301)->withHeader('Location', '/user/login');
+        //        }
 
         $cabinet = $this->userRepository->cabinetInfo($_SESSION['user']['id']);
 
@@ -71,55 +71,6 @@ class PersonalCabinet
         $response->getBody()->write($body);
         return $response;
     }
-
-    public function showUserEditor(Request $request, Response $response)
-    {
-        $icon = $this->userRepository->findUserIcon($_SESSION['user']['id']);
-//        $password = 'helpme';
-//$hash = password_hash($password, PASSWORD_DEFAULT); //метод под вопросом
-        $body = $this->view->render('Navigation/UserEditor.twig', [
-            'user' => $_SESSION['user'],
-            'icons' => $icon,
-//            'generatedhash' => $hash
-        ]);
-        $response->getBody()->write($body);
-        return $response;
-    }
-
-    public function UpdateUserInfo(Request $request, Response $response)
-    {
-        $iconName = $_FILES['avatar']['name'];
-        $userId = $_SESSION['user']['id'];
-
-        $fileDir = "/public/images/";
-        $fileName = $fileDir . $iconName;
-        if (isset($_FILES) && $_FILES['avatar']['error'] == 0) {
-            $dir = "./public/images/" . $_FILES['avatar']['name'];
-            error_log('File name ' . $dir);
-            move_uploaded_file($_FILES['avatar']['tmp_name'], $dir);
-
-        } 
-        error_log('filename is ' . json_encode($fileName));
-        error_log('Files is ' . json_encode($_FILES));
-//        print_r($_FILES);
-
-        // $icon = $this->userRepository->saveUserIcon($fileName, $userId);
-        error_log('Moto value is ' . json_encode($_POST['moto']));
-        $desc = $this->userRepository->updateUserInfo($_POST['moto'], $userId);
-        error_log('New Moto Value is ' . json_encode($desc));
-
-        $newNickName = $this->userRepository->updateUserName($_SESSION['user']['id'], $_POST['Username']);
-//         if ($newNickName) {
-// $_SESSION['user'] = ['name' => $newNickName['name']];
-        error_log('New Password Hash Value is ' . json_encode($newNickName));
-        $generateNewPasswordHash = password_hash($_POST['Userpass'], PASSWORD_DEFAULT);
-        $newPasswordHash = $this->userRepository->UpdatePasswordHash($generateNewPasswordHash, $_SESSION['user']['id']);
-        error_log('New Password Hash Value is ' . json_encode($newPasswordHash));
-        // print_r($icon);
-//                return $response;
-        return $response->withStatus(301)->withHeader('Location', '/user/logout' );
-    }
-
     public function showDefaultIconsSelect(Request $request, Response $response)
     {
         $icons = $this->userRepository->findUserIcon($_SESSION['user']['id']);
