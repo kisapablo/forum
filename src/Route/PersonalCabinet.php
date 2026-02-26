@@ -71,34 +71,6 @@ class PersonalCabinet
         $response->getBody()->write($body);
         return $response;
     }
-    public function showDefaultIconsSelect(Request $request, Response $response)
-    {
-        $icons = $this->userRepository->findUserIcon($_SESSION['user']['id']);
-        if ($icons == null) {
-            error_log("User#" . $_SESSION['user']['id'] . " has no icon");
-        }
-
-        $icon = $this->userRepository->getdefaultIcon();
-        $body = $this->view->render('Navigation/SelectAvatar.twig', [
-            'user' => $_SESSION['user'],
-            'dicons' => $icon,
-            'icons' => $icons
-        ]);
-        $response->getBody()->write($body);
-        return $response;
-    }
-
-    public function getSelectedDefaultIco(Request $request, Response $response)
-    {
-        echo 'Post Value is ';
-        print_r($_POST);
-        echo '<br> Session Value is ';
-        print_r($_SESSION);
-        $defaultIcon = $_POST['selected_icon'];
-        $userId = $_SESSION['user']['id'];
-        $this->userRepository->setUserIcon($defaultIcon, $userId);
-        return $response->withStatus(301)->withHeader('Location', '/user');
-    }
 
     public function getGlobalVariable()
     {

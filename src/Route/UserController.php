@@ -121,15 +121,16 @@ class UserController
         $fileDir = "/public/images/";
         $fileName = $fileDir . $iconName;
 
-        if (isset($_FILES) && $_FILES['avatar']['error'] == 0) {
+        if (isset($_FILES) && $_FILES['avatar']['error'] == 0) { // грузим пользовательскую картинку на сервер
             $dir = "./public/images/" . $_FILES['avatar']['name'];
             error_log('File name ' . $dir);
             move_uploaded_file($_FILES['avatar']['tmp_name'], $dir);
             $icon = $this->userRepository->saveUserIcon($fileName, $userId);
         }
-        error_log('filename is ' . json_encode($fileName));
-        error_log('Files is ' . json_encode($_FILES));
-        error_log('Post value is ' . json_encode($_POST));
+        error_log('filename is ' . json_encode($fileName)); // проверяем какой путь получился в итоге 
+        error_log('Files is ' . json_encode($_FILES)); // смотрим есть ли вообще иконки от юзика которые мы можем загрузить
+        error_log('Post value is ' . json_encode($_POST)); // Проверка данных из формы
+        // Обновление данных о пользователе(Никнейм, пароль, описание)
         if ($_POST['moto'] != null) {
             $desc = $this->userRepository->updateUserInfo($_POST['moto'], $userId);
             error_log('New Moto Value is ' . json_encode($desc));
@@ -141,14 +142,43 @@ class UserController
             $newPasswordHash = $this->userRepository->UpdatePasswordHash($generateNewPasswordHash, $_SESSION['user']['id']);
             error_log('New Password Hash Value is ' . json_encode($newPasswordHash));
         }
+        // Пересоздаем сессию
         unset($_SESSION['user']['name']);
         $nick = $this->userRepository->getNewNick($_SESSION['user']['id']);
         error_log('new nick' . json_encode($nick));
         // $_SESSION['user'] = ['name' => $nick['name']];
         $_SESSION['user']['name'] = $nick;
-        return $response->withStatus(301)->withHeader('Location', '/');
+        return $response->withStatus(301)->withHeader('Location', '/'); // Возвращаем на главную страницу
     }
 
+    public function showDefaultIconsSelect(Request $request, Response $response)
+    {
+        $icons = $this->userRepository->findUserIcon($_SESSION['user']['id']);
+        if ($icons == null) {
+            error_log("User#" . $_SESSION['user']['id'] . " has no icon");
+        }
+
+        $icon = $this->userRepository->getdefaultIcon();
+        $body = $this->view->render('Navigation/SelectAvatar.twig', [
+            'user' => $_SESSION['user'],
+            'dicons' => $icon,
+            'icons' => $icons
+        ]);
+        $response->getBody()->write($body);
+        return $response;
+    }
+
+    public function getSelectedDefaultIco(Request $request, Response $response)
+    {
+        echo 'Post Value is ';
+        print_r($_POST);
+        echo '<br> Session Value is ';
+        print_r($_SESSION);
+        $defaultIcon = $_POST['selected_icon'];
+        $userId = $_SESSION['user']['id'];
+        $this->userRepository->setUserIcon($defaultIcon, $userId);
+        return $response->withStatus(301)->withHeader('Location', '/user');
+    }
 
     public function showSubmitBug(Request $request, Response $response): Response
     {

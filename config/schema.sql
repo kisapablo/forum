@@ -449,40 +449,50 @@ BEGIN
 END
 $
 
-CREATE PROCEDURE AddUserIcon (IN p_name VARCHAR(255), IN p_user_id BIGINT,IN p_is_default BOOL, OUT p_attachment_id BIGINT )
+CREATE PROCEDURE AddUserIcon (
+IN p_name VARCHAR(255),
+IN p_user_id BIGINT,
+IN p_is_default BOOL,
+OUT p_attachment_id BIGINT
+)
 BEGIN
-    DECLARE v_non_default_count INT;
-    DECLARE EXIT HANDLER FOR SQLEXCEPTION 
-    BEGIN
-        ROLLBACK;
-        SET p_attachment_id = NULL;
-        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Error creating user icon';
-    END;
+DECLARE v_old_attachment_id BIGINT;
+DECLARE EXIT HANDLER FOR SQLEXCEPTION
+BEGIN
+ROLLBACK;
+SET p_attachment_id = NULL;
+SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Error creating user icon';
+END;
 
-    START TRANSACTION;
-    
-    -- Check if non-default icon already exists for the user
-    IF NOT p_is_default THEN
-        SELECT COUNT(*) INTO v_non_default_count 
-        FROM `user_icon` 
-        WHERE `user_id` = p_user_id AND `is_default` = FALSE;
-        
-        IF v_non_default_count >= 1 THEN
-            SIGNAL SQLSTATE '45000' 
-            SET MESSAGE_TEXT = 'Cannot add non-default icon: user already has a non-default icon';
-        END IF;
-    END IF;
-    
-    -- Insert into attachment table
-    INSERT INTO `attachment` (`name`) VALUES (p_name);
-    SET p_attachment_id = LAST_INSERT_ID();
-    
-    -- Insert into user_icon table
-    INSERT INTO `user_icon` (`id`, `is_default`, `user_id`) 
-    VALUES (p_attachment_id, p_is_default, p_user_id);
-    -- Update icon id into user
-    UPDATE user SET icon_id = p_name WHERE id = p_attachment_id;
-    COMMIT;
+START TRANSACTION;
+
+-- Если это НЕ дефолтная иконка, ищем старую и удаляем
+IF NOT p_is_default THEN
+SELECT id INTO v_old_attachment_id
+FROM `user_icon`
+WHERE `user_id` = p_user_id AND `is_default` = FALSE
+LIMIT 1;
+
+IF v_old_attachment_id IS NOT NULL THEN
+-- Убираем связь в таблице user, чтобы не нарушить FK при удалении
+UPDATE `user` SET `icon_id` = NULL WHERE `id` = p_user_id AND `icon_id` = v_old_attachment_id;
+-- Удаляем старье
+DELETE FROM `user_icon` WHERE `id` = v_old_attachment_id;
+DELETE FROM `attachment` WHERE `id` = v_old_attachment_id;
+END IF;
+END IF;
+
+-- Вставляем новую запись
+INSERT INTO `attachment` (`name`) VALUES (p_name);
+SET p_attachment_id = LAST_INSERT_ID();
+
+INSERT INTO `user_icon` (`id`, `is_default`, `user_id`)
+VALUES (p_attachment_id, p_is_default, p_user_id);
+
+-- Привязываем к юзеру
+UPDATE `user` SET `icon_id` = p_attachment_id WHERE `id` = p_user_id;
+
+COMMIT;
 END
 $
 
