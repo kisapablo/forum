@@ -15,9 +15,17 @@ Builder New Posts
             <textarea required class="Builder-form" name="content" rows="3" placeholder="You Post content"></textarea>
         </label>
     </div>
-    <label for="avatar" class="Builder-attachments__body"><span class="Builder-attachments-color"><img
-                src="/footer-link/uploading.png" alt="" class="upload-ico">Upload your attachment</span></label>
-    <input type="file" id="avatar" name="avatar" accept="image/**" style="display:none;" />
+    <div class="Builder-attachments__body">
+        <span class="Builder-attachments-color">
+            <label for="avatar">
+                <img src="/footer-link/uploading.png" alt="" class="upload-ico">Upload
+                <input type="file" id="avatar" name="avatar" accept="image/**" style="display:none;" />
+            </label>
+            <span style="margin-left: .5rem;">
+                <img src="/footer-link/preview.png" alt="" class="upload-ico"> <span>Preview</span>
+            </span>
+        </span>
+    </div>
     <span class="form__body-button">
         <button type="submit" class="form-button user-color">Push Public post</button>
     </span>
