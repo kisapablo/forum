@@ -298,7 +298,7 @@ class PostsController
         return $response->withStatus(301)->withHeader('Location', '/posts/' . $post_id);
     }
 
-    // Rendering Post.twig
+    // Rendering Post.twig post.twig post
     public function showPostPage(Request $request, Response $response, array $args = [])
     {
         if (!isset($args['post_id'])) {
@@ -314,7 +314,7 @@ class PostsController
         $post = $this->postRepository->findPostById($post_id);
         error_log('post value ' . json_encode($post));
         $postAttachment = $this->postRepository->getPostAttachmentView($post_id);
-        $icons = $this->userRepository->findUserIcon($post['author_id']);
+        $icons = $this->userRepository->findUserIcon($_SESSION['user']['id']);
         error_log('icons value is' . json_encode($icons));
         //        $userIcon = $this->userRepository->findAuthorIcon($post['author_id']);
         $userIcon = $this->userRepository->findUserIcon($post['author_id']);

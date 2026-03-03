@@ -227,9 +227,8 @@ html {
     margin-bottom: 1rem;
 }
 
-.form-control {
+.comment-form {
     display: block;
-    width: 100%;
     padding: .375rem .75rem;
     font-size: 1rem;
     font-weight: 400;
@@ -853,6 +852,23 @@ padding: 0.5rem .4rem;
     justify-content: inherit;
 
 }
+
+.form-control {
+    display: block;
+    width: 100%;
+    padding: .375rem .75rem;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #ffffff;
+    background-color: #3d3d3f;
+    background-clip: padding-box;
+    border: 1px solid #ced4da;
+    border-radius: 1.25rem;
+    transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+    margin-bottom: 10px;
+}
+
 
 .comment-title {
     display: flex;

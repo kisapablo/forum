@@ -19,7 +19,7 @@
     </span>
     <div class="PostPreview-author">
         <img src="{{ icon.icon_name }}" alt="" class="avatar-post">
-        <div class="PostPreview-auth-text">Jorik!</div>
+        <div class="PostPreview-auth-text">{{ post.author_name }}</div>
     </div>
     <div class="post__body">
         {{ post.content|raw }}
@@ -30,9 +30,8 @@
                 <div class="post_img_body-shadow">
                     <img src="{{ post_attachment.attachment_name }}" alt="PostPhoto" class="post-img">
                 </div>
-            </div>
             {% endfor %}
-
+            </div>
         </div>
     </div>
 </div>
@@ -49,8 +48,7 @@
         {% if comment.author_id == user.id %}
         <div class="post_edit-body">
             <a class="nav-button auth-color"
-                href="{{ url('user/posts/CommentEditor/' ~ post.id ~ "/" ~ comment.id) }}">Edit
-                comment</a>
+                href="{{ url('user/posts/CommentEditor/' ~ post.id ~ "/" ~ comment.id) }}">Edit comment</a>
             <a class="nav-button logout-color"
                 href="{{ url('posts/delete/' ) ~ post.id  ~ '/comments/' ~ comment.id  }}">Delete Comment</a>
         </div>
@@ -64,7 +62,6 @@
             <img src="{{ comment.author_icon_name }}" alt="avatars" class="avatar">
             <small style="">{{ comment.attachments.author_name }}</small>
         </p>
-    </div>
     {% endfor %}
     {% else %}
     <div class="alert alert-info-black" role="alert">
@@ -74,15 +71,14 @@
     {% if user is not null %}
     <form method="POST" action="/posts/{{ post.id }}/comments" class="mb-5" enctype="multipart/form-data">
         <div class="form-group">
-            <label class="Comment__Desc-main" for="exampleFormControlTextarea1">Add new Comment, write your
-                think of this
-                post!</label>
-            <textarea required class="form-control" name="content" id="exampleFormControlTextarea1" rows="2"></textarea>
+            <label class="Comment__Desc-main" for="exampleFormControlTextarea1">Add new Comment, write your think of this post!</label>
+            <textarea required class="comment-form" name="content" id="exampleFormControlTextarea1" rows="2"></textarea>
             <input type="file" id="avatar" name="avatar" class="" accept="image/png, image/jpeg" />
         </div>
         <button type="submit" class="nav-button user-color">Submit Comment</button>
     </form>
     {% else %}
     {% endif %}
+</div>
 </div>
 {% endblock %}
