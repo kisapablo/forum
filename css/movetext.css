@@ -51,6 +51,23 @@ html {
     margin-left: auto;
 }
 
+.form-toolbar {
+    width: fit-content;
+    border-radius: 20px;
+    background-color: #2f3031;
+    padding: 0.25rem;
+    /* border-bottom: 1px solid #5a5a63; */
+    margin-bottom: 5px;
+}
+
+.form-header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
 .Builder_body {
     border: 2px solid #5a5a45;
     display: flex;

@@ -1,14 +1,13 @@
 <button class="collapse-button collapse-color" type="button" data-toggle="collapse" data-target="#toolbarCollapse"
     aria-expanded="false" aria-controls="toolbarCollapse">
     <img class="collapse-ico" src="/public/images/default_ico/favicon.png" alt="Hello">
-    <span {# class="Toolbar-text" #}>Toolbar</span>
+    <span>Toolbar</span>
 </button>
 <div class="collapse" id="toolbarCollapse">
     <div class="collapse_settings">
 
         <div class="post-toolbar post-header">
             {% include 'Navigation/pagination.twig' with pagination %}
-            {#            search=') ~ (posts )#}
             {# Мб будет так-же в форм поиска#}
             <form method="get" action="{{ url('posts?') }}" class="search-header">
                 <label class="toolbar-search-body">
@@ -20,13 +19,8 @@
                         <option>This Tag</option>
                     </select>
                     <button type="submit" class="nav-button builder-color">Search</button>
-                    {#                    <a type="" class="nav-button builder-color">Search</a>#}
                 </label>
             </form>
-            {#            {% if user is not null %}#}
-            {#                <span class="search-header">Тут может что то появится со временем</span>#}
-            {#                {% else %}#}
-            {#                {% endif %}#}
         </div>
     </div>
 </div>
