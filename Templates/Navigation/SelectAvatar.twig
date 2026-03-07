@@ -1,24 +1,21 @@
 {% extends 'base.twig' %}
 {% block title %}
-Selection Default Avatar
+Select Avatar
 {% endblock %}
 {% block body %}
 <div class="container-fluid">
     <h1 class="latestPosts">Выберите иконку из ниже предоставленных.</h1>
-    <form method="POST" action="{{ url('user/icons/debug') }}" class="mb-5">
-        <div class="ico__view-body ico__view-visible-colors">
-            {% for icon in dicons %}
-            <span class="ico__view-bodycolors">
-                <label>
+    <form method="POST" action="{{ url('user/icons/debug') }}" class="IconPreview__body IconPreview-visible-colors">
+    <div class="IconPreview__header">
+    {% for icon in dicons %}
+                <label class="IconPreview-icon IconPreview-bodycolors">
                     <input type="radio" name="selected_icon" value="{{ icon.id }}" style="display: none;">
-                    <span class="text-avatar">Default Ico</span>
-                    <img src="{{ icon.icon_name }}" alt="One Icon" class="select-avatar">
+                    <img src="{{ icon.icon_name }}" alt="One Icon" class="IconPreview-avatar">
                 </label>
-            </span>
             {% endfor %}
-        </div>
-        <div class="mt-3">
-            <button type="submit" class="nav-button user-color mx-1">Готово</button>
+            </div>
+        <div class="IconPreview-button">
+            <button type="submit" class="nav-button user-color">Готово</button>
         </div>
     </form>
 </div>
